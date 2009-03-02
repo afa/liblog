@@ -1,0 +1,31 @@
+body {
+ background-color:#e0e0e0;
+ font-family:Tahoma,Verdana,sans-serif;
+}
+
+.flash {
+ width:100%;
+ padding-bottom:20px;
+}
+.error, .notice {
+ padding:3px;
+ margin:2px;
+}
+.flash .error {
+ background-color:red;
+}
+.flash .notice {
+ background-color:green;
+}
+.main_menu {
+ padding-bottom:5px;
+ padding-top:3px;
+ padding-left:3px;
+ background-color:#f0f0f0;
+}
+.submenu {
+ padding-bottom:5px;
+ padding-left:7px;
+ background-color:#f8f8f8;
+ color:#404040;
+}

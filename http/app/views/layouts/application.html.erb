@@ -1,0 +1,38 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://wwww.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+ <head>
+  <title><%= @title %></title>
+  <%= stylesheet_link_tag "main" %>
+ </head>
+ <body>
+  <div class="main_menu">
+   <%= link_to_unless_current "Home", :controller=>"Site", :action=>"index" %>
+  </div>
+  <% if @submenu then %>
+   <div class="submenu">
+    <% @submenu.each do | item | %>
+     <%= link_to_unless_current item.delete(:text), item %>
+    <% end %>
+   </div>
+  <% end -%>
+  <% if flash && flash.size then %>
+   <div class="flash">
+    <% if flash[:notice] then %>
+     <div class="notice">
+      <%= h(flash[:notice]) -%>
+     </div>
+    <% end %>
+    <% if flash[:error] then %>
+     <div class="error">
+      <%= h(flash[:error]) -%>
+     </div>
+    <% end %>
+   </div>
+  <% end -%>
+  <div class="content">
+   <%= yield %>
+  </div>
+  <div class="footer"></div>
+ </body>
+</html>
