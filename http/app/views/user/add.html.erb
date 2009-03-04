@@ -1,2 +1,6 @@
-<h1>User#add</h1>
-<p>Find me in app/views/user/add.html.erb</p>
+<div>
+ <% form_for :identity do | form | %>
+  <%= render :partial=>'edit_user', :locals=>{ :form=>form } %>
+  <%= form.submit "Сохранить" %>
+ <% end %>
+</div>

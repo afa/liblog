@@ -7,7 +7,11 @@
  </head>
  <body>
   <div class="main_menu">
+   <span style="font-size:8px;display:block;float:right;">
+    <%= render :partial=>'user/logon', :locals=>{ :logon=>@logon } %>
+   </span>
    <%= link_to_unless_current "Home", :controller=>"Site", :action=>"index" %>
+   <%= link_to_unless_current "Users", :controller=>"User", :action=>"index" %>
   </div>
   <% if @submenu then %>
    <div class="submenu">
