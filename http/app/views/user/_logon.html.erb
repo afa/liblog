@@ -1,8 +1,8 @@
 <% if logon.nil? then %>
  <% form_tag( :controller=>'user', :action=>'login' ) do %>
-  <%= text_field_tag :username %>
-  <%= password_field_tag :password %>
-  <%= submit_tag "Login" %>
+  <%= text_field_tag :username, '', {:style=>'max-width:100px;font-size:11px;'} %>
+  <%= password_field_tag :password, '', {:style=>'max-width:100px;font-size:11px;'} %>
+  <%= submit_tag "Login", {:style=>'font-size:10px;'} %>
  <% end %>
 <% else %>
  <%= logon.identity.name %>
