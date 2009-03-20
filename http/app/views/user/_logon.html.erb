@@ -1,9 +1,12 @@
-<% if logon.nil? then %>
+<% if session[:logon].nil? then %>
  <% form_tag( :controller=>'user', :action=>'login' ) do %>
   <%= text_field_tag :username, '', {:style=>'max-width:100px;font-size:11px;'} %>
   <%= password_field_tag :password, '', {:style=>'max-width:100px;font-size:11px;'} %>
   <%= submit_tag "Login", {:style=>'font-size:10px;'} %>
  <% end %>
 <% else %>
- <%= logon.identity.name %>
+ <% logged = User.find( :first, session[:logon] ).identity %>
+ <%= link_to_unless_current logged.name, :controller=>'User', :action=>'show', :id=>logged.id -%>
+ <%- session[:return_to] = request.request_uri -%>
+ <%= link_to "Logout", :controller=>'User', :action=>'logout' %>
 <% end %>

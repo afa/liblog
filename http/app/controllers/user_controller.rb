@@ -11,15 +11,16 @@ class UserController < ApplicationController
     user = User.find_by_username_and_password params[:username], params[:password] 
     session[:logon] = user.id unless user.nil?
     unless session[:return_to].nil? then
-     session[:return_to] = nil
      redirect_to session[:return_to]
+     session[:return_to] = nil
     else 
      redirect_to :controller=>'Site', :action=>'index'
     end
    end
   end
   def logout
-   delete session[:logon]
+   session[:logon] = nil
+   redirect_to :controller=>'Site', :action=>'index'
   end
   def index
    @title = "Список персон"
@@ -32,14 +33,20 @@ class UserController < ApplicationController
   end
 
   def edit
-   @title = 'Edit person'
    @identity = Identity.find params[:id]
+   @submenu << { :text=>'Edit', :action=>'edit', :id=>@identity.id }
+   @submenu << { :text=>'Delete', :action=>'delete', :id=>@identity.id }
+   @title = "Edit person #{ @identity.name }"
   end
 
   def delete
   end
 
   def show
+   @identity = Identity.find params[:id]
+   @identity = Identity.find params[:id]
+   @submenu << { :text=>'Edit', :action=>'edit', :id=>@identity.id }
+   redirect_to :action=>'index' if @identity.nil?
   end
  private
   def protect
