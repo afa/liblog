@@ -1,2 +1,6 @@
-<h1>Blog#post</h1>
-<p>Find me in app/views/blog/post.html.erb</p>
+<div>
+ <% form_for :post, @post do | form | %>
+  <%= render :partial=>'blog_post_edit', :locals=>{ :form=>form } %>
+ <% end %>
+</div>
+

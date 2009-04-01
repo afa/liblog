@@ -29,3 +29,28 @@ body {
  background-color:#f8f8f8;
  color:#404040;
 }
+
+.post {
+ padding-bottom:3px;
+ margin-bottom:7px;
+ background-color:#c0c0e0;
+ margin-left:3px;
+ margin-right:3px;
+ padding-right:2px;
+ padding-left:2px;
+}
+.post .header {
+ background-color:#f8f8f8;
+ padding-top:5px;
+ padding-left:3px;
+ padding-right:3px;
+ font-weight:bold;
+}
+.post .date {
+ float:right;
+ font-weight:normal;
+ font-size:10px;
+}
+.post .links {
+ border-top:black 1px #e0e0e0;
+}

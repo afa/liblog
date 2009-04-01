@@ -1,4 +1,5 @@
 class UserController < ApplicationController
+#  helper :user
   before_filter :protect, :except=>[ :login, :index, :show ]
   def initialize
    @submenu = [
@@ -10,6 +11,7 @@ class UserController < ApplicationController
    unless params[:username].blank? then
     user = User.find_by_username_and_password params[:username], params[:password] 
     session[:logon] = user.id unless user.nil?
+    @take_login
     unless session[:return_to].nil? then
      redirect_to session[:return_to]
      session[:return_to] = nil
@@ -23,6 +25,7 @@ class UserController < ApplicationController
    redirect_to :controller=>'Site', :action=>'index'
   end
   def index
+   @take_login
    @title = "Список персон"
    @users = Identity.find :all, :order=>'name'
   end
@@ -43,6 +46,7 @@ class UserController < ApplicationController
   end
 
   def show
+   @take_login
    @identity = Identity.find params[:id]
    @identity = Identity.find params[:id]
    @submenu << { :text=>'Edit', :action=>'edit', :id=>@identity.id }
@@ -56,5 +60,6 @@ class UserController < ApplicationController
     redirect_to :controller=>'User', :action=>'login'
     return false
    end
+   @take_login
   end 
 end

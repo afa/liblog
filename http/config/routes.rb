@@ -37,6 +37,8 @@ ActionController::Routing::Routes.draw do |map|
 
   # Install the default routes as the lowest priority.
   map.connect '', :controller=>'Site', :action=>'index'
+#  map.connect 'blog/:year/:month/:day', :controller=>'Blog', :action=>'dated'
+#  map.connect 'blog/:year/:month', :controller=>'Blog', :action=>'dated'
   map.connect ':controller/:action/:id'
   map.connect ':controller/:action/:id.:format'
 end
