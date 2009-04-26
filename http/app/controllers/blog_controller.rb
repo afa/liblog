@@ -6,19 +6,6 @@ class BlogController < ApplicationController
     {:text=>'Добавить', :action=>'post'},
    ]
   end
-#(:options => {:theme => 'advanced',
-#   :browsers => %w{msie gecko},
-#   :theme_advanced_toolbar_location => "top",
-#   :theme_advanced_toolbar_align => "left",
-#   :theme_advanced_resizing => true,
-#   :theme_advanced_resize_horizontal => false,
-#   :paste_auto_cleanup_on_paste => true,
-#   :theme_advanced_buttons1 => %w{formatselect fontselect fontsizeselect bold italic underline strikethrough separator justifyleft justifycenter justifyright indent outdent separator bullist numlist forecolor backcolor separator link unlink image undo redo},
-#   :theme_advanced_buttons2 => [],
-#   :theme_advanced_buttons3 => [],
-#   :plugins => %w{contextmenu paste}}
-##   :only => [:new, :edit, :show, :index]
-#  )
 
   def index
    @posts = BlogPost.paginate :all, :order=>'created_at DESC', :page=>params[:page]
@@ -69,6 +56,12 @@ class BlogController < ApplicationController
   def dated
    
    @posts = BlogPost.paginate :all, :page => params[:page]
+  end
+  def named
+   @submenu << { :text=>'Редактировать', :action=>'edit', :id=>params[:id] }
+   @submenu << { :text=>'Удалить', :action=>'delete', :id=>params[:id] }
+   @post = BlogPost.find_by_name params[:name]
+   redirect_to :action=>'index' if @post.nil?
   end
  private
   def protect

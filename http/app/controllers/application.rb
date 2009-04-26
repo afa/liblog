@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
 
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
-  protect_from_forgery # :secret => 'cde0b420e0543a4323b9979a26d5b8e7'
+  protect_from_forgery :secret => 'cde0b420e0543a4323b9979a26d5b8e7'
   
   # See ActionController::Base for details 
   # Uncomment this to filter the contents of submitted sensitive data parameters
@@ -15,7 +15,9 @@ class ApplicationController < ActionController::Base
  def take_login
   if @logged.nil? then
    unless session[:logon].nil? then
-    @logged = User.find :first, session[:logon]
+    @logged = User.find( :first, session[:logon]) or GuestUser.new
+   else 
+    @logged = GuestUser.new
    end
   end
   @logged

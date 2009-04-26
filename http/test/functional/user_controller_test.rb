@@ -1,8 +1,9 @@
 require 'test_helper'
 
 class UserControllerTest < ActionController::TestCase
-  # Replace this with your real tests.
-  def test_truth
-    assert true
+  fixtures :identities, :users
+  def test_can_view_index_not_logged
+   get :index
+   assert :success
   end
 end

@@ -1,8 +1,9 @@
 require 'test_helper'
 
 class IdentityTest < ActiveSupport::TestCase
-  # Replace this with your real tests.
-  def test_truth
-    assert true
-  end
+ fixtures :identities, :users
+ def test_none_users
+  assert identities(:none_users).users.empty?
+ end
+
 end

@@ -1,0 +1,27 @@
+expired:
+  id: 1
+  text: 'exp'
+  to_date: <%= Date.yesterday.to_s %>
+  done: false
+
+normal:
+  id: 2
+  text: 'norm'
+  to_date: <%= Date.tomorrow.to_s %>
+  done: false
+
+nil_done:
+  id: 5
+  text: 'nil_done'
+  to_date: <%= Date.tomorrow.to_s %>
+
+tree_root:
+  id: 3
+  text: 'root'
+  done: false
+
+tree_item:
+  id: 4
+  parent: 3
+  text: 'item'
+  done: true

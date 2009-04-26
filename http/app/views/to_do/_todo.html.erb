@@ -1,0 +1,16 @@
+<% div_for todo do %>
+ <span>
+  <%= link_to_unless_current h(todo.text), todo_path( :action=>'show', :id=>todo.id ) -%>
+ </span>
+ <span class="<%= (! todo.done) && (! todo.to_date.nil?) && (todo.to_date > Date.current) ? 'expired' : '' %>">
+  <%= todo.to_date -%>
+ </span>
+ <span>
+  <%= "#{ todo.percent_done || 'Nothing'} done" %>
+ </span>
+ <% if todo.childs.size and not max_depth.nil? and max_depth > 0 then %>
+  <div class='childs'>
+   <%= todo_render todo.childs, (max_depth ? max_depth - 1 : 0) %>
+  </div>
+ <% end %>
+<% end %>

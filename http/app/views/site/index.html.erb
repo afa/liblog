@@ -1,5 +1,5 @@
-<div>создали, побежали по хотелкам</div>
-<div>блог &mdash; уложить в /blog, controller=&gt;Blog</div>
-<div>проекты &mdash; укладывать в /(буква проекта). контролеры начинаются с буквы, классы моделей тоже.</div>
-<div>заменить хытымыль порнографию на аналог вики. укладывать в /articles. controller=&gt;Article</div>
-<div>шоп два раза не вставать &mdash; фотогалерея (не путать с картинками) ляжет в /photo. controller=&gt;FileStored::ImageStored::Photo</div>
+<div style='width:50%; border:black 1px solid; margin-bottom:10px;'>
+ <legend>Хотелки</legend>
+ <%= todo_render( @todos, 0) -%>
+ <%= link_to ("Посмотреть все хотелки", todo_path) if @todos.total_pages > 1 %>
+</div>

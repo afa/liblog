@@ -9,8 +9,12 @@ class UserController < ApplicationController
   end
   def login
    unless params[:username].blank? then
-    user = User.find_by_username_and_password params[:username], params[:password] 
-    session[:logon] = user.id unless user.nil?
+    user = User.find_by_username_and_password( params[:username], params[:password]) || GuestUser.new 
+    unless user.can_login? then
+     redirect_to :action=>'login' 
+     return false
+    end
+    session[:logon] = user.id if user.logged?
     @take_login
     unless session[:return_to].nil? then
      redirect_to session[:return_to]

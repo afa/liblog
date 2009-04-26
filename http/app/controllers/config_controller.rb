@@ -44,7 +44,7 @@ class ConfigController < ApplicationController
   end
  private
   def protect
-   unless  (not take_login.nil?) and (not take_login.can_admin?) then
+   if take_login.nil? or take_login.kind_of?(GuestUser) or (not take_login.can_admin?) then
     redirect_to :controller=>'User', :action=>'login'
     return false
    end

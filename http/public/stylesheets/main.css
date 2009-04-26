@@ -54,3 +54,17 @@ body {
 .post .links {
  border-top:black 1px #e0e0e0;
 }
+
+div.to_do {
+ padding-bottom: 3px;
+ margin-bottom: 2px;
+}
+div.to_do span {
+ margin-left: 2px;
+ margin-right: 2px;
+ padding-left: 2px;
+}
+.to_do .childs {
+ margin-left:10px;
+ margin-bottom:3px;
+}

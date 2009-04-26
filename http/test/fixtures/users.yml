@@ -1,7 +1,14 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+none_idents:
+ id: 1
+ 
+one_ident:
+ id: 2
+ identity_id: 2
 
-# one:
-#   column: value
-#
-# two:
-#   column: value
+many_ident1:
+ id: 3
+ identity_id: 3
+
+many_ident2:
+ id: 4
+ identity_id: 3

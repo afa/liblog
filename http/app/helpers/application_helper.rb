@@ -14,7 +14,9 @@ module ApplicationHelper
  def take_login
   if @logged.nil? then
    unless session[:logon].nil? then
-    @logged = User.find :first, session[:logon]
+    @logged = User.find( :first, session[:logon] ) or GuestUser.new
+   else
+    @logged = GuestUser.new
    end
   end
   @logged

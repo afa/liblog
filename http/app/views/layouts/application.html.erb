@@ -5,9 +5,9 @@
   <title><%= @title %></title>
   <%= javascript_include_tag "prototype" %>
   <%= yield :tinymce %>
-  <%#= javascript_include_tag "scriptaculous" %>
-  <%= javascript_include_tag "effects" %> 
-  <%= javascript_include_tag "controls" %>
+  <%= javascript_include_tag "scriptaculous.js?load=effects,controls" %>
+  <%#= javascript_include_tag "effects" %> 
+  <%#= javascript_include_tag "controls" %>
   <%= yield :tinymce_init %>
   <%= stylesheet_link_tag "main" %>
  </head>
@@ -20,11 +20,16 @@
    <%= link_to_unless_current "Users", :controller=>"User", :action=>"index" %>
    <%= link_to_unless_current "Blog", :controller=>"Blog", :action=>"index" %>
    <%= link_to_unless_current "SiteConfig", :controller=>'Config', :action=>'index'  %>
+   <%= link_to_unless_current "ToDo", :controller=>'ToDo', :action=>'index'  %>
   </div>
   <% if @submenu then %>
    <div class="submenu">
     <% @submenu.each do | item | %>
-     <%= link_to_unless_current item.delete(:text), item %>
+     <% if item.has_key? :type then %>
+      <%= send("#{item.delete(:type)}_to", item.delete(:text), item) %>
+     <% else %>
+      <%= link_to_unless_current item.delete(:text), item %>
+     <% end %>
     <% end %>
    </div>
   <% end -%>

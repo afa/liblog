@@ -1,7 +1,11 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+none_users:
+ id: 1
+ name: '0'
 
-# one:
-#   column: value
-#
-# two:
-#   column: value
+one_user:
+ id: 2
+ name: '2'
+
+two_users:
+ id: 3
+ name: '3'
