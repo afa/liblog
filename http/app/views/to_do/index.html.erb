@@ -1,2 +1,2 @@
-<%= todo_render(@todos, 10) %>
+<%= todo_render(@todos, { :max_depth=>10 } ) %>
 <%= will_paginate @todos %>

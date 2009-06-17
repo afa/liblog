@@ -1,0 +1,3 @@
+parent = ToDo.find params[:id]
+todo = ToDo.new :to_date=>parent.to_date, :parent_id=>parent.id
+page.insert_html :top, "child_form_for_#{ params[:id] }", :partial=>"/to_do/edit", :locals=>{:parent=>parent, :todo=>todo}

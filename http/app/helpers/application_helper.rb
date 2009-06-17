@@ -21,4 +21,19 @@ module ApplicationHelper
   end
   @logged
  end
+
+ def menu_bar(menu = {})
+  res = ''
+  menu.each do | item |
+   if (item.has_key? :check and eval(item[:check])) or not item.has_key? :check then
+    item.delete :check 
+    if item.has_key? :type then 
+     send("#{item.delete(:type)}_to", item.delete(:text), item)
+    else
+     res = content_for 'div', link_to_unless_current( item.delete(:text), item)
+    end
+   end
+  end
+  res
+ end
 end

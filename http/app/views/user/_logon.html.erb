@@ -1,11 +1,15 @@
-<% unless take_login.logged? then %>
- <% form_tag( :controller=>'user', :action=>'login' ) do %>
+<% form_tag( :controller=>'user', :action=>'login' ) do %>
+ <div>
+  <label for="username">Имя пользователя:</label>
   <%= text_field_tag :username, '', {:style=>'max-width:100px;font-size:11px;'} %>
+ </div>
+ <div>
+  <label for="password">Пароль:</label>
   <%= password_field_tag :password, '', {:style=>'max-width:100px;font-size:11px;'} %>
-  <%= submit_tag "Login", {:style=>'font-size:10px;'} %>
- <% end %>
-<% else %>
- <%= link_to_unless_current( take_login.identity.name, :controller=>'User', :action=>'show', :id=>take_login.identity.id ) if take_login.logged? -%>
- <%- session[:return_to] = request.request_uri -%>
- <%= link_to "Logout", :controller=>'User', :action=>'logout' %>
+ </div>
+ <div>
+  <label for="remember">Запомнить на этом компьютере</label>
+  <%= check_box_tag :remember %>
+ </div>
+ <%= submit_tag "Login", {:style=>'font-size:10px;'} %>
 <% end %>

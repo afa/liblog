@@ -59,7 +59,7 @@ div.to_do {
  padding-bottom: 3px;
  margin-bottom: 2px;
 }
-div.to_do span {
+div.to_do div {
  margin-left: 2px;
  margin-right: 2px;
  padding-left: 2px;
@@ -67,4 +67,16 @@ div.to_do span {
 .to_do .childs {
  margin-left:10px;
  margin-bottom:3px;
+}
+.to_do .expired {
+ font-weight: bold;
+ color: red;
+}
+.to_do .not_expired {
+ font-weight: bold;
+ color: green;
+}
+.to_do .expire_today {
+ font-weight: bold;
+ color: blue;
 }

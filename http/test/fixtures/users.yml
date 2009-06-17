@@ -1,14 +1,12 @@
 none_idents:
- id: 1
+ username: 'un'
  
 one_ident:
- id: 2
- identity_id: 2
+ identity: one_user
+ username: 'uname'
 
 many_ident1:
- id: 3
- identity_id: 3
+ identity: two_users
 
 many_ident2:
- id: 4
- identity_id: 3
+ identity: two_users

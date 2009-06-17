@@ -39,14 +39,13 @@ class ConfigController < ApplicationController
   end
 
   def delete
-   SiteConfig.find(params[:id]).delete
+   SiteConfig.find(params[:id]).destroy
    redirect_to :action=>'index'
   end
  private
   def protect
    if take_login.nil? or take_login.kind_of?(GuestUser) or (not take_login.can_admin?) then
     redirect_to :controller=>'User', :action=>'login'
-    return false
    end
   end
 

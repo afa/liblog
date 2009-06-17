@@ -18,7 +18,7 @@ class User < ActiveRecord::Base
   Role.find(:all, :from=>'roles "r", role_maps "rm" ', :conditions=>[ 'r.id = rm.role_id and rm.user_id = :uid and r.name=:role', {:uid=>self.id, :role=>role_name} ] ).size > 0 ? true : false
  end
  def has_privilege? ( priv_name )
-  Privilege.find( :all, :from=>'privileges "p", privilege_maps "pm", role_maps "rm"', :conditions=>[ 'p.name = :priv and rm.role_id = pm.role_id and p.id = pm.privilege_id and rm.user_id = :uid', { :priv=>priv_name, :uid=>self.id } ] )
+  Privilege.find( :all, :from=>'privileges "p", privilege_maps "pm", role_maps "rm"', :conditions=>[ 'p.name = :priv and rm.role_id = pm.role_id and p.id = pm.privilege_id and rm.user_id = :uid', { :priv=>priv_name, :uid=>self.id } ] ).size > 0 ? true : false
  end
  def logged?
   self.new_record? ? false : true 

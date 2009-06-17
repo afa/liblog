@@ -4,4 +4,7 @@ class SiteConfig < ActiveRecord::Base
   val = self.find_by_name(name)
   val.nil? ? nil : val.value
  end
+ def self.[]= (name, value)
+  self.find_or_create_by_name :name=>name, :value=>value
+ end
 end

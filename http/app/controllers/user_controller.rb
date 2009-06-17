@@ -12,15 +12,15 @@ class UserController < ApplicationController
     user = User.find_by_username_and_password( params[:username], params[:password]) || GuestUser.new 
     unless user.can_login? then
      redirect_to :action=>'login' 
-     return false
+     return
     end
     session[:logon] = user.id if user.logged?
     @take_login
-    unless session[:return_to].nil? then
+    if session[:return_to].nil? then
+     redirect_to :controller=>'Site', :action=>'index'
+    else 
      redirect_to session[:return_to]
      session[:return_to] = nil
-    else 
-     redirect_to :controller=>'Site', :action=>'index'
     end
    end
   end

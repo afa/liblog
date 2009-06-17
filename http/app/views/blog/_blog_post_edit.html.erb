@@ -1,0 +1,17 @@
+<fieldset>
+ <legend>блогеры такие блогеры</legend>
+ <div>
+  <%= form.text_field :title, :style=>'width: 100%;' %>
+ </div>
+ <div>
+  <% use_tinymce -%>
+  <%= form.text_area :text, :class=>'mce-editor' %>
+ </div>
+ <div>
+  <%= form.text_field :name -%>
+ </div>
+ <div>
+  <%= form.hidden_field :identity_id, :style=>'width:100%;' -%>
+ </div>
+</fieldset>
+<%= form.submit "Отправить" %>

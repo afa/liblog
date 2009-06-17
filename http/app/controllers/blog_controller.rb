@@ -3,7 +3,7 @@ class BlogController < ApplicationController
   def initialize
    @submenu = [
     {:text=>'Записи', :action=>'index'},
-    {:text=>'Добавить', :action=>'post'},
+    {:text=>'Добавить', :action=>'post', :check=>'take_login.logged? and take_login.has_privilege?("blog.post")'},
    ]
   end
 
@@ -58,13 +58,14 @@ class BlogController < ApplicationController
    @posts = BlogPost.paginate :all, :page => params[:page]
   end
   def named
-   @submenu << { :text=>'Редактировать', :action=>'edit', :id=>params[:id] }
-   @submenu << { :text=>'Удалить', :action=>'delete', :id=>params[:id] }
    @post = BlogPost.find_by_name params[:name]
+   @submenu << { :text=>'Редактировать', :action=>'edit', :id=>@post.id } unless @post.nil?
+   @submenu << { :text=>'Удалить', :action=>'delete', :id=>@post.id } unless @post.nil?
    redirect_to :action=>'index' if @post.nil?
   end
  private
   def protect
+# :todo.!!!!!
    if session[:logon].nil? then
     session[:return_to] = request.request_uri
     flash[:error] =  "Must be logged in"

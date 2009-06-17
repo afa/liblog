@@ -1,5 +1,6 @@
 <div style='width:50%; border:black 1px solid; margin-bottom:10px;'>
  <legend>Хотелки</legend>
- <%= todo_render( @todos, 0) -%>
+ <%= todo_render( @todos, { :max_depth => 0 } ) -%>
  <%= link_to ("Посмотреть все хотелки", todo_path) if @todos.total_pages > 1 %>
 </div>
+

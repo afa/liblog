@@ -1,0 +1,12 @@
+<div class="post">
+ <div class="header"><span class="date"><%= post.created_at -%></span><%= post.title.blank? ? '&nbsp;' : post.title -%></div>
+ <%= post.text -%>
+ <div class="links">
+  <span>reply&nbsp;</span>
+  <% if post.name.blank? then %>
+   <%= link_to_unless_current "Link", :action=>'show', :id=>post.id -%>
+  <% else %>
+   <%= link_to_unless_current "PermaLink", blog_named_path( :action=>'named', :name=>post.name) -%>
+  <% end %>
+ </div>
+</div>
