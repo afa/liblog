@@ -1,7 +1,8 @@
 tinyMCE.init({
   theme:"advanced",
   theme_advanced_toolbar_location: "top",
-  theme_advanced_buttons1: 'bold, italic, underline, strikethrough, formatselect, fontselect, fontsizeselect, separator, justifyleft, justifycenter, justifyright, indent, outdent, separator, bullist, numlist, forecolor, backcolor, separator, link, unlink, image, undo, redo, emotions',
+  theme_advanced_buttons1: 'bold, italic, underline, strikethrough, separator, formatselect, fontselect, fontsizeselect, separator, justifyleft, justifycenter, justifyright, indent, outdent, separator, forecolor, backcolor, separator, link, unlink, undo, redo, emotions',
+//  theme_advanced_buttons1: 'bold, italic, underline, strikethrough, formatselect, fontselect, fontsizeselect, separator, justifyleft, justifycenter, justifyright, indent, outdent, separator, bullist, numlist, forecolor, backcolor, separator, link, unlink, image, undo, redo, emotions',
   theme_advanced_toolbar_align: 'left',
   theme_advanced_resizing: true,
   theme_advanced_resize_horizontal: false,

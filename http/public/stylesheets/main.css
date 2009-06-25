@@ -2,6 +2,10 @@ body {
  background-color:#e0e0e0;
  font-family:Tahoma,Verdana,sans-serif;
 }
+p {
+ margin: 0px;
+ padding: 0px;
+}
 
 .flash {
  width:100%;
@@ -28,6 +32,9 @@ body {
  padding-left:7px;
  background-color:#f8f8f8;
  color:#404040;
+}
+span.menu_item {
+ padding-right: 5px;
 }
 
 .post {
