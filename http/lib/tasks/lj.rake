@@ -27,16 +27,10 @@ def lj_sync(iface, user, lastsync)
   last = DateTime.strptime(lastsync, '%Y-%m-%d %H:%M:%S') || DateTime.new(1900, 1, 1)
   total, ok, res = 1, true, []
   puts "Start sync since #{ last.strftime('%Y-%m-%d %H:%M:%S') }"
-  while ok and total > 0 do
-    ok, ans = iface.call2('LJ.XMLRPC.syncitems', {:username=>user, :lastsync => last.strftime('%Y-%m-%d %H:%M:%S'), :auth_method=>'cookie', :ver=>'1'})
-    if ok then
-      total = ans['total']
-      ans['syncitems'].each do | i |
-        res << i
-        if DateTime.strptime(i['time'], '%Y-%m-%d %H:%M:%S') > last then
-          last = DateTime.strptime(i['time'], '%Y-%m-%d %H:%M:%S')
-        end
-      end
+  ok, ans = iface.call2('LJ.XMLRPC.syncitems', {:username=>user, :lastsync => last.strftime('%Y-%m-%d %H:%M:%S'), :auth_method=>'cookie', :ver=>'1'})
+  if ok then
+    ans['syncitems'].each do | i |
+      res << i
     end
   end
   res
