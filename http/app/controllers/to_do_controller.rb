@@ -1,4 +1,5 @@
 class ToDoController < ApplicationController
+# change to REST
   before_filter :prot_unlogged, :only=>[:edit, :delete, :add]
   before_filter :prot_admin, :only=>[:edit, :delete, :add]
   def initialize
@@ -80,15 +81,18 @@ class ToDoController < ApplicationController
 
   def prot_unlogged
    @user ||= take_login
-   redirect_to todo_path(:action=>'index') if @user.kind_of?(GuestUser)
-#   return false if @user.kind_of?(GuestUser)
+   unless @user.logged?
+    redirect_to todo_path(:action=>'index')
+    false
+   end
   end
   
   def prot_admin
    @user ||= take_login
-#   unless @user.has_priv?('root') then
-#    redirect_to todo_path(:action=>'index')
-#    return false
-#   end
+   unless @user.has_privilege?('todo.edit') then
+    redirect_to todo_path(:action=>'index')
+    return false
+   end
   end
+  protected :prot_unlogged, :prot_admin
 end

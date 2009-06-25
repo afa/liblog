@@ -5,6 +5,9 @@ class SiteConfig < ActiveRecord::Base
   val.nil? ? nil : val.value
  end
  def self.[]= (name, value)
-  self.find_or_create_by_name :name=>name, :value=>value
+  cfg = self.find_or_create_by_name :name=>name
+  cfg..value = value
+  cfg.save
+  value
  end
 end

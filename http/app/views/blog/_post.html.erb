@@ -4,7 +4,7 @@
  <div class="links">
   <span>reply&nbsp;</span>
   <% if post.name.blank? then %>
-   <%= link_to_unless_current "Link", :action=>'show', :id=>post.id -%>
+   <%= link_to_unless_current "Link", :controller=>'Blog', :action=>'show', :id=>post.id -%>
   <% else %>
    <%= link_to_unless_current "PermaLink", blog_named_path( :action=>'named', :name=>post.name) -%>
   <% end %>

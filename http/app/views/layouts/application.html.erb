@@ -24,39 +24,25 @@
      <% end %>
     </span>
    <% end %>
-   <%= link_to_unless_current "Home", :controller=>"Site", :action=>"index" %>
-   <%= link_to_unless_current "Users", :controller=>"User", :action=>"index" %>
-   <%= link_to_unless_current "Blog", :controller=>"Blog", :action=>"index" %>
-   <%= link_to_unless_current "SiteConfig", :controller=>'Config', :action=>'index'  %>
-   <%= link_to_unless_current "ToDo", :controller=>'ToDo', :action=>'index'  %>
+   <%= menu_bar main_menu %>
   </div>
   <% if @submenu then %>
    <div class="submenu">
     <%= menu_bar @submenu -%>
-    <%# @submenu.each do | item | -%>
-     <%# if (item.has_key? :check and eval(item[:check])) or not item.has_key? :check then -%>
-      <%# item.delete :check -%>
-      <%# if item.has_key? :type then -%>
-       <%#= send("#{item.delete(:type)}_to", item.delete(:text), item) %>
-      <%# else -%>
-       <%#= link_to_unless_current item.delete(:text), item %>
-      <%# end -%>
-     <%# end -%>
-    <%# end -%>
    </div>
   <% end -%>
-  <% if flash && flash.size then %>
+  <% if flash && flash.size -%>
    <div class="flash">
-    <% if flash[:notice] then %>
+    <% if flash[:notice] -%>
      <div class="notice">
       <%= h(flash[:notice]) -%>
      </div>
-    <% end %>
-    <% if flash[:error] then %>
+    <% end -%>
+    <% if flash[:error] -%>
      <div class="error">
       <%= h(flash[:error]) -%>
      </div>
-    <% end %>
+    <% end -%>
    </div>
   <% end -%>
   <div class="content">

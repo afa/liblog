@@ -22,18 +22,25 @@ module ApplicationHelper
   @logged
  end
 
- def menu_bar(menu = {})
-  res = ''
-  menu.each do | item |
-   if (item.has_key? :check and eval(item[:check])) or not item.has_key? :check then
+ def menu_bar(menu = [])
+  menu.collect  do | item |
+   if (item.has_key? :check and eval(item[:check])) or not item.has_key? :check
     item.delete :check 
     if item.has_key? :type then 
      send("#{item.delete(:type)}_to", item.delete(:text), item)
     else
-     res = content_for 'div', link_to_unless_current( item.delete(:text), item)
+     link_to_unless_current( item.delete(:text), item)
     end
    end
-  end
-  res
+  end.compact.join('&nbsp;')
+ end
+ def main_menu
+  [
+   { :text=>'Home', :controller=>"Site", :action=>"index" },
+   { :text=>'Users', :controller=>"User", :action=>"index", :check=>'take_login.can_admin?' },
+   { :text=>'Blog', :controller=>'Blog', :action=>'index' },
+   { :text=>'Config', :controller=>'Config', :action=>'index', :check=>"take_login.has_privilege? 'config.view'" },
+   { :text=>'ToDo', :controller=>'ToDo', :action=>'index', :check=>"take_login.has_privilege? 'todo.view'" }
+  ]
  end
 end

@@ -10,7 +10,7 @@ class UserController < ApplicationController
   def login
    unless params[:username].blank? then
     user = User.find_by_username_and_password( params[:username], params[:password]) || GuestUser.new 
-    unless user.can_login? then
+    unless user.can_login? 
      redirect_to :action=>'login' 
      return
     end

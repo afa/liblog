@@ -1,9 +1,12 @@
 class ConfigController < ApplicationController
+# привилегии config.view, config.edit, config.delete
   before_filter :protect
+  before_filter :protect_edit, :only=>[:edit, :add]
+  before_filter :protect_delete, :only=>[:delete]
   def initialize
    @submenu = [
-    {:text=>'Список', :action=>'index'},
-    {:text=>'Добавить', :action=>'add'}
+    {:text=>'Список', :action=>'index', :check=>'take_login.logged? and take_login.has_privilege?("config.view")'},
+    {:text=>'Добавить', :action=>'add', :check=>'take_login.logged? and take_login.has_privilege?("config.edit")'}
    ]
   end
   def index
@@ -12,7 +15,7 @@ class ConfigController < ApplicationController
 
   def edit
    @item = SiteConfig.find params[:id]
-   @submenu << {:text=>'Удалить', :action=>'delete', :id=>@item.id}
+   @submenu << {:text=>'Удалить', :action=>'delete', :id=>@item.id, :check=>'take_login.logged? and take_login.has_privilege?("config.delete")'}
    if params[:commit] then
     @item.value = params[:item][:value]
     if @item.save then
@@ -44,9 +47,15 @@ class ConfigController < ApplicationController
   end
  private
   def protect
-   if take_login.nil? or take_login.kind_of?(GuestUser) or (not take_login.can_admin?) then
-    redirect_to :controller=>'User', :action=>'login'
+   unless take_login.logged? and take_login.has_privilege?("config.view")
+    redirect_to :controller=>'Site', :action=>'index'
    end
+  end
+  def protect_edit
+    redirect_to :action=>'index' unless take_login.logged? and  take_login.has_privilege?("config.edit")
+  end
+  def protect_delete
+    redirect_to :action=>'index' unless take_login.logged? and take_login.has_privilege?("config.delete")
   end
 
 end

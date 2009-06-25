@@ -6,13 +6,13 @@ class User < ActiveRecord::Base
 #, :source=>'Role'
  validates_uniqueness_of :username, :message=>'Аккаунт с таким именем уже существует', :on=>:create
  def can_admin?
-  has_role?('admin')
+  has_privilege?('root')
  end
  def can_post?
-  has_role?('post')
+  has_privilege?('blog.post')
  end
  def can_login?
-  has_role?('login')
+  has_privilege?('user.login')
  end
  def has_role? ( role_name )
   Role.find(:all, :from=>'roles "r", role_maps "rm" ', :conditions=>[ 'r.id = rm.role_id and rm.user_id = :uid and r.name=:role', {:uid=>self.id, :role=>role_name} ] ).size > 0 ? true : false

@@ -1,5 +1,8 @@
 class BlogController < ApplicationController
   before_filter :protect, :except=>[ :dated, :index, :show ]
+  before_filter :protect_post, :only=>[ :post ]
+  before_filter :protect_edit, :only=>[ :edit ]
+  before_filter :protect_delete, :only=>[ :delete ]
   def initialize
    @submenu = [
     {:text=>'Записи', :action=>'index'},
@@ -26,7 +29,7 @@ class BlogController < ApplicationController
   end
 
   def edit
-   @submenu << { :text=>'Удалить', :action=>'delete', :id=>params[:id] }
+   @submenu << { :text=>'Удалить', :action=>'delete', :id=>params[:id], :check=>'take_login.logged? and take_login.has_privilege?("blog.delete")' }
    @post = BlogPost.find params[:id]
    if params[:commit] then
     @post.title=params[:post][:title]
@@ -48,8 +51,8 @@ class BlogController < ApplicationController
   end
 
   def show
-   @submenu << { :text=>'Редактировать', :action=>'edit', :id=>params[:id] }
-   @submenu << { :text=>'Удалить', :action=>'delete', :id=>params[:id] }
+   @submenu << { :text=>'Редактировать', :action=>'edit', :id=>params[:id], :check=>'take_login.logged? and take_login.has_privilege?("blog.edit")' }
+   @submenu << { :text=>'Удалить', :action=>'delete', :id=>params[:id], :check=>'take_login.logged? and take_login.has_privilege?("blog.delete")' }
    @post = BlogPost.find params[:id]
   end
 
@@ -59,17 +62,39 @@ class BlogController < ApplicationController
   end
   def named
    @post = BlogPost.find_by_name params[:name]
-   @submenu << { :text=>'Редактировать', :action=>'edit', :id=>@post.id } unless @post.nil?
-   @submenu << { :text=>'Удалить', :action=>'delete', :id=>@post.id } unless @post.nil?
+   @submenu << { :text=>'Редактировать', :action=>'edit', :id=>@post.id, :check=>'take_login.logged? and take_login.has_privilege?("blog.edit")' } unless @post.nil?
+   @submenu << { :text=>'Удалить', :action=>'delete', :id=>@post.id, :check=>'take_login.logged? and take_login.has_privilege?("blog.delete")' } unless @post.nil?
    redirect_to :action=>'index' if @post.nil?
   end
  private
   def protect
-# :todo.!!!!!
-   if session[:logon].nil? then
+   unless take_login.logged?
     session[:return_to] = request.request_uri
     flash[:error] =  "Must be logged in"
     redirect_to :controller=>'User', :action=>'login'
+    return false
+   end
+  end
+  def protect_post
+   unless take_login.has_privilege? 'blog.post'
+    flash[:error] = "Недостаточно привилегий для выполнения операции"
+    redirect_to :action=>'index'
+    return false
+   end
+  end
+
+  def protect_edit
+   unless take_login.has_privilege? 'blog.edit'
+    flash[:error] = "Недостаточно привилегий для выполнения операции"
+    redirect_to :action=>'index'
+    return false
+   end
+  end
+
+  def protect_delete
+   unless take_login.has_privilege? 'blog.delete'
+    flash[:error] = "Недостаточно привилегий для выполнения операции"
+    redirect_to :action=>'index'
     return false
    end
   end
