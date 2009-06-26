@@ -37,6 +37,7 @@ ActionController::Routing::Routes.draw do |map|
 
   # Install the default routes as the lowest priority.
   map.connect '', :controller=>'Site', :action=>'index'
+  map.connect '/sitemap.xml', :controller=>'Site', :action=>'sitemap', :format=>'xml'
   map.todo 'to_do/:action/:id', :controller=>'ToDo'
 #  map.resources 'todo'
   map.connect 'blog/:action/:id', :controller=>'Blog', :requirements=>{:id=>/\d+/}
