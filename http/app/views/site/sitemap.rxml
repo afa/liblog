@@ -1,0 +1,20 @@
+xml.instruct! :xml, :version=>"1.0"
+xml.urlset(:xmlns => "http://www.sitemaps.org/schemas/sitemap/0.9") {
+  xml.url {
+    xml.loc(url_for :controller => 'blog', :only_path => false)
+    lastmod = @messages[0].created_at.strftime("%Y-%m-%d") if !@messages.nil?
+    lastmod = lastmod || Time.now.strftime("%Y-%m-%d")
+    xml.lastmod(lastmod)
+    xml.changefreq("daily")
+    xml.priority(1)
+  }
+  for message in @messages
+    xml.url {
+      xml.loc(url_for :controller => 'blog', :action => 'show', :id => message.id, :only_path => false)
+      xml.lastmod(message.created_at.strftime("%Y-%m-%d"))
+      xml.changefreq("weekly")
+      xml.priority(0.8)
+    }
+  end
+}
+

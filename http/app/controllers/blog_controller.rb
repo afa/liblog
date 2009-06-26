@@ -1,5 +1,5 @@
 class BlogController < ApplicationController
-  before_filter :protect, :except=>[ :dated, :index, :show ]
+  before_filter :protect, :except=>[ :rss, :dated, :index, :show ]
   before_filter :protect_post, :only=>[ :post ]
   before_filter :protect_edit, :only=>[ :edit ]
   before_filter :protect_delete, :only=>[ :delete ]
@@ -9,6 +9,11 @@ class BlogController < ApplicationController
     {:text=>'Добавить', :action=>'post', :check=>'take_login.logged? and take_login.has_privilege?("blog.post")'},
    ]
   end
+  def rss
+    @posts = BlogPost.find(:all, :limit => 50, :order => "created_at DESC")
+    render :layout=>false
+  end
+
 
   def index
    @posts = BlogPost.paginate :all, :order=>'created_at DESC', :page=>params[:page]

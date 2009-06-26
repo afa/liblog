@@ -3,6 +3,7 @@
 <html>
  <head>
   <title><%= @title %></title>
+  <%= auto_discovery_link_tag(:rss, :controller=>'Blog', :action => 'rss') %>
   <%= javascript_include_tag "prototype" %>
   <%= yield :tinymce %>
   <%= javascript_include_tag "scriptaculous.js?load=effects,controls" %>

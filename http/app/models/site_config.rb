@@ -6,7 +6,7 @@ class SiteConfig < ActiveRecord::Base
  end
  def self.[]= (name, value)
   cfg = self.find_or_create_by_name :name=>name
-  cfg..value = value
+  cfg.value = value
   cfg.save
   value
  end
