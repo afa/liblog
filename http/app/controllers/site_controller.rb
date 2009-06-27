@@ -1,6 +1,7 @@
 class SiteController < ApplicationController
 #  helper :ToDo
   def initialize
+   super
    @submenu = [
     {:text=>'Contacts', :controller=>'Site', :action=>'contacts'},
    ]
