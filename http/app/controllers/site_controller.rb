@@ -1,5 +1,10 @@
 class SiteController < ApplicationController
 #  helper :ToDo
+  def initialize
+   @submenu = [
+    {:text=>'Contacts', :controller=>'Site', :action=>'contacts'},
+   ]
+  end
   def index
     @title = "Afalone's"
     page = params[:page] || 1
