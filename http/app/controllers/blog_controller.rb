@@ -17,6 +17,7 @@ class BlogController < ApplicationController
 
   def index
    @posts = BlogPost.paginate :all, :order=>'created_at DESC', :page=>params[:page]
+   @title = "AfaLog"
   end
 
   def post
@@ -59,6 +60,7 @@ class BlogController < ApplicationController
    @submenu << { :text=>'Редактировать', :action=>'edit', :id=>params[:id], :check=>'take_login.logged? and take_login.has_privilege?("blog.edit")' }
    @submenu << { :text=>'Удалить', :action=>'delete', :id=>params[:id], :check=>'take_login.logged? and take_login.has_privilege?("blog.delete")' }
    @post = BlogPost.find params[:id]
+   @title = (@post.title.nil? or @post.title.blank?) ? 'AfaLog' : @post.title + ' / AfaLog'
   end
 
   def dated
@@ -70,6 +72,7 @@ class BlogController < ApplicationController
    @submenu << { :text=>'Редактировать', :action=>'edit', :id=>@post.id, :check=>'take_login.logged? and take_login.has_privilege?("blog.edit")' } unless @post.nil?
    @submenu << { :text=>'Удалить', :action=>'delete', :id=>@post.id, :check=>'take_login.logged? and take_login.has_privilege?("blog.delete")' } unless @post.nil?
    redirect_to :action=>'index' if @post.nil?
+   @title = (@post.title || '...') + ' / AfaLog'
   end
  private
   def protect
