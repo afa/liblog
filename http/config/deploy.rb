@@ -13,6 +13,7 @@ set :deploy_to, "~/http/#{application}"
 # If you aren't using Subversion to manage your source code, specify
 # your SCM below:
 set :scm, :subversion
+set :scm_auth_cache, false
 # set :scm, :none
 
 role :app, "afalone-ru.1gb.ru"

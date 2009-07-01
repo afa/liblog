@@ -1,5 +1,5 @@
 class BlogController < ApplicationController
-  before_filter :protect, :except=>[ :rss, :dated, :index, :show ]
+  before_filter :protect, :except=>[ :rss, :dated, :index, :show, :named ]
   before_filter :protect_post, :only=>[ :post ]
   before_filter :protect_edit, :only=>[ :edit ]
   before_filter :protect_delete, :only=>[ :delete ]

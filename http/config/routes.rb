@@ -41,9 +41,12 @@ ActionController::Routing::Routes.draw do |map|
   map.connect '/contacts', :controller=>'Site', :action=>'contacts'
   map.todo 'to_do/:action/:id', :controller=>'ToDo'
 #  map.resources 'todo'
-  map.connect 'blog/:action/:id', :controller=>'Blog', :requirements=>{:id=>/\d+/}
+  map.resources :blog do | post |
+   post.resources :comments
+  end
+#  map.connect 'blog/:action/:id', :controller=>'Blog', :requirements=>{:id=>/\d+/}
   map.ajax 'ajax/:action/:id', :controller=>'Ajax'
-  map.blog_named 'blog/show/:name', :controller=>'Blog', :action=>'named'
+#  map.blog_named 'blog/show/:name', :controller=>'Blog', :action=>'named'
 #  map.connect 'blog/:year/:month/:day', :controller=>'Blog', :action=>'dated'
 #  map.connect 'blog/:year/:month', :controller=>'Blog', :action=>'dated'
   map.connect ':controller/:action/:id'
