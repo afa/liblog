@@ -11,8 +11,8 @@ xml.rss(:version=>"2.0"){
           xml.description(post.text)      
           xml.author("Afa")               
           xml.pubDate(post.created_at.strftime("%a, %d %b %Y %H:%M:%S %z"))
-          xml.link(url_for(:controller=>'Blog', :action=>'show', :id=>post.id, :only_path=>false))
-          xml.guid(url_for :controller=>'Blog', :action=>'show', :id=>post.id, :only_path=>false)
+          xml.link(post.name ? named_blog_url( post.name ) :  blog_url( post ) )
+          xml.guid(post.name ? named_blog_url( post.name ) :  blog_url( post ) )
         end
       end
   }

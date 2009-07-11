@@ -2,11 +2,14 @@
  <div class="header"><span class="date"><%= post.created_at -%></span><%= post.title.blank? ? '&nbsp;' : post.title -%></div>
  <%= post.text -%>
  <div class="links">
-  <span>reply&nbsp;</span>
+  <span><%= link_to_unless_current 'Послать', :controller=>'comments', :blog_id=>post, :action=>:new -%>&nbsp;</span>
+  <% if post.comments.count > 0 %>
+   <%= link_to "#{ post.comments.count } засланцев", blog_comments_path(post) -%>
+  <% end %>
   <% if post.name.blank? then %>
-   <%= link_to "Link", :controller=>'Blog', :action=>'show', :id=>post.id -%>
+   <%= link_to "Link", blog_path(post) -%>
   <% else %>
-   <%= link_to "PermaLink", blog_named_path( :action=>'named', :name=>post.name) -%>
+   <%= link_to "PermaLink", named_blog_path( :name=>post.name) -%>
   <% end %>
  </div>
 </div>

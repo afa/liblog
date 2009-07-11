@@ -5,11 +5,9 @@
   <title><%= @title %></title>
   <%= auto_discovery_link_tag(:rss, :controller=>'Blog', :action => 'rss') %>
   <%= javascript_include_tag "prototype" %>
-  <%= yield :tinymce %>
   <%= javascript_include_tag "scriptaculous.js?load=effects,controls" %>
   <%#= javascript_include_tag "effects" %> 
   <%#= javascript_include_tag "controls" %>
-  <%= yield :tinymce_init %>
   <%= stylesheet_link_tag "main" %>
  </head>
  <body>
