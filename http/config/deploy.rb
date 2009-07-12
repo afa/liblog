@@ -3,6 +3,7 @@ set :application, "afalone"
 set :scm_user, 'afa'
 set :scm_password, 'massacre'
 set :repository,  "svn+ssh://afahome/data/repo/afalone-ru/http"
+set :scm_auth_cache, :true
 
 # If you aren't deploying to /u/apps/#{application} on the target
 # servers (which is the default), you can specify the actual location
