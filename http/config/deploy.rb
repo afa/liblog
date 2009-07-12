@@ -8,20 +8,20 @@ set :repository,  "svn+ssh://afahome/data/repo/afalone-ru/http"
 # servers (which is the default), you can specify the actual location
 # via the :deploy_to variable:
 # set :deploy_to, "/var/www/#{application}"
-set :deploy_to, "~/http/#{application}"
+#set :deploy_to, "~/http/#{application}"
 
 # If you aren't using Subversion to manage your source code, specify
 # your SCM below:
 set :scm, :subversion
 set :scm_auth_cache, true
 # set :scm, :none
-server "afalone-ru.1gb.ru", :app, :web, :db, :primary=>true
+#server "afalone-ru.1gb.ru", :app, :web, :db, :primary=>true
 #role :app, "afalone-ru.1gb.ru"
 #role :web, "afalone-ru.1gb.ru"
 #role :db,  "afalone-ru.1gb.ru", :primary => true
 set :use_sudo, false
-set :user, "w_afalone-ru_3e7b26fa"
-set :password, "892638bb"
+#set :user, "w_afalone-ru_3e7b26fa"
+#set :password, "892638bb"
 
 depend :remote, :gem, "mislav-will_paginate", "2.2.3"
 set :deploy_via, :copy
@@ -64,3 +64,22 @@ namespace :mongrel do
   puts "ok!" if (capture "ps awx|grep #{pid}.*mongrel_rails|grep -v grep") =~ /mongrel/ 
  end
 end
+
+desc "After updating code we need to populate a new database.yml"
+task :after_update_code, :roles => :app do
+  require "yaml"
+  buffer = YAML::load_file('config/database.yml.template')
+  # get ride of uneeded configurations
+  buffer.delete('test')
+  buffer.delete('development')
+  
+  # Populate production element
+  buffer['production']['adapter'] = "postgresql"
+  buffer['production']['port'] = "5432"
+  buffer['production']['database'] = "xgb_afalone"
+  buffer['production']['username'] = "xgb_afalone"
+  buffer['production']['password'] = '3601bdbe'
+  buffer['production']['host'] = "postgres40.1gb.ru"
+  put YAML::dump(buffer), "#{release_path}/config/database.yml", :mode => 0664
+end
+after 'deploy:update_code', 'after_update_code'
