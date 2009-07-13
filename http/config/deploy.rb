@@ -69,7 +69,8 @@ end
 desc "After updating code we need to populate a new database.yml"
 task :after_update_code, :roles => :app do
   require "yaml"
-  buffer = YAML::load_file("#{release_path}/http/config/database.yml.template")
+#  puts capture "cat #{release_path}/config/database.yml.template"
+  buffer = YAML::load_file("config/database.yml.template")
   # get ride of uneeded configurations
   buffer.delete('test')
   buffer.delete('development')
@@ -81,6 +82,10 @@ task :after_update_code, :roles => :app do
   buffer['production']['username'] = "xgb_afalone"
   buffer['production']['password'] = '3601bdbe'
   buffer['production']['host'] = "postgres40.1gb.ru"
-  put YAML::dump(buffer), "#{release_path}/config/database.yml", :mode => 0664
+  Tempfile.open('db_temp_yaml') do |out|
+   YAML.dump(buffer, out)
+   out.flush
+   upload out.path, "#{release_path}/config/database.yml", :mode => 0664, :via=>:scp
+  end
 end
 after 'deploy:update_code', 'after_update_code'
