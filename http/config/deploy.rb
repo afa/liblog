@@ -1,3 +1,4 @@
+default_environment["GEM_PATH"] = "~/.gems"
 set :application, "afalone"
 #set :repository,  "~/work/ruby/afalone-ru/http/"
 set :scm_user, 'afa'
