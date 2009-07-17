@@ -1,0 +1,21 @@
+<% form_for :comment, @comment, :url=>url_for(:action=>'create') do | form | %>
+ <fieldset>
+  <legend>comment this</legend>
+  <%= error_messages_for :comment %>
+  <div>
+   <%= form.text_field :title, :style=>'width: 100%;' %>
+  </div>
+  <div>
+   <%= form.text_area :text %>
+  </div>
+  <div>
+   <%#= form.text_field :name -%>
+  </div>
+  <div>
+   <%#= form.hidden_field :identity_id -%>
+   <%= form.hidden_field :blog_post_id -%>
+   <%= form.hidden_field :blog_comment_id -%>
+  </div>
+ </fieldset>
+ <%= form.submit "Отправить" %>
+<% end %>
