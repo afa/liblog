@@ -42,11 +42,11 @@ class BlogController < ApplicationController
 
   def update
    @post = BlogPost.find params[:id]
-   @post.update(params[:post])
+   if @post.update_attributes(params[:post])
 #   @post.title=params[:post][:title]
 #   @post.text=params[:post][:text]
 #   @post.name=params[:post][:name]
-   if @post.save then
+#   if @post.save then
     redirect_to :action=>'index'
     flash[:notice] = 'Post stored'
    else
@@ -73,13 +73,13 @@ class BlogController < ApplicationController
    @posts = BlogPost.paginate :all, :page => params[:page]
   end
   def named
-   @post = BlogPost.find_by_name params[:name]
+   @post = BlogPost.find_by_name params[:id]
    @submenu << { :text=>'Редактировать', :action=>'edit', :id=>@post.id, :check=>'take_login.logged? and take_login.has_privilege?("blog.edit")' } unless @post.nil?
 #   @submenu << { :text=>'Удалить', :action=>'delete', :id=>@post.id, :check=>'take_login.logged? and take_login.has_privilege?("blog.delete")' } unless @post.nil?
    redirect_to :action=>'index' if @post.nil?
    @title = (@post.title || '...') + ' / AfaLog'
   end
- private
+ protected
   def protect
    unless take_login.logged?
     session[:return_to] = request.request_uri

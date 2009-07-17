@@ -1,5 +1,4 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :stats
 
   # The priority is based upon order of creation: first created -> highest priority.
 
@@ -43,9 +42,10 @@ ActionController::Routing::Routes.draw do |map|
   map.connect '/contacts', :controller=>'Site', :action=>'contacts'
   map.todo 'to_do/:action/:id', :controller=>'ToDo'
 #  map.resources 'todo'
-  map.resources :blog, :collection=>{ :rss=>:get }, :member=>{ :dated=>:get, :named=>:get } do | post |
-   post.resources :comments, :member=>{:new=>:get, :create=>:post}
+  map.resources :blog, :collection=>{ :rss=>:get }, :member=>{ :named=>:get, :dated=>:get } do | post |
+   post.resources :comments
   end
+  map.resources :stats
 #  map.connect 'blog/:action/:id', :controller=>'Blog', :requirements=>{:id=>/\d+/}
   map.ajax 'ajax/:action/:id', :controller=>'Ajax'
 #  map.blog_named 'blog/show/:name', :controller=>'Blog', :action=>'named'

@@ -6,10 +6,10 @@
   <% if post.comments.count > 0 %>
    <%= link_to "#{ post.comments.count } засланцев", blog_comments_path(post) -%>
   <% end %>
-  <% if post.name.blank? then %>
+  <% if true #post.name.blank? then %>
    <%= link_to "Link", blog_path(post) -%>
   <% else %>
-   <%= link_to "PermaLink", named_blog_path( :name=>post.name) -%>
+   <%= link_to "PermaLink", named_blog_path( post ) -%>
   <% end %>
  </div>
 </div>
