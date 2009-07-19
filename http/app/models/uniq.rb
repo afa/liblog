@@ -1,0 +1,3 @@
+class Uniq < Stat
+
+end

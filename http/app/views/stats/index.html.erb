@@ -1,0 +1,5 @@
+<table><tbody>
+<% @stats.each do |stat| %>
+<tr><td><%= stat.for_day -%></td><td><%= stat.counter -%></td></tr>
+<% end %>
+</tbody></table>
