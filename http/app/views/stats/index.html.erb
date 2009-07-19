@@ -1,5 +1,5 @@
 <table><tbody>
-<% @stats.each do |stat| %>
-<tr><td><%= stat.for_day -%></td><td><%= stat.counter -%></td></tr>
+<% (@uniqs.keys + @totals.keys).uniq.sort.each do |stat| %>
+<tr><td><%= stat -%></td><td><%= @uniqs[stat].counter if @uniqs[stat] -%></td><td><%= @totals[stat].counter if @totals[stat] -%></td></tr>
 <% end %>
 </tbody></table>

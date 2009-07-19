@@ -1,5 +1,6 @@
 class StatsController < ApplicationController
   def index
-   @stats = Stat.find( :all, :order=>'for_day DESC')
+   @totals = Total.find(:all).inject({}){ |r, i| r[i.for_day]=i; r  }
+   @uniqs = Uniq.find(:all).inject({}){ |r, i| r[i.for_day]=i; r  }
   end
 end
