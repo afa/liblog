@@ -22,4 +22,4 @@ config.action_view.cache_template_loading            = true
 # config.action_mailer.raise_delivery_errors = false
 GEM_PATH='/home/virtwww/w_afalone-ru_3e7b26fa/.gems:/usr/lib/ruby/gems/1.8'
 NGINXLOGS_PATH='../../logs'
-NGINXLOGS_MASK='access*log'
+NGINXLOGS_MASK=['access*log']
