@@ -3,8 +3,8 @@ class UserController < ApplicationController
   before_filter :protect, :except=>[ :login, :index, :show ]
   def initialize
    @submenu = [
-    {:text=>'Index', :action=>'index'},
-    {:text=>'Add', :action=>'add'}
+    {:text=>'Index', :action=>'index', :check=>'take_login.logged?'},
+    {:text=>'Add', :action=>'add', :check=>'take_login.can_admin?'}
    ]
   end
   def login
@@ -51,7 +51,6 @@ class UserController < ApplicationController
 
   def show
    @take_login
-   @identity = Identity.find params[:id]
    @identity = Identity.find params[:id]
    @submenu << { :text=>'Edit', :action=>'edit', :id=>@identity.id }
    redirect_to :action=>'index' if @identity.nil?

@@ -1,5 +1,21 @@
 <fieldset>
+  <%= error_messages_for :identity -%>
  <legend>Параметры персоны</legend>
  <label for="name">Имя</label>
  <%= form.text_field :name %>
+ <% fields_for :user do |u| %>
+  <div>
+   <%= u.label :username, "Логин" %>
+   <%= u.text_field :username -%>
+  </div>
+
+  <div>
+   <%= u.label :password, "Пароль" %>
+   <%= u.password_field :password %>
+  </div>
+  <div>
+   <%= u.label :password_confirmation, "Подтверждение пароля" %>
+   <%= u.password_field :password_confirmation %>
+  </div>
+ <% end %>
 </fieldset>

@@ -1,6 +1,6 @@
 <% div_for( account_info ) do %>
  <%= account_info.username -%>
- <%= 'L' if account_info.can_login? -%>
- <%= 'A' if account_info.can_admin? -%>
- <%= 'P' if account_info.can_post? -%>
+ <% account_info.roles.each do |r| %>
+  <%= r.name %>
+ <% end %>
 <% end %>

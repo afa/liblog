@@ -3,7 +3,8 @@ namespace :logs do
  desc "paarse nginx logs, scan day statistics"
  task :parse => :environment do
   # load logs from NGINXLOGS_PATH (by mask NGINXLOGS_MASK) and extract statistics per day.
- # ксли собранная цифра за день больше - она заменяет предыдущую.
+  # ксли собранная цифра за день больше - она заменяет предыдущую.
+  # TODO определять роботов, поо чтению robots.txt и не учитывать ip следующий час
   stats = {} # by dates
   NGINXLOGS_MASK.each do |mask|
    Dir.glob(File.join(NGINXLOGS_PATH, mask)) { |name|

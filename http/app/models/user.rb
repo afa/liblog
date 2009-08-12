@@ -5,6 +5,8 @@ class User < ActiveRecord::Base
  has_many :roles, :through=>:role_maps
 #, :source=>'Role'
  validates_uniqueness_of :username, :message=>'Аккаунт с таким именем уже существует', :on=>:create
+ validates_presence_of :email, :message=>'Необходимо ввести емайл'
+ validates_confirmation_of :password
  def can_admin?
   has_privilege?('root')
  end
@@ -22,6 +24,10 @@ class User < ActiveRecord::Base
  end
  def logged?
   self.new_record? ? false : true 
+ end
+ def self.register_email_user(email)
+  ident = Identity.find_by_name "mailer identity"
+  self.find_or_create_by_email :username=>email, :email=>email
  end
 end
 

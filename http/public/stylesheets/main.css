@@ -87,3 +87,15 @@ div.to_do div {
  font-weight: bold;
  color: blue;
 }
+.blocked {
+ color: red;
+ text-style: striked;
+}
+.allowed {
+ color: green;
+}
+.right {
+ font-weight: bold;
+ padding-left: 3px;
+ padding-right: 3px;
+}
