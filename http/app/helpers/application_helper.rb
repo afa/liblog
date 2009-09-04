@@ -12,6 +12,12 @@ module ApplicationHelper
   @logged
  end
 
+ def lib_menu
+  [
+   []
+  ]
+ end
+
  def menu_bar(menu = [])
   menu.collect  do | item |
    if (item.has_key? :check and eval(item[:check])) or not item.has_key? :check
@@ -19,7 +25,11 @@ module ApplicationHelper
     if item.has_key? :type then 
      send("#{item.delete(:type)}_to", item.delete(:text), item)
     else
-     link_to_unless_current( item.delete(:text), item)
+     if item.has_key? :url
+      link_to_unless_current( item.delete(:text), item.delete(:url))
+     else
+      link_to_unless_current( item.delete(:text), item)
+     end
     end
    end
   end.compact.join('&nbsp;')
@@ -31,7 +41,8 @@ module ApplicationHelper
    { :text=>'Blog', :controller=>'Blog', :action=>'index' },
    { :text=>'Config', :controller=>'Config', :action=>'index', :check=>"take_login.has_privilege? 'config.view'" },
    { :text=>'ToDo', :controller=>'ToDo', :action=>'index', :check=>"take_login.has_privilege? 'todo.view'" },
-   { :text=>'Stats', :controller=>'Stats', :action=>'index', :check=>"take_login" }
+   { :text=>'Stats', :controller=>'Stats', :action=>'index', :check=>"take_login" },
+   { :text=>'Lib', :url=>lib_index_path }
   ]
  end
 end

@@ -37,20 +37,28 @@ ActionController::Routing::Routes.draw do |map|
   # See how all your routes lay out with "rake routes"
 
   # Install the default routes as the lowest priority.
-  map.connect '', :controller=>'Site', :action=>'index'
-  map.connect '/sitemap.xml', :controller=>'Site', :action=>'sitemap', :format=>'xml'
-  map.connect '/contacts', :controller=>'Site', :action=>'contacts'
-  map.todo 'to_do/:action/:id', :controller=>'ToDo'
+  map.subdomain :lib, :name=>:lib do |lib|
+   lib.index '', :controller=>'Site', :action=>'index'
+   lib.resources :author
+   lib.resources :book
+   lib.resources :site
+  end
+  map.subdomain nil, :www, :name=>nil do |m|
+  m.connect '', :controller=>'Site', :action=>'index'
+  m.connect '/sitemap.xml', :controller=>'Site', :action=>'sitemap', :format=>'xml'
+  m.connect '/contacts', :controller=>'Site', :action=>'contacts'
+  m.todo 'to_do/:action/:id', :controller=>'ToDo'
 #  map.resources 'todo'
-  map.resources :blog, :collection=>{ :rss=>:get }, :member=>{ :named=>:get, :dated=>:get } do | post |
+  m.resources :blog, :collection=>{ :rss=>:get }, :member=>{ :named=>:get, :dated=>:get } do | post |
    post.resources :comments
   end
-  map.resources :stats
+  m.resources :stats
 #  map.connect 'blog/:action/:id', :controller=>'Blog', :requirements=>{:id=>/\d+/}
-  map.ajax 'ajax/:action/:id', :controller=>'Ajax'
+  m.ajax 'ajax/:action/:id', :controller=>'Ajax'
 #  map.blog_named 'blog/show/:name', :controller=>'Blog', :action=>'named'
 #  map.connect 'blog/:year/:month/:day', :controller=>'Blog', :action=>'dated'
 #  map.connect 'blog/:year/:month', :controller=>'Blog', :action=>'dated'
   map.connect ':controller/:action/:id'
   map.connect ':controller/:action/:id.:format'
+  end
 end

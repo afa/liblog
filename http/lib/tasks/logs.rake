@@ -1,6 +1,6 @@
 namespace :logs do
 
- desc "paarse nginx logs, scan day statistics"
+ desc "parse nginx logs, scan day statistics"
  task :parse => :environment do
   # load logs from NGINXLOGS_PATH (by mask NGINXLOGS_MASK) and extract statistics per day.
   # ксли собранная цифра за день больше - она заменяет предыдущую.
@@ -10,7 +10,10 @@ namespace :logs do
    Dir.glob(File.join(NGINXLOGS_PATH, mask)) { |name|
     File.open(name, 'r') { |file|
      file.each { |l|
-      l.scan(/^(\d+\.\d+\.\d+\.\d+)\s+.+?\s+.+?\s+\[(.+?)\]\s+\"(\S+)\s(\S+)\s+(\S+)\"\s+(\d+)\s+(\d+)\s+\"(\S+?)\"/){ |ip, ts, meth, url, proto, cod, siz, ref|
+      l.scan(/^(\d+\.\d+\.\d+\.\d+)\s+.+?\s+.+?\s+\[(.+?)\]\s+\"(\S+)\s(\S+)\s+(\S+)\"\s+(\d+)\s+(\d+)\s+\"(\S+?)\"\s+\".*\"/){ |ip, ts, meth, url, proto, cod, siz, ref, agent|
+       next if agent =~ /^Yandex\//
+       next if agent =~ /^YandexBlog\//
+       next if agent =~ /Googlebot\//
        d = DateTime.strptime(ts, "%d/%b/%Y:%T %z")
        stats[d.strftime("%Y-%m-%d")] ||= {} 
        stats[d.strftime("%Y-%m-%d")][ip] ||= []

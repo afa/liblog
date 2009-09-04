@@ -1,5 +1,9 @@
 # Settings specified here will take precedence over those in config/environment.rb
 
+config.action_controller.session ||= {}
+config.action_controller.session[:session_domain] = '.e3pc'
+SubdomainRoutes::Config.domain_length = 1
+
 # In the development environment your application's code is reloaded on
 # every request.  This slows down response time but is perfect for development
 # since you don't have to restart the webserver when you make code changes.

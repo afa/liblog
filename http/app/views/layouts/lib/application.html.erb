@@ -12,18 +12,7 @@
  </head>
  <body>
   <div class="main_menu">
-   <% unless current_page?( :controller=>'User', :action=>'login') -%>
-    <span style="display:block;float:right;">
-     <% unless take_login.logged? then %>
-      <% session[:return_to] = request.request_uri unless current_page?( :controller=>'User', :action=>'login' ) -%>
-      <%= link_to( 'Login', :controller=>'User', :action=>'login' ) %>
-     <% else %>
-      <%= link_to_unless_current( take_login.identity.name, :controller=>'User', :action=>'show', :id=>take_login.identity.id ) if take_login.logged? -%>
-      <%= link_to "Logout", :controller=>'User', :action=>'logout' %>
-     <% end %>
-    </span>
-   <% end %>
-   <%= menu_bar main_menu %>
+   <%= menu_bar lib_menu %>
   </div>
   <% if @submenu then %>
    <div class="submenu">
