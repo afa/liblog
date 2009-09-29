@@ -1,2 +1,2 @@
-<h1>Lib::Book#show</h1>
-<p>Find me in app/views/lib/book/show.html.erb</p>
+<div><%= @book.name %></div>
+<div><%= @book.authors.collect{|a| [a.first_name, a.last_name].join ' ' }.join ', ' %></div>

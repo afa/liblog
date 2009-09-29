@@ -84,7 +84,7 @@ class BlogController < ApplicationController
    unless take_login.logged?
     session[:return_to] = request.request_uri
     flash[:error] =  "Must be logged in"
-    redirect_to :controller=>'User', :action=>'login'
+    redirect_to login_user_path
     return false
    end
   end

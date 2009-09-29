@@ -11,13 +11,13 @@ class UserController < ApplicationController
    unless params[:username].blank? then
     user = User.find_by_username_and_password( params[:username], params[:password]) || GuestUser.new 
     unless user.can_login? 
-     redirect_to :action=>'login' 
+     redirect_to login_user_path 
      return
     end
     session[:logon] = user.id if user.logged?
     @take_login
     if session[:return_to].nil? then
-     redirect_to :controller=>'Site', :action=>'index'
+     redirect_to index_path
     else 
      redirect_to session[:return_to]
      session[:return_to] = nil
@@ -26,7 +26,7 @@ class UserController < ApplicationController
   end
   def logout
    session[:logon] = nil
-   redirect_to :controller=>'Site', :action=>'index'
+   redirect_to index_path
   end
   def index
    @take_login
@@ -60,7 +60,7 @@ class UserController < ApplicationController
    if session[:logon].nil? then
     session[:return_to] = request.request_uri
     flash[:error] =  "Must be logged in"
-    redirect_to :controller=>'User', :action=>'login'
+    redirect_to login_user_path
     return false
    end
    @take_login

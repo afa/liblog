@@ -14,7 +14,7 @@ module ApplicationHelper
 
  def lib_menu
   [
-   []
+   { :text => 'lib', :url=>lib_index_path}
   ]
  end
 
@@ -36,12 +36,12 @@ module ApplicationHelper
  end
  def main_menu
   [
-   { :text=>'Home', :controller=>"Site", :action=>"index" },
-   { :text=>'Users', :controller=>"User", :action=>"index", :check=>'take_login.can_admin?' },
-   { :text=>'Blog', :controller=>'Blog', :action=>'index' },
-   { :text=>'Config', :controller=>'Config', :action=>'index', :check=>"take_login.has_privilege? 'config.view'" },
-   { :text=>'ToDo', :controller=>'ToDo', :action=>'index', :check=>"take_login.has_privilege? 'todo.view'" },
-   { :text=>'Stats', :controller=>'Stats', :action=>'index', :check=>"take_login" },
+   { :text=>'Home', :url=>index_path },
+   { :text=>'Users', :url=>user_index_path, :check=>'take_login.can_admin?' },
+   { :text=>'Blog', :url=>blog_index_path },
+ #  { :text=>'Config', :controller=>'Config', :action=>'index', :check=>"take_login.has_privilege? 'config.view'" },
+ #  { :text=>'ToDo', :controller=>'ToDo', :action=>'index', :check=>"take_login.has_privilege? 'todo.view'" },
+ #  { :text=>'Stats', :controller=>'Stats', :action=>'index', :check=>"take_login" },
    { :text=>'Lib', :url=>lib_index_path }
   ]
  end

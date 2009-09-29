@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
 
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
-  protect_from_forgery :secret => 'cde0b420e0543a4323b9979a26d5b8e7'
+  protect_from_forgery #:secret => 'cde0b420e0543a4323b9979a26d5b8e7'
   
   # See ActionController::Base for details 
   # Uncomment this to filter the contents of submitted sensitive data parameters
@@ -21,5 +21,10 @@ class ApplicationController < ActionController::Base
    end
   end
   @logged
+ end
+
+ # need change when subdomain_routes will handle non-80 port
+ def default_url_options(options=nil)
+  { :port => self.request.port }
  end
 end

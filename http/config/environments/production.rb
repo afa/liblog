@@ -27,3 +27,8 @@ config.action_view.cache_template_loading            = true
 GEM_PATH='/home/virtwww/w_afalone-ru_3e7b26fa/.gems:/usr/lib/ruby/gems/1.8'
 NGINXLOGS_PATH='../../logs'
 NGINXLOGS_MASK=['access*log']
+
+DESC_PATH = File.join RAILS_ROOT, 'desc'
+FB2_PATH = File.join RAILS_ROOT, 'fb2'
+
+BUNDLE_PATH = File.join RAILS_ROOT, 'bundles'

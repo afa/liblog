@@ -21,3 +21,9 @@ config.action_controller.perform_caching             = false
 config.action_mailer.raise_delivery_errors = false
 NGINXLOGS_PATH='.'
 NGINXLOGS_MASK=['access*log']
+
+
+DESC_PATH = File.join RAILS_ROOT, 'desc'
+FB2_PATH = File.join RAILS_ROOT, 'fb2'
+
+BUNDLE_PATH = File.join RAILS_ROOT, 'bundles'

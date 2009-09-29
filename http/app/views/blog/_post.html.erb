@@ -2,7 +2,7 @@
  <div class="header"><span class="date"><%= post.created_at -%></span><%= post.title.blank? ? '&nbsp;' : post.title -%></div>
  <%= post.text -%>
  <div class="links">
-  <span><%= link_to_unless_current 'Послать', :controller=>'comments', :blog_id=>post, :action=>:new -%>&nbsp;</span>
+  <span><%= link_to_unless_current 'Послать', new_blog_comment_path(post) -%>&nbsp;</span>
   <% if post.comments.count > 0 %>
    <%= link_to "#{ post.comments.count } засланцев", blog_comments_path(post) -%>
   <% end %>

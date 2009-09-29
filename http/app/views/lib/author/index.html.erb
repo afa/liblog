@@ -1,2 +1,19 @@
-<h1>Lib::Author#index</h1>
-<p>Find me in app/views/lib/author/index.html.erb</p>
+<table>
+<tr><th>Имя</th><th>Книг</th><th>ДД</th></tr>
+ <% @authors.each do |author| %>
+ <%# @page.authors.each do |author| %>
+  <tr>
+   <td><%= [author.first_name, author.last_name].compact.join(' ') -%></td>
+   <td><%= author.books_count -%></td>
+   <td><%= link_to "show", lib_author_path(author) -%>
+  </tr>
+ <% end %>
+</table>
+<%= will_paginate @authors %>
+<ul>
+<%# @page.paginator.window(:inner => 2, :outer => 1) do |page, path, classes| %>
+    <%# content_tag_for :li, page, :class => classes.join(" ") do %>
+      <%#= link_to_if path, page.number, path %>
+    <%# end %>
+  <%# end %>
+</ul>

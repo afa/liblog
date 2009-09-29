@@ -48,7 +48,7 @@ class ConfigController < ApplicationController
  private
   def protect
    unless take_login.logged? and take_login.has_privilege?("config.view")
-    redirect_to :controller=>'Site', :action=>'index'
+    redirect_to index_path
    end
   end
   def protect_edit

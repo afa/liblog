@@ -99,3 +99,15 @@ div.to_do div {
  padding-left: 3px;
  padding-right: 3px;
 }
+
+
+
+li.page { display: inline }
+li.page a { text-decoration: none }
+li.page span {
+  border: 1px solid black;
+  padding: 0.2em 0.5em }
+li.page.selected span, li.page span:hover {
+  background: gray;
+  color: white }
+li.page.gap_before:before { content: "..." }
