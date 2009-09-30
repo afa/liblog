@@ -2,7 +2,7 @@ ActionController::Routing::Routes.draw do |map|
 
   # Install the default routes as the lowest priority.
   map.subdomain :lib, :name=>:lib do |lib|
-   lib.resources :site, :only=>[:index], :collection=>[:rss]
+   lib.resources :site, :only=>[:index], :collection=>{:rss=>:get}
    lib.index '', :subdomains=>['lib'], :controller=>'Site', :action=>'index'
 #   lib.rss '', :controller=>'Site', :action=>'index'
    lib.resources :author
@@ -13,7 +13,7 @@ ActionController::Routing::Routes.draw do |map|
    lib.resources :lang
   end
   map.subdomain nil, :www, :name=>nil do |m|
-   m.resources :site, :only=>[:index, :sitemap, :contacts], :collection=>[:sitemap=>:get, :contacts=>:get]
+   m.resources :site, :only=>[:index, :sitemap, :contacts], :collection=>{:sitemap=>:get, :contacts=>:get}
    m.index '', :controller=>'Site', :action=>'index'
    m.sitemap '/sitemap.xml', :controller=>'Site', :action=>'sitemap', :format=>'xml'
    m.contacts '/contacts', :controller=>'Site', :action=>'contacts'
