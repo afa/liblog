@@ -95,12 +95,12 @@ task :after_update_code, :roles => :app do
   buffer['production']['username'] = "xgb_afalone"
   buffer['production']['password'] = '3601bdbe'
   buffer['production']['host'] = "postgres40.1gb.ru"
-  buffer['prodtest']['adapter'] = "postgresql"
-  buffer['prodtest']['port'] = "5432"
-  buffer['prodtest']['database'] = "homesite"
-  buffer['prodtest']['username'] = "afa"
-  buffer['prodtest']['password'] = 'massacre'
-  buffer['prodtest']['host'] = "afahome"
+#  buffer['prodtest']['adapter'] = "postgresql"
+#  buffer['prodtest']['port'] = "5432"
+#  buffer['prodtest']['database'] = "homesite"
+#  buffer['prodtest']['username'] = "afa"
+#  buffer['prodtest']['password'] = 'massacre'
+#  buffer['prodtest']['host'] = "afahome"
   Tempfile.open('db_temp_yaml') do |out|
    YAML.dump(buffer, out)
    out.flush
