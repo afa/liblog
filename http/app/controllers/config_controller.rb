@@ -1,14 +1,18 @@
 class ConfigController < ApplicationController
 # привилегии config.view, config.edit, config.delete
+  before_filter :submenu
   before_filter :protect
   before_filter :protect_edit, :only=>[:edit, :add]
   before_filter :protect_delete, :only=>[:delete]
-  def initialize
+  def submenu
    @submenu = [
     {:text=>'Список', :action=>'index', :check=>'take_login.logged? and take_login.has_privilege?("config.view")'},
     {:text=>'Добавить', :action=>'add', :check=>'take_login.logged? and take_login.has_privilege?("config.edit")'}
    ]
   end
+
+  protected :submenu
+
   def index
    @items = SiteConfig.find :all
   end

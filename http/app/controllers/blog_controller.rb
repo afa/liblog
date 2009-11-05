@@ -1,14 +1,18 @@
 class BlogController < ApplicationController
+  before_filter :submenu
+  
   before_filter :protect, :except=>[ :rss, :dated, :index, :show, :named ]
   before_filter :protect_post, :only=>[ :new, :create ]
   before_filter :protect_edit, :only=>[ :edit, :update ]
   before_filter :protect_delete, :only=>[ :delete ]
-  def initialize
+  def submenu
    @submenu = [
     {:text=>'Записи', :action=>'index'},
     {:text=>'Добавить', :action=>'new', :check=>'take_login.logged? and take_login.has_privilege?("blog.post")'},
    ]
   end
+
+  protected :submenu
   def rss
     @posts = BlogPost.find(:all, :limit => 50, :order => "created_at DESC")
     render :layout=>false

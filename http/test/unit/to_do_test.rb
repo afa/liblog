@@ -3,9 +3,7 @@ require 'test_helper'
 class ToDoTest < ActiveSupport::TestCase
   self.use_instantiated_fixtures = true
   fixtures 'to_dos'
-  def setup
 
-  end
   def test_percent_done_tree_50
    assert_in_delta @tree_root.percent_done, 50, 1, 'percent_done for 50% calc wrongly'
   end

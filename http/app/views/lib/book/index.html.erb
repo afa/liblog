@@ -6,6 +6,7 @@
    <td><%= book.name -%></td>
    <td><%= book.authors.collect{|a| [a.first_name, a.last_name].join ' '}.join ', ' -%></td>
    <td><%= link_to "show", lib_book_path(book) -%>
+   <%= link_to "edit", edit_lib_book_path(book) -%></td>
   </tr>
  <% end %>
 </table>

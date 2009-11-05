@@ -1,6 +1,6 @@
 class AddUserToComment < ActiveRecord::Migration
   def self.up
-   add_column :blog_comments, :user_id, :integer, :null=>false, :default=>false
+   add_column :blog_comments, :user_id, :integer, :null=>false
   end
 
   def self.down

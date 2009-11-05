@@ -1,5 +1,5 @@
-n_list = ['.fb2', '.desc', '.invalid']
 def l_name(nm)
+ n_list = ['.fb2', '.desc', '.invalid']
  name = nm
  0..n_list.size do
   name = n_list.inject(name){|r, n| File.basename r, n}
@@ -7,16 +7,20 @@ def l_name(nm)
  name
 end
 namespace :books do
+ task :tst, :files, :needs => :environment do |task_obj, args|
+  puts args
+ end
  desc "Import book descriptions from fb2"
- task :import => :environment do
+ task :import, :files, :needs => :environment do |task_name, args|
   require 'rubygems'
   require 'xmlsimple'
   require 'timeout'
-  params = ARGV
-  params.shift
+  params = args[:files]
+  #params.shift
+  exit unless params
   exit if params.empty?
   counter = 5000
-  params.sort.each do |fname|
+  [params].flatten.sort.each do |fname|
    Dir[fname].sort.each do |name|
     next if Book.find_by_lre_name(l_name(name)) and SKIP_EXISTS
     break if counter < 0
@@ -105,64 +109,82 @@ namespace :books do
  desc "prepare bundles for books(desc only)"
  task :make_desc_bundles => :environment do
 #   cb = lang.books.find(:all, :conditions=>'bundle_id is null', :include=>[:authors])
-  cb = Book.unbundled
-  blk = []
-  puts 'scan'
-  while cb.size > 0
-   b = [cb[0]]
-   a = []
-   p_cnt = 0
-   cnt = 1
-   while p_cnt < cnt
-    p_cnt = a.size + b.size
-    a += (b.compact.map(&:authors).flatten.compact.uniq) - a
-    b += (a.compact.map(&:books).flatten.compact.uniq) - b
-    cb -= b
-    cnt = a.size + b.size
+  cb = Book.unbundled.map(&:id)
+  puts "books: #{cb.size}"
+  until cb.empty?
+   bundle=Bundle.create
+   bundle.update_attribute :name, bundle.id.to_s
+   puts "bundle #{bundle.id}"
+   cb[cb.size>=1000 ? -1000 : 0, cb.size > 1000 ? 1000 : cb.size].each do |b|
+    bundle.book_ids << b
+    puts b
    end
-   b.compact!
-   b.uniq!
-   blk << b.map(&:id)
-   cb -= b
-   puts "#{b.size} #{a.compact.uniq.size} #{cb.compact.size}"
+   bundle.save
+   cb -= cb[cb.size>1000 ? -1000 : 0, cb.size > 1000 ? 1000 : cb.size]
+   puts "saved"
   end
-  blk.sort!{|a, b| a.size <=> b.size}
-  blk.reverse!
-  puts "bundles #{blk.size} #{blk.flatten.size} #{blk[0].size}"
-  puts "creating (#{blk.size})"
-  while blk.size > 0
-   puts blk.size
-   books = blk.delete_at 0
-   while books.size >1000
-    bks = books[0..999]
-    books -= bks
-    bnd = Bundle.create
-    bnd.update_attribute :name, bnd.id.to_s
-    bks.map{|i| Book.find i }.each{|book| bnd.books << book }
-    bnd.save
-   end
-   bnd = Bundle.create
-   bnd.update_attribute :name, bnd.id.to_s
-   while bnd.books.size < 1000
-    bks = blk.detect{|b| (bnd.books.size + b.size) <= 1000 }
-    break unless bks
-    blk.delete bks
-    bks.map{|i| Book.find i }.each{|b| bnd.books << b }
-   end
-   bnd.save
-  end
+
+#/  blk = []
+#  puts 'scan'
+#  while cb.size > 0
+#   b = [cb[0]]
+#   a = []
+#   p_cnt = 0
+#   cnt = 1
+#   while p_cnt < cnt
+#    p_cnt = a.size + b.size
+#    a += (b.compact.map(&:authors).flatten.compact.uniq) - a
+#    b += (a.compact.map(&:books).flatten.compact.uniq) - b
+#    cb -= b
+#    cnt = a.size + b.size
+#   end
+#   b.compact!
+#   b.uniq!
+#   blk << b.map(&:id)
+#   cb -= b
+#   puts "#{b.size} #{a.compact.uniq.size} #{cb.compact.size}"
+#  end
+#  blk.sort!{|a, b| a.size <=> b.size}
+#  blk.reverse!
+#  puts "bundles #{blk.size} #{blk.flatten.size} #{blk[0].size}"
+#  puts "creating (#{blk.size})"
+#  while blk.size > 0
+#   puts blk.size
+#   books = blk.delete_at 0
+#   while books.size >1000
+#    bks = books[0..999]
+#    books -= bks
+#    bnd = Bundle.create
+#    bnd.update_attribute :name, bnd.id.to_s
+#    bks.map{|i| Book.find i }.each{|book| bnd.books << book }
+#    bnd.save
+#   end
+#   bnd = Bundle.create
+#   bnd.update_attribute :name, bnd.id.to_s
+#   while bnd.books.size < 1000
+#    bks = blk.detect{|b| (bnd.books.size + b.size) <= 1000 }
+#    break unless bks
+#    blk.delete bks
+#    bks.map{|i| Book.find i }.each{|b| bnd.books << b }
+#   end
+#   bnd.save
+#  end
+#/
  end
 
  desc "compress desc bundles"
  task :compress_desc => :environment do
-  Bundle.find_each :batch_size=>5, :include=>[:books] do |bundle|
+  Bundle.find_each :batch_size=>5 do |bundle|
    str = bundle.books.map{|b| File.join DESC_PATH, "#{b.lre_name}.fb2.desc"}
    puts "compress #{bundle.name}"
-   IO.popen "rar a -m5 -md1024 -s -ep #{File.join BUNDLE_PATH, bundle.name} #{str.join ' '}"
+   IO.popen( "rar a -inul -m5 -md1024 -s -ep #{File.join BUNDLE_PATH, bundle.name} #{str.join ' '} >/dev/null")
    Process.wait
-   bundle.books.each{|b| b.update_attribute :bundled, true}
+   puts 'exec done'
+   Book.update_all "bundled = 't'", "bundle_id = #{bundle.id}"
+   #bundle.books.each{|b| b.update_attribute :bundled, true}
    bundle.update_attribute :is_compressed, true
   end
+  puts 'done'
  end
 
  desc "divide genre"

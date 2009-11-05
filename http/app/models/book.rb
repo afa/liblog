@@ -1,4 +1,5 @@
 class Book < ActiveRecord::Base
+ has_many :covers, :source=>:things, :as=>:thingable
  has_and_belongs_to_many :authors
  has_and_belongs_to_many :genres
  belongs_to :lang, :counter_cache=>true

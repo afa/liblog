@@ -4,6 +4,7 @@ class String
  end
 end
 class BlogPost < ActiveRecord::Base
+ has_many :photos, :source=>:things, :as=>:thingable
  before_save :trim_fields
  has_one :imported_entry
  cattr_reader :per_page
@@ -15,7 +16,7 @@ class BlogPost < ActiveRecord::Base
   self.name
  end 
  def trim_fields
-  self.title = self.title.smart_trim(250) if self.title and self.title.length >255
-  self.name = self.name.smart_trim(250) if self.name and self.name.length >255
+  #self.title = self.title.smart_trim(250) if self.title and self.title.length >255
+  #self.name = self.name.smart_trim(250) if self.name and self.name.length >255
  end
 end

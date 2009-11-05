@@ -72,7 +72,9 @@ Rails::Initializer.run do |config|
     :source => 'http://gems.github.com'
   config.gem 'russian'
   config.gem 'andand'
+  config.gem 'nokogiri'
   config.gem "mholling-paged_scopes", :lib=>"paged_scopes", :source=>"http://gems.github.com"
+  config.gem "paperclip"
 
 end
 

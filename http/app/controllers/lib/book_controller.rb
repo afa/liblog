@@ -1,8 +1,8 @@
 class Lib::BookController < ApplicationController
   layout 'lib/application'
 
-  before_filter :load_books
-  before_filter :load_book, :only=>[:show]
+  before_filter :load_books, :only=>[:index]
+  before_filter :load_book, :only=>[:show, :edit, :update, :destroy]
 
 #  paginate :books, :per_page=>30, :path=>:lib_page_book_index_path
 
@@ -12,10 +12,18 @@ class Lib::BookController < ApplicationController
   def show
   end
 
+  def edit
+  end
+
+  def update
+  end
+
+  def destroy
+  end
  protected
   def load_books
 #   @books = Book.scoped(:order=>'name')
-   @books = Book.paginate :order=>'name', :per_page=>100, :page=>params[:page]
+   @books = Book.paginate :order=>'name', :per_page=>100, :include=>[:authors], :page=>params[:page]
   end
 
   def load_book

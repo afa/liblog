@@ -42,6 +42,18 @@ task :production, :role=>:all do
 
 end
 
+desc "set home params"
+task :home, :role=>:all do
+ set :deploy_to, '~/site'
+# set :current_path, 'http'
+ server "afahome", :app, :web, :db, :primary=>true
+# set :use_sudo, false
+ set :user, "afa"
+ set :password, "massacre"
+ set :rails_env, 'prodtest'
+
+end
+
 namespace :mongrel do
   set :mongrel_pid, "~/logs_ror/ror_w_afalone-ru_3e7b26fa.pid"
   def get_mongrel_pid
@@ -83,6 +95,12 @@ task :after_update_code, :roles => :app do
   buffer['production']['username'] = "xgb_afalone"
   buffer['production']['password'] = '3601bdbe'
   buffer['production']['host'] = "postgres40.1gb.ru"
+  buffer['prodtest']['adapter'] = "postgresql"
+  buffer['prodtest']['port'] = "5432"
+  buffer['prodtest']['database'] = "homesite"
+  buffer['prodtest']['username'] = "afa"
+  buffer['prodtest']['password'] = 'massacre'
+  buffer['prodtest']['host'] = "afahome"
   Tempfile.open('db_temp_yaml') do |out|
    YAML.dump(buffer, out)
    out.flush

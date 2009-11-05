@@ -1,29 +1,31 @@
 class UserController < ApplicationController
 #  helper :user
-  before_filter :protect, :except=>[ :login, :index, :show ]
-  def initialize
+  before_filter :submenu
+  before_filter :protect, :except=>[ :login, :logit, :index, :show ]
+  def submenu
    @submenu = [
-    {:text=>'Index', :action=>'index', :check=>'take_login.logged?'},
-    {:text=>'Add', :action=>'add', :check=>'take_login.can_admin?'}
+    {:text=>'Index', :action=>'index', :check=>'take_login.is_admin?'},
+    {:text=>'Add', :action=>'add', :check=>'take_login.is_admin?'}
    ]
   end
-  def login
-   unless params[:username].blank? then
-    user = User.find_by_username_and_password( params[:username], params[:password]) || GuestUser.new 
-    unless user.can_login? 
-     redirect_to login_user_path 
-     return
-    end
-    session[:logon] = user.id if user.logged?
-    @take_login
-    if session[:return_to].nil? then
-     redirect_to index_path
-    else 
-     redirect_to session[:return_to]
-     session[:return_to] = nil
-    end
+
+  protected :submenu
+
+  def logit
+   user = User.find_by_username_and_password( params[:username], params[:password]) || GuestUser.new 
+   session[:logon] = user.id if user.logged?
+   @take_login
+   unless user.can_login? 
+    redirect_to login_user_path 
+   else
+    redirect_to session[:return_to] ? session[:return_to] : index_path
+    session[:return_to] = nil
    end
   end
+
+  def login
+  end
+
   def logout
    session[:logon] = nil
    redirect_to index_path

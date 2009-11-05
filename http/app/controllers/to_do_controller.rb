@@ -1,13 +1,17 @@
 class ToDoController < ApplicationController
 # change to REST
+  before_filter :submenu 
   before_filter :prot_unlogged, :only=>[:edit, :delete, :add]
   before_filter :prot_admin, :only=>[:edit, :delete, :add]
-  def initialize
+  def submenu
    @submenu = [
     {:text=>'Index', :action=>'index'},
     {:text=>'Add', :action=>'add'}
    ]
   end
+
+  protected :submenu
+
   def index
    @title = 'Хотелки'
    @todos = ToDo.paginate :all, :include=>[:childs], :conditions=>'parent_id is null', :page=>params[:page]

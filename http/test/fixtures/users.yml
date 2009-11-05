@@ -10,3 +10,9 @@ many_ident1:
 
 many_ident2:
  identity: two_users
+
+admin:
+ identity: admin
+
+banned:
+ identity: banned

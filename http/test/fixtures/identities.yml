@@ -6,3 +6,9 @@ one_user:
 
 two_users:
  name: '3'
+
+admin:
+ name: 'admin'
+
+banned:
+ name: 'banned'

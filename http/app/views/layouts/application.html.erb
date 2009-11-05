@@ -19,7 +19,7 @@
       <%= link_to( 'Login', login_user_path ) %>
      <% else %>
       <%= link_to_unless_current( take_login.identity.name, user_path(take_login.identity.id) ) if take_login.logged? -%>
-      <%= link_to "Logout", logout_user_path %>
+      <%= link_to "Logout", session_index_path, :method=>'delete' %>
      <% end %>
     </span>
    <% end %>

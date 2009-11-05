@@ -1,10 +1,9 @@
+# Defines named roles for users that may be applied to
+# objects in a polymorphic fashion. For example, you could create a role
+# "moderator" for an instance of a model (i.e., an object), a model class,
+# or without any specification at all.
 class Role < ActiveRecord::Base
- has_many :role_maps, :source=>:RoleMap
- has_many :users, :through=>:role_maps
- has_many :privilege_maps, :source=>:PrivilegeMap
- has_many :privileges, :through=>:privilege_maps
-
- def has_privilege?(priv_name)
-  Privilege.find( :all, :from=>'privileges "p", privilege_maps "pm"', :conditions=>[ 'p.name = :priv and p.id = pm.privilege_id and pm.role_id = :uid', { :priv=>priv_name, :uid=>self.id } ] ).size > 0 ? true : false
- end
+  has_many :roles_users, :dependent => :delete_all
+  has_many :users, :through => :roles_users
+  belongs_to :authorizable, :polymorphic => true
 end

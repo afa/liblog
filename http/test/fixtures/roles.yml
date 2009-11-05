@@ -1,7 +1,6 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+admin:
+ name: 'admin'
 
-# one:
-#   column: value
-#
-# two:
-#   column: value
+banned: 
+ name: 'banned'

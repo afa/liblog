@@ -6,7 +6,7 @@
     <div>
      <span><%= link_to u.username, :action=>'show', :id=>u.id -%>
      <span class="<%= u.can_login? ? "allowed" : "blocked" %> right">L</span>
-     <span class="<%= u.can_admin? ? "allowed" : "blocked" %> right">A</span>
+     <span class="<%= u.is_admin? ? "allowed" : "blocked" %> right">A</span>
      <span class="<%= u.can_post? ? "allowed" : "blocked" %> right">P</span>
     </div>
    <% end %>

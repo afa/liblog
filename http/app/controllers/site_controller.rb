@@ -1,12 +1,8 @@
 class SiteController < ApplicationController
 #  helper :ToDo
-  def initialize
-   @submenu = [
-    {:text=>'Contacts', :url=>contacts_path}
-   ]
-  end
 
   def index
+    @submenu = [{:text=>'Contacts', :url=>contacts_url}] 
     @title = "Afalone's"
     page = params[:page] || 1
 #   @todos = ToDo.paginate :all, :order=>'created_at desc', :page=> 1, :per_page=>10, :conditions=>'parent_id is null'
@@ -20,6 +16,7 @@ class SiteController < ApplicationController
   end
 
   def contacts
+    @submenu = [{:text=>'Contacts', :url=>contacts_url}] 
     @title = "Как связаться"
   end
 
