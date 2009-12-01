@@ -1,0 +1,12 @@
+<% form_for :book, :id=>'edit_form' do |f| %>
+<div class="edit_heading">
+Редактирование книги (id=<%= @book.id.to_s %>) "<%= h @book.name %>"
+</div>
+<%= image_tag @book.covers[0].file.url unless @book.covers.empty? %>
+<div class="edit_row">
+<%= f.label :name, "Название" %>
+<%= f.text_field :name %>
+</div>
+<%= f.submit "Сохранить" %>
+<%#= link_to_action "Сохранить изменения", "$('edit_form').submit(); return false;" %>
+<% end %>
