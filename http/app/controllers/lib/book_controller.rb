@@ -16,14 +16,20 @@ class Lib::BookController < ApplicationController
   end
 
   def update
+   if @book.update_attributes params[:book]
+    redirect_to lib_book_index_path
+   else
+    render :action=>:edit
+   end
   end
 
   def destroy
   end
+
  protected
   def load_books
 #   @books = Book.scoped(:order=>'name')
-   @books = Book.paginate :order=>'name', :per_page=>100, :include=>[:authors], :page=>params[:page]
+   @books = Book.with_authors.paginate :order=>'name', :per_page=>100, :page=>params[:page]
   end
 
   def load_book

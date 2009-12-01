@@ -26,6 +26,7 @@ ActionController::Routing::Routes.draw do |map|
    m.resources :user, :collection=>{:login=>:get, :logit=>:post, :logout=>:get}
    m.resources :stats
    m.resources :session, :only=>[:new, :create, :delete]
+   m.resources :config
 #  map.connect 'blog/:action/:id', :controller=>'Blog', :requirements=>{:id=>/\d+/}
 #   m.ajax 'ajax/:action/:id', :controller=>'Ajax'
 #  map.blog_named 'blog/show/:name', :controller=>'Blog', :action=>'named'

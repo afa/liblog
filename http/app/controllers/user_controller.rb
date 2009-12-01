@@ -1,27 +1,20 @@
 class UserController < ApplicationController
 #  helper :user
   before_filter :submenu
-  before_filter :protect, :except=>[ :login, :logit, :index, :show ]
-  def submenu
-   @submenu = [
-    {:text=>'Index', :action=>'index', :check=>'take_login.is_admin?'},
-    {:text=>'Add', :action=>'add', :check=>'take_login.is_admin?'}
-   ]
-  end
+  before_filter :protect, :except=>[ :login, :index, :show ]
+ #:logit, 
 
-  protected :submenu
-
-  def logit
-   user = User.find_by_username_and_password( params[:username], params[:password]) || GuestUser.new 
-   session[:logon] = user.id if user.logged?
-   @take_login
-   unless user.can_login? 
-    redirect_to login_user_path 
-   else
-    redirect_to session[:return_to] ? session[:return_to] : index_path
-    session[:return_to] = nil
-   end
-  end
+#  def logit
+#   user = User.find_by_username_and_password( params[:username], params[:password]) || GuestUser.new 
+#   session[:logon] = user.id if user.logged?
+#   @take_login
+#   unless user.can_login? 
+#    redirect_to login_user_path 
+#   else
+#    redirect_to session[:return_to] ? session[:return_to] : index_path
+#    session[:return_to] = nil
+#   end
+#  end
 
   def login
   end
@@ -33,12 +26,18 @@ class UserController < ApplicationController
   def index
    @take_login
    @title = "Список персон"
-   @users = Identity.find :all, :order=>'name'
+   @users = Identity.order_by_name.all
   end
 
-  def add
+  def new
    @title = 'Add person'
    @identity = Identity.new unless params[:commit]
+  end
+
+  def create
+  end
+
+  def update
   end
 
   def edit
@@ -48,7 +47,7 @@ class UserController < ApplicationController
    @title = "Edit person #{ @identity.name }"
   end
 
-  def delete
+  def destroy
   end
 
   def show
@@ -57,7 +56,15 @@ class UserController < ApplicationController
    @submenu << { :text=>'Edit', :action=>'edit', :id=>@identity.id }
    redirect_to :action=>'index' if @identity.nil?
   end
- private
+ protected
+
+  def submenu
+   @submenu = [
+    {:text=>'Index', :action=>'index', :check=>'take_login.is_admin?'},
+    {:text=>'Add', :url=>new_user_path, :check=>'take_login.is_admin?'}
+   ]
+  end
+
   def protect
    if session[:logon].nil? then
     session[:return_to] = request.request_uri

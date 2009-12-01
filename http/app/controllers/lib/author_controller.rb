@@ -14,11 +14,11 @@ class Lib::AuthorController < ApplicationController
  protected
   def get_authors
 #   @authors = Author.order_by_name
-   @authors = Author.paginate :order=>'last_name, first_name', :per_page=>100, :page=>params[:page]
+   @authors = Author.order_by_name.paginate :per_page=>100, :page=>params[:page]
   end
 
   def get_author
-   @author = Author.find params[:id], :include=>[:books]
+   @author = Author.with_books.find params[:id]
   end
 
 end

@@ -6,7 +6,7 @@ class Lib::SiteController < ApplicationController
   end
 
   def rss
-   @books = Book.find(:all, :limit=>50, :order=>'created_at DESC')
+   @books = Book.lasts.only_50.with_authors.all
    render :layout=>false
   end
 

@@ -1,4 +1,4 @@
-<% form_for :item, @item do | form | %>
+<% form_for @item, :url=>config_path(@item), :html=>{:method=>:put} do | form | %>
  <fieldset>
   <legend>Параметры конфигурации</legend>
   <%= @item.name %>
@@ -6,3 +6,4 @@
   <%= form.submit "Сохранить" %>
  </fieldset>
 <% end %>
+<%= button_to 'удалить', config_path(@item), :method=>:delete -%>

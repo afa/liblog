@@ -8,4 +8,8 @@ class Genre < ActiveRecord::Base
    end
    self.save
   end
+
+  def update_books_count
+   self.update_attribute :books_count, self.book_ids.length
+  end
 end

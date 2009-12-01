@@ -75,6 +75,7 @@ Rails::Initializer.run do |config|
   config.gem 'nokogiri'
   config.gem "mholling-paged_scopes", :lib=>"paged_scopes", :source=>"http://gems.github.com"
   config.gem "paperclip"
+  config.gem "rubyist-aasm", :lib=>'aasm'
 
 end
 

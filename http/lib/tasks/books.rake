@@ -14,14 +14,18 @@ namespace :books do
  task :import, :files, :needs => :environment do |task_name, args|
   require 'rubygems'
   require 'xmlsimple'
-  require 'timeout'
+#  require 'timeout'
   params = args[:files]
   #params.shift
   exit unless params
   exit if params.empty?
   counter = 5000
   [params].flatten.sort.each do |fname|
-   Dir[fname].sort.each do |name|
+   booklist = Book.all.map(&:lre_name).compact
+   puts "selecting"
+   dir = Dir[fname].select{|n| not booklist.include? l_name(n)}
+   puts "select #{dir.size}"
+   dir.sort.each do |name|
     next if Book.find_by_lre_name(l_name(name)) and SKIP_EXISTS
     break if counter < 0
     File.open(name, 'r'){ |f|
@@ -29,9 +33,10 @@ namespace :books do
      begin
       puts "xml in"
       begin 
-       data = Timeout::timeout(300){
-        XmlSimple.xml_in f.read 
-       }
+       data = XmlSimple.xml_in f.read 
+#       data = Timeout::timeout(300){
+#        XmlSimple.xml_in f.read 
+#       }
       rescue exception=>e
        puts e.message 
        puts "longly invalid"
@@ -124,52 +129,6 @@ namespace :books do
    puts "saved"
   end
 
-#/  blk = []
-#  puts 'scan'
-#  while cb.size > 0
-#   b = [cb[0]]
-#   a = []
-#   p_cnt = 0
-#   cnt = 1
-#   while p_cnt < cnt
-#    p_cnt = a.size + b.size
-#    a += (b.compact.map(&:authors).flatten.compact.uniq) - a
-#    b += (a.compact.map(&:books).flatten.compact.uniq) - b
-#    cb -= b
-#    cnt = a.size + b.size
-#   end
-#   b.compact!
-#   b.uniq!
-#   blk << b.map(&:id)
-#   cb -= b
-#   puts "#{b.size} #{a.compact.uniq.size} #{cb.compact.size}"
-#  end
-#  blk.sort!{|a, b| a.size <=> b.size}
-#  blk.reverse!
-#  puts "bundles #{blk.size} #{blk.flatten.size} #{blk[0].size}"
-#  puts "creating (#{blk.size})"
-#  while blk.size > 0
-#   puts blk.size
-#   books = blk.delete_at 0
-#   while books.size >1000
-#    bks = books[0..999]
-#    books -= bks
-#    bnd = Bundle.create
-#    bnd.update_attribute :name, bnd.id.to_s
-#    bks.map{|i| Book.find i }.each{|book| bnd.books << book }
-#    bnd.save
-#   end
-#   bnd = Bundle.create
-#   bnd.update_attribute :name, bnd.id.to_s
-#   while bnd.books.size < 1000
-#    bks = blk.detect{|b| (bnd.books.size + b.size) <= 1000 }
-#    break unless bks
-#    blk.delete bks
-#    bks.map{|i| Book.find i }.each{|b| bnd.books << b }
-#   end
-#   bnd.save
-#  end
-#/
  end
 
  desc "compress desc bundles"

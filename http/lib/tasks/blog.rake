@@ -14,4 +14,12 @@ namespace "blog" do
     urlexp = /^http:\/\/(users\.livejournal.com\/#{ljuser}|#{ljuser2}\.livejournal\.com)(.*)$/
 
   end
+
+ namespace :raw do
+  task :convert_text => :environment do
+   BlogPost.find_each :batch_size=>10 do |post|
+    post.update_attribute :text, class_eval(post.raw_type + 'Convertor').text_convert(post.raw_text)
+   end
+  end
+ end
 end

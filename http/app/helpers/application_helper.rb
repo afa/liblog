@@ -39,7 +39,7 @@ module ApplicationHelper
    { :text=>'Home', :url=>index_path },
    { :text=>'Users', :url=>user_index_path, :check=>'take_login.can_admin?' },
    { :text=>'Blog', :url=>blog_index_path },
- #  { :text=>'Config', :controller=>'Config', :action=>'index', :check=>"take_login.has_privilege? 'config.view'" },
+   { :text=>'Config', :controller=>'Config', :url=>config_index_path, :check=>"take_login.is_admin?" },
  #  { :text=>'ToDo', :controller=>'ToDo', :action=>'index', :check=>"take_login.has_privilege? 'todo.view'" },
  #  { :text=>'Stats', :controller=>'Stats', :action=>'index', :check=>"take_login" },
    { :text=>'Lib', :url=>lib_index_path }

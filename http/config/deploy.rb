@@ -4,7 +4,7 @@ set :application, "afalone"
 set :scm_user, 'afa'
 set :scm_password, 'massacre'
 set :repository,  "svn+ssh://afahome/data/repo/afalone-ru/http"
-set :scm_auth_cache, :true
+#set :scm_auth_cache, :true
 
 # If you aren't deploying to /u/apps/#{application} on the target
 # servers (which is the default), you can specify the actual location
@@ -21,7 +21,6 @@ set :scm_auth_cache, true
 #role :app, "afalone-ru.1gb.ru"
 #role :web, "afalone-ru.1gb.ru"
 #role :db,  "afalone-ru.1gb.ru", :primary => true
-set :use_sudo, false
 #set :user, "w_afalone-ru_3e7b26fa"
 #set :password, "892638bb"
 
@@ -33,6 +32,7 @@ set :copy_exclude, [".svn/*", ".git/*"]
 desc "set production params"
 task :production, :role=>:all do
  set :deploy_to, '~/'
+ set :use_sudo, false
  set :current_path, 'http'
  server "afalone-ru.1gb.ru", :app, :web, :db, :primary=>true
  set :use_sudo, false
@@ -40,6 +40,18 @@ task :production, :role=>:all do
  set :password, "892638bb"
  set :rails_env, 'production'
 
+end
+
+desc "set store params"
+task :afastore, :role=>:all do
+ set :deploy_to, '/mnt/data/www'
+ set :use_sudo, true
+# set :current_path, 'http'
+ server "afastore", :app, :web, :db, :primary=>true
+ set :use_sudo, true
+ set :user, "web"
+ set :password, "afa@store"
+ set :rails_env, 'production'
 end
 
 desc "set home params"
@@ -52,6 +64,11 @@ task :home, :role=>:all do
  set :password, "massacre"
  set :rails_env, 'prodtest'
 
+end
+
+namespace :thin do
+ task :start do
+ end
 end
 
 namespace :mongrel do
