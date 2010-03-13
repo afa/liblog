@@ -40,7 +40,7 @@ class ToDoController < ApplicationController
     else 
      flash[:error] = "Не удалось добавить хотелку"
     end
-    redirect_to todo_path :action => 'index'
+    redirect_to todo_path( :action => 'index')
    else
     if params[:id]
      @parent = ToDo.find(params[:id])
