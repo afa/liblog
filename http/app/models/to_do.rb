@@ -3,7 +3,7 @@ class ToDo < ActiveRecord::Base
  has_many :childs, :class_name=>'ToDo',  :foreign_key=>:parent_id, :dependent=>:delete_all
 
  named_scope :with_childs, :include=>[:childs]
- named_scope :by_id, lambda{ |id| :conditions=>{:id=>id} unless id.blank?}
+ named_scope :by_id, lambda{ |id| {:conditions=>{:id=>id}} unless id.blank?}
  named_scope :roots, :conditions=>{:parent_id => nil}
 
  def percent_done
