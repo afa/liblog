@@ -1,0 +1,45 @@
+/* === CODE === */
+code span.comment
+{
+       color: #BD48B3;
+}
+code span.string
+{
+       color: #99FF00;
+}
+code span.symbol
+{
+       color: #6BCFF7;
+}
+code span.keywords
+{
+       color: #FF8400;
+}
+code span.erb
+{
+       background: #333333 none repeat scroll 0%;
+}
+code span.symbol
+{
+       color: #07DFFC;
+}
+code.html span.tag
+{
+       color: #FFFFFF;
+}
+code.html span.attribute
+{
+       color: #FFD500;
+}
+code.html span.string
+{
+       color: #99FF00;
+}
+code.html span.comment
+{
+       color: #999999;
+}
+code.html span.doctype
+{
+       color: #D7FF80;
+}

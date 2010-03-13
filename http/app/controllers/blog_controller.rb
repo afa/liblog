@@ -1,11 +1,13 @@
 class BlogController < ApplicationController
   before_filter :submenu
   
+  before_filter :parse_named_id, :only=>[:show]
   before_filter :get_post, :only => [:edit, :update, :destroy, :show]
   before_filter :protect, :except=>[ :rss, :dated, :index, :show, :named ]
   before_filter :protect_post, :only=>[ :new, :create ]
-  before_filter :protect_edit, :only=>[ :edit, :update ]
+  before_filter :protect_admins_access, :only=>[ :edit, :update, :delete ]
   before_filter :protect_delete, :only=>[ :delete ]
+  before_filter :get_tags, :only=>[:index]
 
   def rss
     @posts = BlogPost.only_50.lasts.find :all
@@ -18,7 +20,7 @@ class BlogController < ApplicationController
   end
 
   def new 
-   @post = take_login.identity.posts.build 
+   @post = current_user.identity.posts.build 
   end
 
   def create
@@ -51,7 +53,7 @@ class BlogController < ApplicationController
   end
 
   def show
-   @submenu << { :text=>'Редактировать', :action=>'edit', :id=>params[:id], :check=>'take_login.logged? and take_login.is_admin?' }
+   @submenu << { :text=>'Редактировать', :action=>'edit', :id=>params[:id], :check=>'current_user.logged? and current_user.is_admin?' }
    @title = (@post.title.nil? or @post.title.blank?) ? 'AfaLog' : @post.title + ' / AfaLog'
   end
 
@@ -61,26 +63,35 @@ class BlogController < ApplicationController
 
   def named
    @post = BlogPost.find_by_name params[:id]
-   @submenu << { :text=>'Редактировать', :action=>'edit', :id=>@post.id, :check=>'take_login.logged? and take_login.is_admin?' } 
+   @submenu << { :text=>'Редактировать', :action=>'edit', :id=>@post.id, :check=>'current_user.logged? and current_user.is_admin?' } 
    redirect_to :action=>'index' if @post.nil?
    @title = (@post.title || '...') + ' / AfaLog'
   end
 
  protected
+  def parse_named_id
+   if params[:id].to_s.strip != params[:id].to_s.strip.to_i
+    @post = BlogPost.find_by_name params[:id].to_s.strip
+   end
+  end
+
+  def get_tags
+   @tags = [] #TODO добавить тэги (лучше гемом)
+  end
 
   def submenu
    @submenu = [
     {:text=>'Записи', :url=>blog_index_path},
-    {:text=>'Добавить', :url=>new_blog_path, :check=>'take_login.logged? and take_login.is_admin?'},
+    {:text=>'Добавить', :url=>new_blog_path, :check=>'current_user.logged? and current_user.is_admin?'},
    ]
   end
 
   def get_post
-   @post = BlogPost.find params[:id]
+   @post = BlogPost.find params[:id] unless @post
   end
 
   def protect
-   unless take_login.logged?
+   unless current_user.logged?
     session[:return_to] = request.request_uri
     flash[:error] =  "Must be logged in"
     redirect_to login_user_path
@@ -88,26 +99,19 @@ class BlogController < ApplicationController
    end
   end
   def protect_post
-   unless take_login.is_blogger?
+   unless current_user.is_blogger?
     flash[:error] = "Недостаточно привилегий для выполнения операции"
     redirect_to :action=>'index'
     return false
    end
   end
 
-  def protect_edit
-   unless take_login.is_admin?
+  def protect_admins_access
+   unless current_user.is_admin?
     flash[:error] = "Недостаточно привилегий для выполнения операции"
     redirect_to :action=>'index'
     return false
    end
   end
 
-  def protect_delete
-   unless take_login.is_admin?
-    flash[:error] = "Недостаточно привилегий для выполнения операции"
-    redirect_to :action=>'index'
-    return false
-   end
-  end
 end

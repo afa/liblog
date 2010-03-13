@@ -2,8 +2,7 @@ class ConfigController < ApplicationController
 # привилегии config.view, config.edit, config.delete
   before_filter :submenu
   before_filter :protect
-  before_filter :protect_edit, :only=>[:edit, :add]
-  before_filter :protect_delete, :only=>[:destroy]
+  before_filter :protect_admin_access, :only=>[:edit, :add, :destroy]
   before_filter :get_item, :only=>[:show, :edit, :update, :destroy]
 
   def index
@@ -11,7 +10,7 @@ class ConfigController < ApplicationController
   end
 
   def edit
-   #@submenu << {:text=>'Удалить', :action=>'delete', :id=>@item.id, :check=>'take_login.logged? and take_login.is_admin?'}
+   #@submenu << {:text=>'Удалить', :action=>'delete', :id=>@item.id, :check=>'current_user.logged? and current_user.is_admin?'}
   end
 
   def update
@@ -48,8 +47,8 @@ class ConfigController < ApplicationController
 
   def submenu
    @submenu = [
-    {:text=>'Список', :url=>config_index_path, :check=>'take_login.logged? and take_login.is_admin?'},
-    {:text=>'Добавить', :url=>new_config_path, :check=>'take_login.logged? and take_login.is_admin?'}
+    {:text=>'Список', :url=>config_index_path, :check=>'current_user.logged? and current_user.is_admin?'},
+    {:text=>'Добавить', :url=>new_config_path, :check=>'current_user.logged? and current_user.is_admin?'}
    ]
   end
 
@@ -58,17 +57,13 @@ class ConfigController < ApplicationController
   end
 
   def protect
-   unless take_login.logged? and take_login.is_admin?
+   unless current_user.logged?
     redirect_to index_path
    end
   end
 
-  def protect_edit
-    redirect_to :action=>'index' unless take_login.logged? and  take_login.is_admin?
-  end
-
-  def protect_delete
-    redirect_to :action=>'index' unless take_login.logged? and take_login.is_admin?
+  def protect_admin_access
+    redirect_to :action=>'index' unless current_user.is_admin?
   end
 
 end

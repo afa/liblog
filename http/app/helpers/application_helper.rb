@@ -1,7 +1,7 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
- attr_accessor :take_login
- def take_login
+ attr_accessor :current_user
+ def current_user
   if @logged.nil? then
    unless session[:logon].nil? then
     @logged = User.find( :first, session[:logon] ) or GuestUser.new
@@ -37,11 +37,11 @@ module ApplicationHelper
  def main_menu
   [
    { :text=>'Home', :url=>index_path },
-   { :text=>'Users', :url=>user_index_path, :check=>'take_login.can_admin?' },
+   { :text=>'Users', :url=>user_index_path, :check=>'current_user.can_admin?' },
    { :text=>'Blog', :url=>blog_index_path },
-   { :text=>'Config', :controller=>'Config', :url=>config_index_path, :check=>"take_login.is_admin?" },
- #  { :text=>'ToDo', :controller=>'ToDo', :action=>'index', :check=>"take_login.has_privilege? 'todo.view'" },
- #  { :text=>'Stats', :controller=>'Stats', :action=>'index', :check=>"take_login" },
+   { :text=>'Config', :controller=>'Config', :url=>config_index_path, :check=>"current_user.is_admin?" },
+ #  { :text=>'ToDo', :controller=>'ToDo', :action=>'index', :check=>"current_user.has_privilege? 'todo.view'" },
+ #  { :text=>'Stats', :controller=>'Stats', :action=>'index', :check=>"current_user" },
    { :text=>'Lib', :url=>lib_index_path }
   ]
  end

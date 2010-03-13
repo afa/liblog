@@ -2,6 +2,7 @@ class UserController < ApplicationController
 #  helper :user
   before_filter :submenu
   before_filter :protect, :except=>[ :login, :index, :show ]
+  before_filter :current_user, :only=>[:index, :show]
  #:logit, 
 
 #  def logit
@@ -24,7 +25,7 @@ class UserController < ApplicationController
    redirect_to index_path
   end
   def index
-   @take_login
+   current_user #@?
    @title = "Список персон"
    @users = Identity.order_by_name.all
   end
@@ -51,7 +52,7 @@ class UserController < ApplicationController
   end
 
   def show
-   @take_login
+   current_user #@?
    @identity = Identity.find params[:id]
    @submenu << { :text=>'Edit', :action=>'edit', :id=>@identity.id }
    redirect_to :action=>'index' if @identity.nil?
@@ -60,10 +61,12 @@ class UserController < ApplicationController
 
   def submenu
    @submenu = [
-    {:text=>'Index', :action=>'index', :check=>'take_login.is_admin?'},
-    {:text=>'Add', :url=>new_user_path, :check=>'take_login.is_admin?'}
+    {:text=>'Index', :action=>'index', :check=>'current_user.is_admin?'},
+    {:text=>'Add', :url=>new_user_path, :check=>'current_user.is_admin?'}
    ]
   end
+
+  def 
 
   def protect
    if session[:logon].nil? then
@@ -72,6 +75,6 @@ class UserController < ApplicationController
     redirect_to login_user_path
     return false
    end
-   @take_login
+   current_user #@?
   end 
 end

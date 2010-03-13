@@ -18,11 +18,14 @@ ActionController::Routing::Routes.draw do |map|
    m.index '', :subdomains=>['', 'www'], :controller=>'site', :action=>'index'
    m.sitemap '/sitemap.xml',:subdomains=>['', 'www'],  :controller=>'site', :action=>'sitemap', :format=>'xml'
    m.contacts '/contacts',:subdomains=>['', 'www'], :controller=>'site', :action=>'contacts'
+   m.resources :todo, :controller=>'Todo'
    #m.todo 'to_do/:action/:id', :controller=>'ToDo'
 #  map.resources 'todo'
+   m.resources :rails, :controller=>'Blog', :tag=>'rails'
    m.resources :blog, :collection=>{ :rss=>:get }, :member=>{ :named=>:get, :dated=>:get } do | post |
     post.resources :comments
    end
+   m.resources :tag
    m.resources :user, :collection=>{:login=>:get, :logit=>:post, :logout=>:get}
    m.resources :stats
    m.resources :session, :only=>[:new, :create, :delete]

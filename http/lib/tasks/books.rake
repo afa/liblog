@@ -2,7 +2,7 @@ def l_name(nm)
  n_list = ['.fb2', '.desc', '.invalid']
  name = nm
  0..n_list.size do
-  name = n_list.inject(name){|r, n| File.basename r, n}
+  n_list.each{|n| name = File.basename(r, n)}
  end
  name
 end

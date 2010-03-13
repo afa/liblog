@@ -1,5 +1,6 @@
 class ToDoController < ApplicationController
 # change to REST
+  before_filter :get_todo, :only => [:show, :edit, :update, :destroy]
   before_filter :submenu 
   before_filter :prot_unlogged, :only=>[:edit, :delete, :add]
   before_filter :prot_admin, :only=>[:edit, :delete, :add]
@@ -14,13 +15,12 @@ class ToDoController < ApplicationController
 
   def index
    @title = 'Хотелки'
-   @todos = ToDo.paginate :all, :include=>[:childs], :conditions=>'parent_id is null', :page=>params[:page]
+   @todos = ToDo.with_childs.roots.paginate :all, :page=>params[:page]
   end
 
   def show
-   @todo = ToDo.find params[:id], :include=>[:childs]
-   @submenu << { :text=>'Edit', :action=>'edit', :id=>@todo.id }
-   @submenu << { :text=>'AddChild', :action=>'add', :id=>@todo.id }
+   @submenu << { :text=>'Edit', :url=>todo_path(@todo) }
+   @submenu << { :text=>'AddChild', :new_todo_path(@todo) }
    if @todo.nil? then
     flash[:error] = "Хотелка с id=#{params[:id]} не найдена."
     redirect_to todo_path(:action=>'index')
@@ -52,7 +52,6 @@ class ToDoController < ApplicationController
   end
 
   def edit
-   @todo = ToDo.find params[:id]
 #   @submenu << { :text=>'Delete', :action=>'delete', :id=>@todo.id, :type=>'button', :method=>:post }
    if params[:commit]
 # TODO!!
@@ -71,20 +70,22 @@ class ToDoController < ApplicationController
 
   def delete
    todo = ToDo.find(params[:id]) if params[:id]
-   if request.post? then 
     if todo and todo.destroy then
      flash[:notice] = "Хотелка успешно удалена"
     else
      flash[:error] = "Ошибка удаления хотелки"
     end
     redirect_to todo_path( {:action=>'index'} )
-   else 
-    redirect_to todo_path( {:action=>'index'} )
-   end
+  end
+
+  protected
+
+  def get_todo
+   @todo = ToDo..with_childs.by_id(params[:id])
   end
 
   def prot_unlogged
-   @user ||= take_login
+   @user ||= current_user
    unless @user.logged?
     redirect_to todo_path(:action=>'index')
     false
@@ -92,11 +93,10 @@ class ToDoController < ApplicationController
   end
   
   def prot_admin
-   @user ||= take_login
+   @user ||= current_user
    unless @user.has_privilege?('todo.edit') then
     redirect_to todo_path(:action=>'index')
     return false
    end
   end
-  protected :prot_unlogged, :prot_admin
 end

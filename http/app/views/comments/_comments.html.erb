@@ -4,7 +4,7 @@
  <%= comments.text %>
  <div style="font-size:70%;">
   <%= link_to 'link', blog_comment_path(comments.post, comments) -%>
-  <%= link_to 'comment', new_blog_comment_path(comments.post, comments) -%>
+  <%= link_to 'comment', new_blog_comment_path(comments.post, :id=>comments.id) -%>
  </div>
  <%= render :partial=>'comments', :collection=>comments.childs %>
 </div>
