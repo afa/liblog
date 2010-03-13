@@ -20,7 +20,7 @@ class ToDoController < ApplicationController
 
   def show
    @submenu << { :text=>'Edit', :url=>todo_path(@todo) }
-   @submenu << { :text=>'AddChild', :new_todo_path(@todo) }
+   @submenu << { :text=>'AddChild', :url=>new_todo_path(@todo) }
    if @todo.nil? then
     flash[:error] = "Хотелка с id=#{params[:id]} не найдена."
     redirect_to todo_path(:action=>'index')
