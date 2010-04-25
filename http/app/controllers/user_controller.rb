@@ -3,6 +3,7 @@ class UserController < ApplicationController
   before_filter :submenu
   before_filter :protect, :except=>[ :login, :index, :show ]
   before_filter :current_user, :only=>[:index, :show]
+  before_filter :get_identity_submenu, :only=>[:edit, :show]
  #:logit, 
 
 #  def logit
@@ -25,7 +26,7 @@ class UserController < ApplicationController
    redirect_to index_path
   end
   def index
-   current_user #@?
+#   current_user #@?
    @title = "Список персон"
    @users = Identity.order_by_name.all
   end
@@ -42,8 +43,6 @@ class UserController < ApplicationController
   end
 
   def edit
-   @identity = Identity.find params[:id]
-   @submenu << { :text=>'Edit', :action=>'edit', :id=>@identity.id }
    @submenu << { :text=>'Delete', :action=>'delete', :id=>@identity.id }
    @title = "Edit person #{ @identity.name }"
   end
@@ -52,12 +51,14 @@ class UserController < ApplicationController
   end
 
   def show
-   current_user #@?
-   @identity = Identity.find params[:id]
-   @submenu << { :text=>'Edit', :action=>'edit', :id=>@identity.id }
+ #  current_user #@?
    redirect_to :action=>'index' if @identity.nil?
   end
  protected
+  def get_identity_submenu
+   @identity = Identity.find params[:id]
+   @submenu << { :text=>'Edit', :action=>'edit', :id=>@identity.id }
+  end
 
   def submenu
    @submenu = [
@@ -65,8 +66,6 @@ class UserController < ApplicationController
     {:text=>'Add', :url=>new_user_path, :check=>'current_user.is_admin?'}
    ]
   end
-
-  def 
 
   def protect
    if session[:logon].nil? then

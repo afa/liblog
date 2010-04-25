@@ -85,16 +85,16 @@ class ToDoController < ApplicationController
   end
 
   def prot_unlogged
-   @user ||= current_user
-   unless @user.logged?
+   #@user ||= current_user
+   unless current_user.logged?
     redirect_to todo_path(:action=>'index')
     false
    end
   end
   
   def prot_admin
-   @user ||= current_user
-   unless @user.has_privilege?('todo.edit') then
+   #@user ||= current_user
+   unless current_user.has_privilege?('todo.edit') then
     redirect_to todo_path(:action=>'index')
     return false
    end

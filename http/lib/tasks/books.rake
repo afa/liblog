@@ -191,3 +191,117 @@ namespace :books do
   m_g.destroy
  end
 end
+
+#exit 0
+#
+#oniguruma
+def ttt
+    if self.name == 'FB2'
+      begin
+        fname = self.full_path
+        dirname = nil
+        if `file #{fname}` =~ /Zip archive data/
+          dirname = File.join("/tmp", File.basename(self.full_path))
+          Dir.mkdir dirname
+          `unzip #{fname} -d #{dirname}`
+          fname = Dir[File.join(dirname, "*.fb2")].first
+        end
+        if `file #{fname}` =~ /XML/
+          pages = []
+          File.open(fname) do |f|
+            doc = Nokogiri::XML(f, nil, 'utf-8')
+            doc.remove_namespaces!
+            body = doc.xpath('//body').to_xml
+            sections = []
+            #sdoc = Nokogiri::XML(body, nil, 'utf-8')
+            #sdoc.remove_namespaces!
+            #p sdoc
+            doc.xpath('//body/section').each { |section| sections << section }
+            titles = []
+            #p sections.first
+            puts sections.size
+            sections.each_with_index do |section, idx|
+              ttl = section.xpath('//title')
+              titles[idx] = ttl.first.content unless ttl.blank?
+              pages << Testpage.generate_pages(self, section.content, titles[idx] || '')
+            end
+          end
+        end
+      ensure
+        FileUtils.rm_r dirname, :verbose=>true if dirname
+      end
+    end
+    nil
+end
+
+#rmagick
+
+  def self.generate_pages(format, section_text, title_text)
+    sections = section_text.split("\n")
+    img = Magick::Image.new(300, 400)
+    font_type = "georgia"
+    font_style = Magick::NormalStyle
+    gc = Magick::Draw.new do
+      self.encoding = "utf-8"
+      self.font_family = font_type
+      self.font_style = font_style
+    end
+    pages = []
+
+    #prepare strings
+    strings = []
+    pos = 0
+    sections.each do |s|
+      words = s.mb_chars.split(' ')
+      until words.empty?
+        cnt = 1
+        while gc.get_multiline_type_metrics(img, words[0, cnt].join(' ')).width < img.columns and
+cnt <= words.size
+          cnt += 1
+        end
+        cnt -= 1 unless gc.get_multiline_type_metrics(img, words[0, cnt].join(' ')).width <
+img.columns
+        strings << words[0, cnt].join(' ')
+        cnt.times {  words.shift }
+        sleep 0.1
+        pos += 1
+        puts pos
+      end
+    end
+    puts "strings #{strings.size}"
+    until strings.empty?
+      cnt = 1
+      while gc.get_multiline_type_metrics(img, strings[0, cnt].join("\n")).height < img.rows and
+cnt <= strings.size
+        cnt += 1
+      end
+      cnt -= 1 unless gc.get_multiline_type_metrics(img, strings[0, cnt].join("\n")).height <
+img.rows
+      pages << strings[0, cnt].join("\n")
+      sleep 1
+      cnt.times { strings.shift }
+      puts "#{strings.size}"
+    end
+    puts "pages #{pages.size}"
+    return if pages.size < 10
+    pages.each_index do |i|
+      sleep 1
+      page = format.book.testpages.create(:position => i + 1)
+      img = Magick::Image.new(300, 400)
+      gc = Magick::Draw.new do
+        self.encoding = "utf-8"
+        self.font_family = font_type
+        self.font_style = font_style
+      end
+      h = gc.get_type_metrics(img, pages[i].split("\n")[0]).height
+      gc.annotate(img, 300,400, 0, h, pages[i])
+      img.write("/tmp/#{format.book.code || 'tmp_code'}_#{format.id || 'unid_format'}_#{i + 1}.png")
+      page.image = File.open("/tmp/#{format.book.code}_#{format.id}_#{i + 1}.png")
+      page.save
+      puts "#{page.id}"
+    end
+
+
+
+    #pages splitted
+  end

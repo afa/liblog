@@ -79,6 +79,11 @@ Rails::Initializer.run do |config|
   config.gem "rubyist-aasm", :lib => "aasm", :source => "http://gems.github.com"
   config.gem "mechanize"
   config.gem "acts-as-taggable-on", :source => "http://gemcutter.org"
+  config.gem "blueprints"
+  config.gem "faker"
+  config.gem "delayed_job"
+  config.gem "daemon-spawn"
+  config.gem "daemons"
 
 end
 
