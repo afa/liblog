@@ -1,19 +1,31 @@
 require 'test_helper'
 
 class ToDoTest < ActiveSupport::TestCase
-  self.use_instantiated_fixtures = true
-  fixtures 'to_dos'
+ context "non done todo" do
+  setup do
+   @todo_active = ToDo.make :done => false
+  end
+  should "return 0 percent done" do
+   assert_in_delta @todo_active.percent_done, 0, 1
+  end
+  context "non done with done child" do
+   setup do
+    @parent = ToDo.make(:done=>true)
+    @todo_tree = ToDo.make :parent => @parent, :done => false
+   end
+   should "return 50 percent done" do
+    assert_in_delta @parent.percent_done, 50, 1
+   end
+  end
+  context "done todo" do
+   setup do
+    @todo_done = ToDo.make :done => true
+   end
+   should "return 100 percents done" do
+    assert_in_delta @todo_done.percent_done, 100, 1
+   end
+  end
+ end
 
-  def test_percent_done_tree_50
-   assert_in_delta @tree_root.percent_done, 50, 1, 'percent_done for 50% calc wrongly'
-  end
-  def test_percent_done_100
-   assert_in_delta @tree_item.percent_done, 100, 0.01, 'percent_done for 100% calc wrongly'
-  end
-  def test_percent_done_0
-   assert_in_delta @normal.percent_done, 0, 0.01, 'percent_done for 0% calc wrongly'
-  end
-  def test_percent_done_0_for_nil
-   assert_in_delta @nil_done.percent_done, 0, 0.01, 'percent_done for done == nil 0% calc wrongly'
-  end
+
 end

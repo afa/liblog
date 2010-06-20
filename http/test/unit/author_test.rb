@@ -1,8 +1,9 @@
 require 'test_helper'
 
 class AuthorTest < ActiveSupport::TestCase
-  # Replace this with your real tests.
-  test "the truth" do
-    assert true
+ context "author" do
+  setup do
+   @author = Author.make
   end
+ end
 end

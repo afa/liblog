@@ -64,7 +64,7 @@ namespace :books do
        book = Book.find_or_create_by_lre_name :name=>ti["book-title"].join('::'), :lre_name=>l_name(name)
        if ti.has_key? 'author'
        puts "authors: #{ ti["author"].collect{|a| "#{a["first-name"]} #{a["last-name"]}"}.join '; ' }"
-       authors = ti["author"].collect {|a| Author.find_or_create_by_first_name_and_last_name :first_name=>a["first-name"].to_s, :last_name=>a["last-name"].to_s }.compact
+       authors = ti["author"].collect {|a| Author.find_or_create_by_name :name=>a["first-name"].to_s}.compact
        else
         authors = []
        end

@@ -22,6 +22,7 @@ ActionController::Routing::Routes.draw do |map|
    #m.todo 'to_do/:action/:id', :controller=>'ToDo'
 #  map.resources 'todo'
    m.resources :rails, :controller=>'Blog', :tag=>'rails'
+   m.resources :articles
    m.resources :blog, :collection=>{ :rss=>:get }, :member=>{ :named=>:get, :dated=>:get } do | post |
     post.resources :comments
    end

@@ -34,11 +34,13 @@ module ApplicationHelper
    end
   end.compact.join('&nbsp;')
  end
+
  def main_menu
   [
    { :text=>'Home', :url=>index_path },
    { :text=>'Users', :url=>user_index_path, :check=>'current_user.can_admin?' },
    { :text=>'Blog', :url=>blog_index_path },
+   { :text=>'Stories', :url=>articles_path },
    { :text=>'Config', :controller=>'Config', :url=>config_index_path, :check=>"current_user.is_admin?" },
  #  { :text=>'ToDo', :controller=>'ToDo', :action=>'index', :check=>"current_user.has_privilege? 'todo.view'" },
  #  { :text=>'Stats', :controller=>'Stats', :action=>'index', :check=>"current_user" },

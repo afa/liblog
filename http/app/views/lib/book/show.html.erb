@@ -1,2 +1,2 @@
 <div><%= @book.name %></div>
-<div><%= @book.authors.collect{|a| [a.first_name, a.last_name].join ' ' }.join ', ' %></div>
+<div><%= @book.authors.map(&:name ).join ', ' %></div>

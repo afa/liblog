@@ -5,6 +5,8 @@ class Book < ActiveRecord::Base
  belongs_to :lang, :counter_cache=>true
  belongs_to :bundle, :counter_cache=>true
 
+ validates_uniqueness_of :fbguid, :nil=>true
+ validates_presence_of :name, :blank=>false
  after_save :update_count
 
  named_scope :unbundled, lambda { {:conditions=>"state not in ('bundled', 'published')"} }
@@ -13,63 +15,60 @@ class Book < ActiveRecord::Base
  named_scope :with_authors, {:include=>[:authors]}
  named_scope :active, {:conditions => {:state => 'published'}}
 
- include AASM
+ state_machine :state, :initial=>:created do
 
- aasm_column :state
+  event :prepare do
+   transition :created => :prepared, :if => :check_book_fields
+  end
+  after_transition :created=>:prepared, :do => :process_media
 
- aasm_initial_state :created
+  event :to_bundled do
+   transition :prepared => :bundled, :if => :check_bundled
+  end
+  before_transition :prepared => :bundled, :do => :prepare_bundle
 
- aasm_state :created # создан. остальное без гарантий
- aasm_state :prepared, :after_enter => :process_media#, :exit=>
-# авторы, язык, аннотация, обложка, превью etc подготовлены.
- aasm_state :bundled #.fb2.desc и .fb2 упакованы
- aasm_state :published # активна
- aasm_state :blocked, :after_enter => :process_block
-
- aasm_event :prepare do
-  transitions :to => :prepared, :from => [:created], :guard => :check_book_fields
- end
- aasm_event :to_bundled do
-  transitions :to => :bundled, :from => [:prepared], :guard => :check_bundled
- end
- aasm_event :publish do
-  transitions :to => :published, :from => [:bundled], :guard => :check_ready
- end
- aasm_event :block do
-  transitions :to => :blocked, :from =>[:created, :prepared, :bundled, :published]
- end
- aasm_event :restart do
-  transitions :to => :created, :from => [:blocked]
- end
- ## callbacks, guards (protected)
-  def check_ready
-   false
+  event :publish do
+   transition :bundled => :published, :if => :allow_publish?
   end
 
-  def check_bundled
+  state :created
+  state :prepared
+  state :bundled
+  state :published
+  state :blocked
+ end
+  def allow_publish?
    false
   end
 
   def check_book_fields
+   return false if self.annotation.blank? and !self.annotation.nil?
+   true
+  end
+  def check_bundled
    false
   end
-
+ #eog
   def process_media
   end
-
-  def process_block
-  end
- #end aasm
+ #eow
+ #eo state_machine
+# aasm_state :created # создан. остальное без гарантий
+# aasm_state :prepared, :after_enter => :process_media#, :exit=>
+## авторы, язык, аннотация, обложка, превью etc подготовлены.
+# aasm_state :bundled #.fb2.desc и .fb2 упакованы
+# aasm_state :published # активна
+# aasm_state :blocked, :after_enter => :process_block
 
  def Book.per_page
   30
  end
 
-  def parse_fb2(fname)
-   
+  def authors=(str)
   end
 
-  def authors=(str)
+  def self.register_working_fb2(file_name)
+   false
   end
 
   def parse_fb2(fname)
@@ -97,5 +96,5 @@ class Book < ActiveRecord::Base
    self.genres.each{|a| a.update_books_count}
    #self.lang.update_books_count
   end
- 
+
 end

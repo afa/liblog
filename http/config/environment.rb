@@ -76,14 +76,17 @@ Rails::Initializer.run do |config|
   config.gem "mholling-paged_scopes", :lib=>"paged_scopes", :source=>"http://gems.github.com"
   config.gem "paperclip"
   #config.gem "rubyist-aasm", :lib=>'aasm'
-  config.gem "rubyist-aasm", :lib => "aasm", :source => "http://gems.github.com"
+  #config.gem "rubyist-aasm", :lib => "aasm", :source => "http://gems.github.com"
+  config.gem "state_machine"
   config.gem "mechanize"
   config.gem "acts-as-taggable-on", :source => "http://gemcutter.org"
   config.gem "blueprints"
+  #config.gem "machinist"
   config.gem "faker"
   config.gem "delayed_job"
-  config.gem "daemon-spawn"
+  #config.gem "daemon-spawn"
   config.gem "daemons"
+  config.gem "newrelic_rpm"
 
 end
 

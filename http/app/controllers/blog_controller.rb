@@ -10,7 +10,7 @@ class BlogController < ApplicationController
   before_filter :get_tags, :only=>[:index]
 
   def rss
-    @posts = BlogPost.only_50.lasts.find :all
+    @posts = BlogPost.only_50.lasts.all
     render :layout=>false
   end
 
@@ -53,7 +53,7 @@ class BlogController < ApplicationController
   end
 
   def show
-   @submenu << { :text=>'Редактировать', :action=>'edit', :id=>params[:id], :check=>'current_user.logged? and current_user.is_admin?' }
+   @submenu << { :text=>'Редактировать', :url=>edit_blog_path(@post), :check=>'current_user.logged? and current_user.is_admin?' }
    @title = (@post.title.nil? or @post.title.blank?) ? 'AfaLog' : @post.title + ' / AfaLog'
   end
 

@@ -38,38 +38,39 @@ class LivejournalConvertor < Convertor
 end
 
 class SimpleConvertor < Convertor
+ def self.text_to_hash(src)
+  {:short => src, :cut_phrase=>nil, :text=>nil}
+ end
+
+ def self.hash_to_text(hash)
+  hash[:short]
+ end
 end
-#class String
-# def smart_trim(byte_len)
-#  self.length > byte_len ? self.chars[0,self[0..byte_len].chars.rindex(/\s/)-1] + '...' : self
-# end
-#end
 
 class BlogPost < ActiveRecord::Base
 
- include AASM
-
- aasm_column :state
- aasm_initial_state :created
-
- aasm_state :created
- aasm_state :imported
- aasm_state :prepared
- aasm_state :published
- aasm_state :removed
-
- aasm_event :import do
-  transitions :to => :imported, :from => :created
- end
-
- aasm_event :prepare do
-  transitions :to => :prepared, :from => [ :created, :imported ]
- end
-
- # END aasm
+# include AASM
+#
+# aasm_column :state
+# aasm_initial_state :created
+#
+# aasm_state :created
+# aasm_state :imported
+# aasm_state :prepared
+# aasm_state :published
+# aasm_state :removed
+#
+# aasm_event :import do
+#  transitions :to => :imported, :from => :created
+# end
+#
+# aasm_event :prepare do
+#  transitions :to => :prepared, :from => [ :created, :imported ]
+# end
+#
+# # END aasm
  acts_as_taggable_on :tags
  has_many :photos, :source=>:things, :as=>:thingable
-# before_save :trim_fields
  has_one :imported_entry
  cattr_reader :per_page
  @@per_page = 20
@@ -89,8 +90,4 @@ class BlogPost < ActiveRecord::Base
  def permalink
   self.name
  end 
- def trim_fields
-  #self.title = self.title.smart_trim(250) if self.title and self.title.length >255
-  #self.name = self.name.smart_trim(250) if self.name and self.name.length >255
- end
 end
