@@ -1,7 +1,0 @@
-production:
-  adapter: postgresql
-  database: xgb_afalone
-  host: postgres40.1gb.ru
-  port: 5432
-  username: xgb_afalone
-  password: 3601bdbe

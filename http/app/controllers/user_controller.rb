@@ -1,22 +1,9 @@
 class UserController < ApplicationController
 #  helper :user
-  before_filter :submenu
-  before_filter :protect, :except=>[ :login, :index, :show ]
   before_filter :current_user, :only=>[:index, :show]
+  before_filter :protect, :except=>[:login]
+  before_filter :submenu, :except=>[:login]
   before_filter :get_identity_submenu, :only=>[:edit, :show]
- #:logit, 
-
-#  def logit
-#   user = User.find_by_username_and_password( params[:username], params[:password]) || GuestUser.new 
-#   session[:logon] = user.id if user.logged?
-#   @take_login
-#   unless user.can_login? 
-#    redirect_to login_user_path 
-#   else
-#    redirect_to session[:return_to] ? session[:return_to] : index_path
-#    session[:return_to] = nil
-#   end
-#  end
 
   def login
   end
@@ -25,8 +12,8 @@ class UserController < ApplicationController
    session[:logon] = nil
    redirect_to index_path
   end
+
   def index
-#   current_user #@?
    @title = "Список персон"
    @users = Identity.order_by_name.all
   end
@@ -43,7 +30,7 @@ class UserController < ApplicationController
   end
 
   def edit
-   @submenu << { :text=>'Delete', :action=>'delete', :id=>@identity.id }
+   @submenu << { :text=>'Delete', :url=>user_path(@identity.id, :method=>:delete) }
    @title = "Edit person #{ @identity.name }"
   end
 
@@ -52,17 +39,17 @@ class UserController < ApplicationController
 
   def show
  #  current_user #@?
-   redirect_to :action=>'index' if @identity.nil?
+   redirect_to user_index_path if @identity.nil?
   end
  protected
   def get_identity_submenu
    @identity = Identity.find params[:id]
-   @submenu << { :text=>'Edit', :action=>'edit', :id=>@identity.id }
+   @submenu << { :text=>'Edit', :url=>edit_user_path(@identity.id) }
   end
 
   def submenu
    @submenu = [
-    {:text=>'Index', :action=>'index', :check=>'current_user.is_admin?'},
+    {:text=>'Index', :url=>user_index_path, :check=>'current_user.is_admin?'},
     {:text=>'Add', :url=>new_user_path, :check=>'current_user.is_admin?'}
    ]
   end

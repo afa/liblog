@@ -26,6 +26,7 @@ class ApplicationController < ActionController::Base
  # need change when subdomain_routes will handle non-80 port
  protected
  def default_url_options(options=nil)
-  { :port => (self.request.andand.port ? self.request.andand.port : 80) }
+  logger.info "#{options.inspect}"
+  { :port => (self.request.andand.port ? self.request.andand.port : 80) }.merge(options || {})
  end
 end

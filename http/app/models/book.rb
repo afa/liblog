@@ -1,4 +1,6 @@
 class Book < ActiveRecord::Base
+
+# has_one :cover, :source=>:things, :as=>:thingable
  has_many :covers, :source=>:things, :as=>:thingable
  has_and_belongs_to_many :authors
  has_and_belongs_to_many :genres
@@ -50,6 +52,8 @@ class Book < ActiveRecord::Base
   end
  #eog
   def process_media
+   cover = self.generate_cover
+   pages = self.generate_testpages
   end
  #eow
  #eo state_machine
@@ -68,12 +72,35 @@ class Book < ActiveRecord::Base
   end
 
   def self.register_working_fb2(file_name)
-   false
+   return false unless File.exist? file_name
+   doc = self.load_xml(file_name)
+   return false unless doc
+   fb2_guid = self.extract_xml_part(doc, '//document-info//id').first.andand.content
+   return false if fb2_guid.blank?
+   return false if Book.find_by_fbguid(fb2_guid)
+   title = self.extract_xml_part(doc, '//description//title-info//book-title').first.andand.content
+   title = Iconv.iconv('utf-8', doc.encoding, title).join('')
+   book = Book.create(:fbguid=>fb2_guid, :name=>title, :file_name=>File.basename(file_name))
+   book.valid?
   end
 
-  def parse_fb2(fname)
-    doc = Nokogiri::XML(f, nil, 'utf-8')
-    doc.remove_namespaces!
+  def self.load_xml(fname)
+   doc = nil
+   File.open(fname, 'r') do |file|
+    doc = Nokogiri::XML(file, nil, 'utf-8')
+   end
+   return nil unless doc
+   doc.remove_namespaces!
+   doc
+  end
+
+  def self.extract_xml_part(doc, part)
+   doc.xpath(part)
+  end
+
+  def self.parse_fb2(fname)
+    doc = self.load_xml(fname)
+    return nil unless doc
     body = doc.xpath('//body').to_xml
     sections = []
     #sdoc = Nokogiri::XML(body, nil, 'utf-8')
@@ -90,6 +117,36 @@ class Book < ActiveRecord::Base
     end
   end
 
+  def generate_cover
+   doc = Book.load_xml(self.working_file)
+   page = Book.extract_xml_part(doc, '//description//title-info//coverpage/image').first
+   raise ErrorNoCover if page.nil?
+   raise ErrorNoCover if page.attributes['href'].nil?
+   cname = page.attributes['href'].value.scan(/#(.+)/)[0][0]
+   bins = Book.extract_xml_part(doc, '//binary')
+   bin = nil
+   bins.each do |e|
+    next unless e.attributes['content-type'].andand.value =~ /^image\//
+    next unless e.attributes['id'].andand.value == cname
+    bin = e.content
+   end
+   raise ErrorNoCover unless bin
+   c = Base64.decode64(bin)
+   cover = nil
+   Tempfile.open('/tmp_cover') do |f|
+    f << c
+    self.covers << cover = Cover.new(:name => "book_cover_#{cname}", :file => f)
+   end
+   cover
+  end
+
+  def generate_testpages
+  end
+
+  def working_file
+   File.join(WORKING_DIR, self.file_name.to_s)
+  end
+
  private
   def update_count
    self.authors.each{|a| a.update_books_count}
@@ -98,3 +155,7 @@ class Book < ActiveRecord::Base
   end
 
 end
+
+ class ErrorNoCover < Exception; end
+ class ErrorNoText < Exception; end
+ class ErrorNoWorkFile < Exception; end

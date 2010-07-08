@@ -15,9 +15,12 @@ ActionController::Routing::Routes.draw do |map|
   end
   map.subdomain nil, :www, :name=>nil do |m|
    m.resources :site, :only=>[:index, :sitemap, :contacts], :collection=>{:sitemap=>:get, :contacts=>:get}
-   m.index '', :subdomains=>['', 'www'], :controller=>'site', :action=>'index'
-   m.sitemap '/sitemap.xml',:subdomains=>['', 'www'],  :controller=>'site', :action=>'sitemap', :format=>'xml'
-   m.contacts '/contacts',:subdomains=>['', 'www'], :controller=>'site', :action=>'contacts'
+   m.index '', :controller=>'site', :action=>'index'
+#   m.index '', :subdomains=>['', 'www'], :controller=>'site', :action=>'index'
+   m.sitemap '/sitemap.xml',  :controller=>'site', :action=>'sitemap', :format=>'xml'
+#   m.sitemap '/sitemap.xml',:subdomains=>['', 'www'],  :controller=>'site', :action=>'sitemap', :format=>'xml'
+   m.contacts '/contacts', :controller=>'site', :action=>'contacts'
+#   m.contacts '/contacts',:subdomains=>['', 'www'], :controller=>'site', :action=>'contacts'
    m.resources :todo, :controller=>'Todo'
    #m.todo 'to_do/:action/:id', :controller=>'ToDo'
 #  map.resources 'todo'
@@ -31,12 +34,6 @@ ActionController::Routing::Routes.draw do |map|
    m.resources :stats
    m.resources :session, :only=>[:new, :create, :delete]
    m.resources :config
-#  map.connect 'blog/:action/:id', :controller=>'Blog', :requirements=>{:id=>/\d+/}
 #   m.ajax 'ajax/:action/:id', :controller=>'Ajax'
-#  map.blog_named 'blog/show/:name', :controller=>'Blog', :action=>'named'
-#  map.connect 'blog/:year/:month/:day', :controller=>'Blog', :action=>'dated'
-#  map.connect 'blog/:year/:month', :controller=>'Blog', :action=>'dated'
   end
-#  map.connect ':controller/:action/:id'
-#  map.connect ':controller/:action/:id.:format'
 end

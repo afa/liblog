@@ -5,13 +5,18 @@
 # your test database is "scratch space" for the test suite and is wiped
 # and recreated between test runs.  Don't rely on the data there!
 config.cache_classes = true
+config.action_controller.session ||= {}
+config.action_controller.session[:session_domain] = '.e3pc'
 SubdomainRoutes::Config.domain_length = 1
 
 # Log error messages when you accidentally call methods on nil.
 config.whiny_nils = true
 
+config.gem "test-unit", :lib => 'test/unit'
+
 # Show full error reports and disable caching
-config.action_controller.consider_all_requests_local = true
+config.action_controller.consider_all_requests_local = false
+#config.action_controller.consider_all_requests_local = true
 config.action_controller.perform_caching             = false
 
 # Disable request forgery protection in test environment
@@ -21,3 +26,9 @@ config.action_controller.allow_forgery_protection    = false
 # The :test delivery method accumulates sent emails in the
 # ActionMailer::Base.deliveries array.
 config.action_mailer.delivery_method = :test
+
+BASE_DATA_DIR = 'test/testdata'
+BATCH_INPUT_DIR = File.join(BASE_DATA_DIR, 'batch')
+INPUT_DIR = File.join(BASE_DATA_DIR, 'input')
+WORKING_DIR = File.join(BASE_DATA_DIR, 'work')
+BUNDLE_DIR = File.join(BASE_DATA_DIR, 'bundle')

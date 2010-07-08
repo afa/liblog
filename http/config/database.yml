@@ -22,6 +22,11 @@ test:
   password: 123456
   timeout: 5000
 
+test_sqlite:
+  adapter: sqlite3
+  database: db/afalone_test.sqlite3
+  timeout: 5000
+
 production:
   adapter: sqlite3
   database: db/production.sqlite3

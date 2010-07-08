@@ -16,9 +16,65 @@ class BookTest < ActiveSupport::TestCase
     assert Book.respond_to? :register_working_fb2
    end
    context "on register_working_fb2" do
-    should "check existence of in file"
-    should "extract fb_guid from file"
-    should "check nonexistence of working file by guid"
+    setup do
+     @name=File.join(INPUT_DIR, 'in.fb2')
+    end
+    should "fail on unexistence of in file" do
+     File.expects(:exist?).with(@name).at_least_once.returns(false)
+     assert !Book.register_working_fb2(@name)
+    end
+    context "with zero length file" do
+     setup do
+      `touch #{@name}`
+     end
+     should "load_xml and return nil" do
+      File.expects(:exist?).with(@name).at_least_once.returns(true)
+      Book.expects(:load_xml).with(@name).once.returns(nil)
+      assert !Book.register_working_fb2(@name)
+     end
+     teardown do
+      `rm #{@name}`
+     end
+    end
+    context "with real fb2 like file" do
+     setup do
+      @name = File.join(INPUT_DIR, 'in.fb2')
+      FileUtils.cp 'test/testdata/24.fb2', @name
+      @count = Book.count
+     end
+     should "fail on extracting blank fbguid" do
+      Book.expects(:extract_xml_part).at_least_once.returns([]) #REFACTOR to use .with(Nokogiri::XML::Document, '//document-info//id')
+      assert !Book.register_working_fb2(@name)
+     end
+     should "fail on existence of working file with guid" do
+      Book.expects(:find_by_fbguid).with('Mon Jun 10 19:57:41 2013').once.returns(Book.make(:fbguid=>'Mon Jun 10 19:57:41 2013'))
+      assert !Book.register_working_fb2(@name)
+     end
+     should "check nonexistence of working file with guid" do
+      Book.expects(:find_by_fbguid).with('Mon Jun 10 19:57:41 2013').once.returns(nil)
+      assert Book.register_working_fb2(@name)
+     end
+     should "extract name from file" do
+      Book.expects(:create).once.with(:name=>'Белка', :fbguid=>'Mon Jun 10 19:57:41 2013', :file_name=>File.basename(@name)).returns(Book.new)
+      Book.register_working_fb2(@name)
+     end
+     should "create valid book" do
+      assert Book.register_working_fb2(@name)
+      assert_in_delta Book.count, @count, 1
+     end
+     should "convert name to utf-8 from src encoding"
+     should "move file from in to work catalog"
+     should "setup file_name"
+     teardown do
+      FileUtils.rm @name
+     end
+    end
+#    should "extract lre_title from file"
+#    should "extract lre_annotation from file"
+#    should "extract lang from file"
+#    should "setup extracted lang"
+#    should "extract authors from file"
+#    should "ask Author to create authors from extractedlist of hashes"
    end
   end
   context "state machine" do
@@ -28,46 +84,40 @@ class BookTest < ActiveSupport::TestCase
     end
     should "be in created state" do
      assert_equal @inited.state, 'created'
-     assert_equal @inited.state_name, :created
     end
    end
+
    context "in state created" do
     setup do
      #@author = Author.make
      #@lang = Lang.make
-     @created = Book.make :state => 'created'
-     @unannotated = Book.make :state => 'created', :annotation => nil
-     @badannotated = Book.make :state => 'created', :annotation => '   '
+     `touch test/testdata/work/in.fb2`
+     @created = Book.make :state => 'created', :file_name=>'in.fb2'
     end
     subject {@created}
     should "respond to prepare" do
      assert @created.respond_to? :prepare
     end
-    should "not allow blank annotation" do
-     assert !@badannotated.check_book_fields
-    end
-    should "allow nil annotation" do
-     assert @unannotated.check_book_fields
-    end
     context "on prepare" do
-     should "test check_book_fields" do
+     should "test check_book_fields and exec process_media" do
       @created.expects(:check_book_fields).once.returns(true)
+      @created.expects(:process_media).once
       assert @created.prepare
      end
      should "fail on check_book_fields returning false" do
       @created.expects(:check_book_fields).once.returns(false)
       assert !@created.prepare
      end
-     should "check for annotation" do
-      assert @created.prepare
-      assert !@badannotated.prepare
-     end
      should "run process_media" do
       @created.expects(:process_media)
       @created.prepare
      end
     end
+    teardown do
+     `rm test/testdata/work/in.fb2`
+    end
    end
+
    context "in prepared state" do
     setup do
      @prepared = Book.make :state=>'prepared'
@@ -84,6 +134,7 @@ class BookTest < ActiveSupport::TestCase
      end
     end
    end
+
    context "in bundled state" do
     setup do 
      @bundled = Book.make(:state=>'bundled')
@@ -103,6 +154,81 @@ class BookTest < ActiveSupport::TestCase
     end
    end
   end
+
+  context "on check_book_fields" do
+   setup do
+    @annotated = Book.make :state => 'created', :file_name=>'in.fb2'
+    @unannotated = Book.make :state => 'created', :annotation => nil
+    @badannotated = Book.make :state => 'created', :annotation => '   '
+   end
+   should "allow valid annotation" do
+    assert @annotated.check_book_fields
+   end
+   should "not allow blank annotation" do
+    assert !@badannotated.check_book_fields
+   end
+   should "allow nil annotation" do
+    assert @unannotated.check_book_fields
+   end
+  end
+
+  context "on process_media" do
+   setup do
+    @name = File.join(WORKING_DIR, "#{rand(999)+1}.fb2")
+    FileUtils.cp 'test/testdata/24.fb2', @name
+    @book = Book.make :file_name => @name
+   end
+   should "call generate_cover" do
+    @book.expects(:generate_cover).once
+    @book.process_media
+   end
+   should "call generate_cover and then generate_testpages" do
+    @book.expects(:generate_cover).once
+    @book.expects(:generate_testpages).once
+    @book.process_media
+   end
+   teardown do
+    FileUtils.rm @name
+   end
+  end
+
+  context "on generate_cover" do
+   setup do
+    @noncover = File.join(WORKING_DIR, "#{rand(999)+1}.fb2")
+    @cover = File.join(WORKING_DIR, "#{(999)+1000}.fb2")
+    FileUtils.cp 'test/testdata/193937.fb2', @cover
+    FileUtils.cp 'test/testdata/24.fb2', @noncover
+    @covered = Book.make :file_name => File.basename(@cover)
+    @noncovered = Book.make :file_name => File.basename(@noncover)
+   end
+   should "raise ErrorNoCover when cover not found in file" do
+    assert_raises ErrorNoCover do
+     @noncovered.generate_cover
+    end
+   end
+   should "not raise any when cover exists" do
+    assert_nothing_raised do
+     @covered.generate_cover
+    end
+   end
+   should "extract cover and return it" do
+    assert_kind_of Cover, @covered.generate_cover
+   end
+   teardown do
+    FileUtils.rm @cover
+    FileUtils.rm @noncover
+   end
+  end
+
+  context "on generate_testpages" do
+  end
+
+  context "on working_file" do
+   should "return path to fb2 in work dir" do
+    assert @book.working_file =~ /^#{WORKING_DIR.gsub('/', '\/')}/
+   end
+  end
+
   should have_many :covers
   should have_and_belong_to_many :authors
   should have_and_belong_to_many :genres
@@ -112,6 +238,3 @@ class BookTest < ActiveSupport::TestCase
   should validate_presence_of :name
  end
 end
-
-
-

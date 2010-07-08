@@ -4,6 +4,7 @@ Sham.title {Faker::Lorem.sentence}
 Sham.name {Faker::Lorem.sentence}
 Sham.text {Faker::Lorem.paragraph}
 Sham.annotation {Faker::Lorem.paragraph}
+Sham.username {Faker::Lorem.name}
 BlogPost.blueprint do
  title
  text
@@ -45,4 +46,7 @@ Book.blueprint do
 end
 Lang.blueprint do
  name
+end
+User.blueprint do
+ username
 end
