@@ -80,13 +80,14 @@ Rails::Initializer.run do |config|
   config.gem "state_machine"
   config.gem "mechanize"
   config.gem "acts-as-taggable-on", :source => "http://gemcutter.org"
-  config.gem "blueprints"
+  #config.gem "blueprints"
   #config.gem "machinist"
-  config.gem "faker"
+  #config.gem "faker"
   config.gem "delayed_job"
   #config.gem "daemon-spawn"
   config.gem "daemons"
   config.gem "newrelic_rpm"
+  config.gem "mholling-subdomain_routes", :lib=>"subdomain_routes"
 
 end
 

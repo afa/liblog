@@ -13,7 +13,8 @@ ActionController::Routing::Routes.draw do |map|
    lib.resources :genre
    lib.resources :lang
   end
-  map.subdomain nil, :www, :name=>nil do |m|
+  map.subdomain nil, :name=>nil do |m|
+  #map.subdomain nil, :www, :name=>nil do |m|
    m.resources :site, :only=>[:index, :sitemap, :contacts], :collection=>{:sitemap=>:get, :contacts=>:get}
    m.index '', :controller=>'site', :action=>'index'
 #   m.index '', :subdomains=>['', 'www'], :controller=>'site', :action=>'index'

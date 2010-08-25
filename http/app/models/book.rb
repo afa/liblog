@@ -98,25 +98,6 @@ class Book < ActiveRecord::Base
    doc.xpath(part)
   end
 
-  def self.parse_fb2(fname)
-    doc = self.load_xml(fname)
-    return nil unless doc
-    body = doc.xpath('//body').to_xml
-    sections = []
-    #sdoc = Nokogiri::XML(body, nil, 'utf-8')
-    #sdoc.remove_namespaces!
-    #p sdoc
-    doc.xpath('//body/section').each { |section| sections << section }
-    titles = []
-    #p sections.first
-    puts sections.size
-    sections.each_with_index do |section, idx|
-     ttl = section.xpath('//title')
-     titles[idx] = ttl.first.content unless ttl.blank?
-     pages << Testpage.generate_pages(self, section.content, titles[idx] || '')
-    end
-  end
-
   def generate_cover
    doc = Book.load_xml(self.working_file)
    page = Book.extract_xml_part(doc, '//description//title-info//coverpage/image').first
@@ -141,6 +122,23 @@ class Book < ActiveRecord::Base
   end
 
   def generate_testpages
+    #to fix
+    doc = self.load_xml(fname)
+    return nil unless doc
+    body = doc.xpath('//body').to_xml
+    sections = []
+    #sdoc = Nokogiri::XML(body, nil, 'utf-8')
+    #sdoc.remove_namespaces!
+    #p sdoc
+    doc.xpath('//body/section').each { |section| sections << section }
+    titles = []
+    #p sections.first
+    puts sections.size
+    sections.each_with_index do |section, idx|
+     ttl = section.xpath('//title')
+     titles[idx] = ttl.first.content unless ttl.blank?
+     pages << Testpage.generate_pages(self, section.content, titles[idx] || '')
+    end
   end
 
   def working_file

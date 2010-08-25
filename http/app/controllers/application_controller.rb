@@ -27,6 +27,6 @@ class ApplicationController < ActionController::Base
  protected
  def default_url_options(options=nil)
   logger.info "#{options.inspect}"
-  { :port => (self.request.andand.port ? self.request.andand.port : 80) }.merge(options || {})
+  { :port => (self.request.andand.port ? self.request.andand.port : 80), :host=>(self.request.andand.host ? self.request.andand.host : 'e3pc') }.merge(options || {})
  end
 end

@@ -49,8 +49,8 @@ class UserController < ApplicationController
 
   def submenu
    @submenu = [
-    {:text=>'Index', :url=>user_index_path, :check=>'current_user.is_admin?'},
-    {:text=>'Add', :url=>new_user_path, :check=>'current_user.is_admin?'}
+    {:text=>'Index', :url=>user_index, :check=>'current_user.is_admin?'},
+    {:text=>'Add', :url=>new_user, :check=>'current_user.is_admin?'}
    ]
   end
 
@@ -61,6 +61,6 @@ class UserController < ApplicationController
     redirect_to login_user_path
     return false
    end
-   current_user #@?
+   #current_user #@?
   end 
 end
