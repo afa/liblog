@@ -2,6 +2,7 @@ class Book < ActiveRecord::Base
 
 # has_one :cover, :source=>:things, :as=>:thingable
  has_many :covers, :source=>:things, :as=>:thingable
+ has_many :preview_pages
  has_and_belongs_to_many :authors
  has_and_belongs_to_many :genres
  belongs_to :lang, :counter_cache=>true
@@ -53,7 +54,7 @@ class Book < ActiveRecord::Base
  #eog
   def process_media
    cover = self.generate_cover
-   pages = self.generate_testpages
+   preview_pages = self.generate_testpages
   end
  #eow
  #eo state_machine
@@ -73,38 +74,26 @@ class Book < ActiveRecord::Base
 
   def self.register_working_fb2(file_name)
    return false unless File.exist? file_name
-   doc = self.load_xml(file_name)
+   doc = Fb2.load_xml(file_name)
    return false unless doc
-   fb2_guid = self.extract_xml_part(doc, '//document-info//id').first.andand.content
+   fb2_guid = Fb2.extract_xml_part(doc, '//document-info//id').first.andand.content
+    #p Fb2.extract_xml_part(doc, '//document-info//id')
+    #p fb2_guid
    return false if fb2_guid.blank?
    return false if Book.find_by_fbguid(fb2_guid)
-   title = self.extract_xml_part(doc, '//description//title-info//book-title').first.andand.content
+   title = Fb2.extract_xml_part(doc, '//description//title-info//book-title').first.andand.content
    title = Iconv.iconv('utf-8', doc.encoding, title).join('')
    book = Book.create(:fbguid=>fb2_guid, :name=>title, :file_name=>File.basename(file_name))
    book.valid?
   end
 
-  def self.load_xml(fname)
-   doc = nil
-   File.open(fname, 'r') do |file|
-    doc = Nokogiri::XML(file, nil, 'utf-8')
-   end
-   return nil unless doc
-   doc.remove_namespaces!
-   doc
-  end
-
-  def self.extract_xml_part(doc, part)
-   doc.xpath(part)
-  end
-
   def generate_cover
-   doc = Book.load_xml(self.working_file)
-   page = Book.extract_xml_part(doc, '//description//title-info//coverpage/image').first
+   doc = Fb2.load_xml(self.working_file)
+   page = Fb2.extract_xml_part(doc, '//description//title-info//coverpage/image').first
    raise ErrorNoCover if page.nil?
    raise ErrorNoCover if page.attributes['href'].nil?
    cname = page.attributes['href'].value.scan(/#(.+)/)[0][0]
-   bins = Book.extract_xml_part(doc, '//binary')
+   bins = Fb2.extract_xml_part(doc, '//binary')
    bin = nil
    bins.each do |e|
     next unless e.attributes['content-type'].andand.value =~ /^image\//
@@ -122,23 +111,21 @@ class Book < ActiveRecord::Base
   end
 
   def generate_testpages
-    #to fix
-    doc = self.load_xml(fname)
-    return nil unless doc
-    body = doc.xpath('//body').to_xml
-    sections = []
-    #sdoc = Nokogiri::XML(body, nil, 'utf-8')
-    #sdoc.remove_namespaces!
-    #p sdoc
-    doc.xpath('//body/section').each { |section| sections << section }
-    titles = []
-    #p sections.first
-    puts sections.size
-    sections.each_with_index do |section, idx|
-     ttl = section.xpath('//title')
-     titles[idx] = ttl.first.content unless ttl.blank?
-     pages << Testpage.generate_pages(self, section.content, titles[idx] || '')
-    end
+   #to fix
+   pages = [] 
+   doc = Fb2.load_xml(self.working_file)
+   return nil unless doc
+   body = doc.xpath('//body').to_xml
+   sections = []
+   doc.xpath('//body/section').each { |section| sections << section }
+   titles = []
+   puts sections.size
+   sections.each_with_index do |section, idx|
+    ttl = section.xpath('//title')
+    titles[idx] = ttl.first.content unless ttl.blank?
+    pages << PreviewPage.generate_previews(self, section.content, titles[idx] || '', 1, 5)
+   end
+   pages
   end
 
   def working_file

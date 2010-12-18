@@ -15,14 +15,14 @@ dev_sqlite:
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
-test: &test
+test_pg: 
   adapter: postgresql
   database: afalone_test
   username: afalone
   password: 123456
   timeout: 5000
 
-test_sqlite:
+test: &test
   adapter: sqlite3
   database: db/afalone_test.sqlite3
   timeout: 5000

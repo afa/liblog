@@ -1,3 +1,4 @@
+# encoding: UTF-8
 #require 'mechanize'
 namespace :lre do
  task :t => :environment do

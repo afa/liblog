@@ -5,7 +5,8 @@
 # ENV['RAILS_ENV'] ||= 'production'
 
 # Specifies gem version of Rails to use when vendor/rails is not present
-RAILS_GEM_VERSION = '2.3.5' unless defined? RAILS_GEM_VERSION
+#RAILS_GEM_VERSION = '3.0.0' unless defined? RAILS_GEM_VERSION
+RAILS_GEM_VERSION = '2.3.8' unless defined? RAILS_GEM_VERSION
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
@@ -49,7 +50,8 @@ Rails::Initializer.run do |config|
   # Make sure the secret is at least 30 characters and all random, 
   # no regular words or you'll be exposed to dictionary attacks.
   config.action_controller.session = {
-    :session_key => '_http_session',
+    :key => '_http_session',
+    #:session_key => '_http_session',
     :secret      => '460020f2b609ada6898d4be1fa259184ff76b3a88b52b7215cfdfcfd94dfde541d3b0bec8deccc3cd0aa9961555e6e16dcca1e40cbf0037add6ceea193563971'
   }
 
@@ -87,7 +89,9 @@ Rails::Initializer.run do |config|
   #config.gem "daemon-spawn"
   config.gem "daemons"
   config.gem "newrelic_rpm"
-  config.gem "mholling-subdomain_routes", :lib=>"subdomain_routes"
+  #config.gem "mholling-subdomain_routes", :lib=>"subdomain_routes"
+  config.gem "rmagick", :lib=>'RMagick'
+  config.gem "bluecloth"
 
 end
 

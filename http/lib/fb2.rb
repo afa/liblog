@@ -1,30 +1,23 @@
-class PreviewPage < ActiveRecord::Base
- has_attached_file :image
+module Fb2
+ require "nokogiri"
+  class << self
+  def load_xml(fname)
+   doc = nil
+   File.open(fname, 'r') do |file|
+    doc = Nokogiri::XML(file, nil, 'utf-8')
+   end
+   return nil unless doc
+   doc.remove_namespaces!
+   doc
+  end
 
-# def self.generate_previews(nokogiri_data)
-# def self.generate_previews(nokogiri_data)
-#  begin
-#   position = 1
-#   fname = self.full_path
-#   dirname = nil
-#   puts "#{fname}"
-#   if `file '#{fname}'` =~ /Zip archive data/
-#    dirname, fname = unzip_format_file(fname)
-#   end
-#   file_type = `file #{fname}`
-#   if file_type =~ /XML/ or file_type =~ / text, with very long lines/
-#    make_testpages_from_xml(fname, max_pages, position)
-#   else
-#    puts file_type
-#   end
-#  ensure
-#   FileUtils.rm_r dirname, :verbose=>true if dirname
-#  end
-# end
+  def extract_xml_part(doc, part)
+   doc.xpath(part)
+  end
 
 
-  #returns last_height, last_img, arr of imgs(without last_img)
-  def self.build_images_from_paragraph(gc, paragraph, params = {:height=>370, :width=>270, :used => 0}, last_img = nil) 
+
+  def build_images_from_paragraph(gc, paragraph, params = {:height=>370, :width=>270, :used => 0}, last_img = nil)
     images = []
     img = last_img || Magick::Image.new(300, 400)
     words = paragraph.mb_chars.split(/\s+/)
@@ -67,7 +60,7 @@ class PreviewPage < ActiveRecord::Base
   end
 
 #  def self.generate_pages(format, section_text, title_text, last_pos, max_pages)
-  def self.generate_previews(book, section_text, title_text, last_pos, max_pages)
+  def generate_previews(book, section_text, title_text, last_pos, max_pages)
     return [] if book.preview_pages.count >= max_pages
     files_list = []
     need_pages = max_pages - book.preview_pages.count
@@ -95,7 +88,7 @@ class PreviewPage < ActiveRecord::Base
     title_paras.each do |title_para|
       break if images.size >= need_pages
       break if title_para.blank?
-      used, last_img, img_arr = self.build_images_from_paragraph(title_gc, title_para, {:height=>370, :width=>270, :used =>used}, last_img)
+      used, last_img, img_arr = build_images_from_paragraph(title_gc, title_para, {:height=>370, :width=>270, :used =>used}, last_img)
       used += 8 #after paragraph gap
       puts "title used #{used}"
       img_arr.each{|i| images << i }
@@ -103,7 +96,7 @@ class PreviewPage < ActiveRecord::Base
     paras = section_text.split("\n")
     paras.each do |para|
       break if images.size >= need_pages
-      used, last_img, img_arr = self.build_images_from_paragraph(gc, para, {:height=>370, :width=>270, :used =>used}, last_img)
+      used, last_img, img_arr = build_images_from_paragraph(gc, para, {:height=>370, :width=>270, :used =>used}, last_img)
       used += 8 #after paragraph gap
       puts "used #{used}"
       img_arr.each{|i| images << i }
@@ -121,6 +114,5 @@ class PreviewPage < ActiveRecord::Base
     end
     files_list.each{|n| FileUtils.rm_f n }
   end
-
-
+ end
 end

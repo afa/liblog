@@ -85,7 +85,7 @@ namespace :books do
        if ti.has_key? "lang"
         langs = ti["lang"].collect{|l| Lang.find_or_create_by_name :name=>l.to_s }.compact
        else
-        langs = [Lang.find_or_create_by_name :name=>'NoLang']
+        langs = [Lang.find_or_create_by_name(:name=>'NoLang')]
        end
        unless SKIP_EXISTS and book.lang
         book.lang = langs[0]

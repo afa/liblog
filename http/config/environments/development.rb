@@ -1,8 +1,8 @@
 # Settings specified here will take precedence over those in config/environment.rb
 
 config.action_controller.session ||= {}
-config.action_controller.session[:session_domain] = '.e3pc'
-SubdomainRoutes::Config.domain_length = 1
+#config.action_controller.session[:session_domain] = '.e3pc'
+#SubdomainRoutes::Config.domain_length = 1
 
 # In the development environment your application's code is reloaded on
 # every request.  This slows down response time but is perfect for development
@@ -37,3 +37,6 @@ DESC_PATH = File.join RAILS_ROOT, 'desc'
 FB2_PATH = File.join RAILS_ROOT, 'fb2'
 
 BUNDLE_PATH = File.join RAILS_ROOT, 'bundles'
+config.gem "rspec", :lib=>false, :version=>'~>1.3.0'
+  config.gem 'rspec-rails', :version => '~> 1.3.2', :lib => false unless File.directory?(File.join(Rails.root, 'vendor/plugins/rspec-rails'))
+     

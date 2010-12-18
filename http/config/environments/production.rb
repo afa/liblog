@@ -1,8 +1,8 @@
 # Settings specified here will take precedence over those in config/environment.rb
 
 config.action_controller.session ||= {}
-config.action_controller.session[:session_domain] = '.afalone.ru'
-SubdomainRoutes::Config.domain_length = 2
+#config.action_controller.session[:session_domain] = '.afalone.ru'
+#SubdomainRoutes::Config.domain_length = 2
 
 # The production environment is meant for finished, "live" apps.
 # Code is not reloaded between requests

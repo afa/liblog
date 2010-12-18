@@ -4,15 +4,14 @@ describe UserController do
 
   describe "anonymous user" do
    it "should be redirected to login" do
-    #get :index, :subdomains=>['', 'www'], :host=>'e3pc'
-    get :index, :subdomains=>[''], :host=>'e3pc'
+    get :index
     #p response.methods
     #response.should redirect_url_match /\/users\/login/
     flash[:error].should =~ /be logged in/
    end
   end
   it "should get login" do
-   get :login, :subdomains=>[''], :host=>'e3pc'
+   get :login
    response.should render_template 'login'
   end
   describe "normal user" do

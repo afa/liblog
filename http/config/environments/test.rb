@@ -7,7 +7,7 @@
 config.cache_classes = true
 config.action_controller.session ||= {}
 config.action_controller.session[:session_domain] = '.e3pc'
-SubdomainRoutes::Config.domain_length = 1
+#SubdomainRoutes::Config.domain_length = 1
 
 # Log error messages when you accidentally call methods on nil.
 config.whiny_nils = true
@@ -36,4 +36,5 @@ INPUT_DIR = File.join(BASE_DATA_DIR, 'input')
 WORKING_DIR = File.join(BASE_DATA_DIR, 'work')
 BUNDLE_DIR = File.join(BASE_DATA_DIR, 'bundle')
 
-  config.gem 'rspec-rails', :version => '>= 1.3.2', :lib => false unless File.directory?(File.join(Rails.root, 'vendor/plugins/rspec-rails'))
+config.gem "rspec", :lib=>false, :version=>'~>1.3.0'
+  config.gem 'rspec-rails', :version => '~> 1.3.2', :lib => false unless File.directory?(File.join(Rails.root, 'vendor/plugins/rspec-rails'))

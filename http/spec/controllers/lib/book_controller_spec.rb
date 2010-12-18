@@ -5,7 +5,7 @@ describe Lib::BookController do
   @book=Book.create :name=>'aa', :state=>'published'
  end
  it "should get index" do
-  get :index, :subdomains=>['lib']
+  get :index
   assigns(:books).should_not be_empty
  end
 end

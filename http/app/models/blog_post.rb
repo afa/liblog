@@ -1,74 +1,30 @@
+require "bluecloth"
 class Convertor
-
-  def self.text_to_hash(src)
-  end
-
-  def self.title_to_ml(src)
-  end
-
-  def self.ml_to_title(src)
-  end
-
-  def self.hash_to_text(src)
-  end
-end
-
-
-class LivejournalConvertor < Convertor
-
-  def self.text_to_hash(src)
-  # return hash {:short=>, :cut_phrase=>, :text}
-  # разобрать на части, 
-  # self.
-  end
-
-  def self.title_to_ml(src)
-   #убрать опасные теги, преобразовать разрешенные, урезать в размере
-   self.convert_tags(self.process_tags(src))
-  end
- protected
-  def self.convert_tags(src)
-   src.mb_chars.gsub('<', '&lt;')
-  end
-
-  def self.process_tags(src)
-   result = {}
-   src.scan(/<lj-cut(\s+text="(.+?)")>/)
-  end
-end
-
-class SimpleConvertor < Convertor
- def self.text_to_hash(src)
-  {:short => src, :cut_phrase=>nil, :text=>nil}
+ def self.to_markdown(src) #to internal
+  src
+ end
+ 
+ def self.to_html(src) #to view
+  src
  end
 
- def self.hash_to_text(hash)
-  hash[:short]
+ def self.split(src) #split cutted
+  src
+ end
+
+ def self.join(*src) #join cutted text with cut line and last part
+  src.join('')
+ end
+end
+
+class MarkdownConvertor < Convertor
+ def self.to_html(src)
+  Markdown.new(src).to_html
  end
 end
 
 class BlogPost < ActiveRecord::Base
 
-# include AASM
-#
-# aasm_column :state
-# aasm_initial_state :created
-#
-# aasm_state :created
-# aasm_state :imported
-# aasm_state :prepared
-# aasm_state :published
-# aasm_state :removed
-#
-# aasm_event :import do
-#  transitions :to => :imported, :from => :created
-# end
-#
-# aasm_event :prepare do
-#  transitions :to => :prepared, :from => [ :created, :imported ]
-# end
-#
-# # END aasm
  acts_as_taggable_on :tags
  has_many :photos, :source=>:things, :as=>:thingable
  has_one :imported_entry
