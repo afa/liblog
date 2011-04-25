@@ -21,12 +21,12 @@ gem 'rmagick', :require => 'RMagick'
 gem 'bluecloth'
 gem "haml"
 gem "haml-rails"
+gem "cancan"
 #group :production do
 # gem "hoptoad_notifier"
 #end
 group :development, :test do
  gem "factory_girl"
- gem "faker"
  gem "rspec", "~>2.5"
  gem "rspec-rails"
 end
