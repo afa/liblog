@@ -2,9 +2,9 @@ class ToDo < ActiveRecord::Base
  belongs_to :parent, :class_name=>'ToDo', :foreign_key=>'parent_id'
  has_many :childs, :class_name=>'ToDo',  :foreign_key=>:parent_id, :dependent=>:delete_all
 
- named_scope :with_childs, :include=>[:childs]
- named_scope :by_id, lambda{ |id| {:conditions=>{:id=>id}} unless id.blank?}
- named_scope :roots, :conditions=>{:parent_id => nil}
+ scope :with_childs, lambda{includes([:childs])}
+ scope :by_id, lambda{ |id| where(:id=>id) unless id.blank?}
+ scope :roots, lambda{where(:parent_id => nil)}
 
  def percent_done
   done, total = self.calc_percent

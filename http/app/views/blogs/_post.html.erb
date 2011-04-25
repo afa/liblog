@@ -1,0 +1,15 @@
+<div class="post">
+ <div class="header"><span class="date"><%= post.created_at -%></span><%= post.title.blank? ? '&nbsp;'.html_safe : post.title.html_safe -%></div>
+ <%= post.text.to_s.html_safe -%>
+ <div class="links">
+  <span><%= link_to_unless_current '<noindex>Послать</noindex>'.html_safe, new_blog_comment_path(post) -%>&nbsp;</span>
+  <% if post.comments.count > 0 %>
+   <%= link_to "<noindex>#{ post.comments.count } засланцев</noindex>".html_safe, blog_comments_path(post) -%>
+  <% end %>
+  <% if post.name.blank? then %>
+   <%= link_to "<noindex>Link</noindex>".html_safe, blog_path(post) -%>
+  <% else %>
+   <%= link_to "<noindex>PermaLink</noindex>".html_safe, blog_path( :id=>post.name ) -%>
+  <% end %>
+ </div>
+</div>

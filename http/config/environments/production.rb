@@ -1,3 +1,4 @@
+Afalone::Application.configure do
 # Settings specified here will take precedence over those in config/environment.rb
 
 config.action_controller.session ||= {}
@@ -24,6 +25,7 @@ config.action_view.cache_template_loading            = true
 
 # Disable delivery errors, bad email addresses will be ignored
 # config.action_mailer.raise_delivery_errors = false
+end
 GEM_PATH='/home/virtwww/w_afalone-ru_3e7b26fa/.gems:/usr/lib/ruby/gems/1.8'
 NGINXLOGS_PATH='../../logs'
 NGINXLOGS_MASK=['access*log']

@@ -1,4 +1,5 @@
 class Book < ActiveRecord::Base
+include Fb2
 
 # has_one :cover, :source=>:things, :as=>:thingable
  has_many :covers, :source=>:things, :as=>:thingable
@@ -12,11 +13,11 @@ class Book < ActiveRecord::Base
  validates_presence_of :name, :blank=>false
  after_save :update_count
 
- named_scope :unbundled, lambda { {:conditions=>"state not in ('bundled', 'published')"} }
- named_scope :only_50, {:limit=>50}
- named_scope :lasts, {:order=>'created_at DESC'}
- named_scope :with_authors, {:include=>[:authors]}
- named_scope :active, {:conditions => {:state => 'published'}}
+ scope :unbundled, lambda { where "state not in ('bundled', 'published')" }
+ scope :only_50, lambda{limiti(50)}
+ scope :lasts, lambda{order('created_at DESC')}
+ scope :with_authors, lambda{includes([:authors])}
+ scope :active, lambda{where(:state => 'published')}
 
  state_machine :state, :initial=>:created do
 

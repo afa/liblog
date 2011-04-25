@@ -14,7 +14,7 @@ module ApplicationHelper
 
  def lib_menu
   [
-   { :text => 'lib', :url=>lib_root_path}
+   { :text => 'lib', :url=>lib_index_path}
   ]
  end
 
@@ -32,19 +32,19 @@ module ApplicationHelper
      end
     end
    end
-  end.compact.join('&nbsp;').html_safe
+  end.compact.join('&nbsp;')
  end
 
  def main_menu
   [
-   { :text=>'Home', :url=>root_path },
-   { :text=>'Users', :url=>users_path, :check=>'current_user.can_admin?' },
-   { :text=>'Blog', :url=>blogs_path },
+   { :text=>'Home', :url=>index_path },
+   { :text=>'Users', :url=>user_index_path, :check=>'current_user.can_admin?' },
+   { :text=>'Blog', :url=>blog_index_path },
    { :text=>'Stories', :url=>articles_path },
    { :text=>'Config', :controller=>'Config', :url=>config_index_path, :check=>"current_user.is_admin?" },
  #  { :text=>'ToDo', :controller=>'ToDo', :action=>'index', :check=>"current_user.has_privilege? 'todo.view'" },
  #  { :text=>'Stats', :controller=>'Stats', :action=>'index', :check=>"current_user" },
-   { :text=>'Lib', :url=>lib_root_path }
+   { :text=>'Lib', :url=>lib_index_path }
   ]
  end
 end

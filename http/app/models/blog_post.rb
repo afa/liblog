@@ -34,10 +34,10 @@ class BlogPost < ActiveRecord::Base
  has_many :comments, :class_name=>'BlogComment', :foreign_key=>'blog_post_id', :order=>'created_at'
  has_many :imm_comments, :class_name=>'BlogComment', :foreign_key=>'blog_post_id', :conditions=>'blog_comment_id is null', :order=>'created_at'
 
- named_scope :lasts, {:order=>'created_at DESC'}
- named_scope :only_50, {:limit=>50}
- named_scope :accessible, {:conditions => {:state => ['published', 'prepared']}}
- named_scope :active, {:conditions => {:state => 'published'}}
+ scope :lasts, order('created_at DESC')
+ scope :only_50, limit(50)
+ scope :accessible, where(:state => ['published', 'prepared'])
+ scope :active, where(:state => 'published')
 
   def convertor
    class_eval((raw_type || 'Simple') + 'Convertor')

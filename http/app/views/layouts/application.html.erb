@@ -3,7 +3,7 @@
 <html>
  <head>
   <title><%= @title %></title>
-  <%= auto_discovery_link_tag(:rss, rss_blog_path) %>
+  <%= auto_discovery_link_tag(:rss, rss_path) %>
   <%= javascript_include_tag "prototype" %>
   <%#= javascript_include_tag "scriptaculous.js?load=effects,controls" %>
   <%#= javascript_include_tag "effects" %> 
@@ -12,11 +12,11 @@
  </head>
  <body>
   <div class="main_menu">
-   <% unless current_page?( login_user_path ) -%>
+   <% unless current_page?( login_users_path ) -%>
     <span style="display:block;float:right;">
      <% unless current_user.logged? then %>
-      <% session[:return_to] = request.request_uri unless current_page?( login_user_path ) -%>
-      <%= link_to( 'Login', login_user_path ) %>
+      <% session[:return_to] = request.request_uri unless current_page?( login_users_path ) -%>
+      <%= link_to( 'Login', login_users_path ) %>
      <% else %>
       <%= link_to_unless_current( current_user.identity.name, user_path(current_user.identity.id) ) if current_user.logged? -%>
       <%= link_to "Logout", session_index_path, :method=>'delete' %>

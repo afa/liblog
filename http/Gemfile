@@ -1,0 +1,32 @@
+# This preamble is the current preamble for Rails 3 apps; edit as needed.
+source 'http://rubygems.org'
+
+gem 'rails', '~>3.0'
+
+#source 'http://gems.github.com'
+#gem 'mislav-will_paginate', '~> 2.2.3', :require => 'will_paginate'
+gem "will_paginate"
+#gem "will_paginate", :git=>"http://github.com/mislav/will_paginate.git", :branch=>"rails3"
+gem 'russian'
+gem 'andand'
+gem 'nokogiri'
+gem 'paperclip'
+gem 'state_machine'
+gem 'mechanize'
+gem 'acts-as-taggable-on'
+#gem 'delayed_job'
+#gem 'daemons'
+gem 'newrelic_rpm'
+gem 'rmagick', :require => 'RMagick'
+gem 'bluecloth'
+gem "haml"
+gem "haml-rails"
+#group :production do
+# gem "hoptoad_notifier"
+#end
+group :development, :test do
+ gem "factory_girl"
+ gem "faker"
+ gem "rspec", "~>2.5"
+ gem "rspec-rails"
+end
