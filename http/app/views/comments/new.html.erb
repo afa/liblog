@@ -1,7 +1,7 @@
-<% form_for :comment, @comment, :url=>url_for(:action=>'create') do | form | %>
+<%= form_for :comment, @comment, :url=>url_for(:action=>'create') do | form | %>
  <fieldset>
   <legend>comment this</legend>
-  <%= error_messages_for :comment %>
+  <%#= error_messages_for :comment %>
   <% unless current_user.logged? %>
   <div>
    OpenID:
