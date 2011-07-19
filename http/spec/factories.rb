@@ -1,17 +1,16 @@
-#require "faker"
-#Sham.login {Faker::Lorem.words(1)}
-#Sham.name {Faker::Lorem.words(5)}
-Factory.sequence(:user_login) do |n|
+FactoryGirl.define do
+ sequence :username do |n|
  "username_#{n}"
-end
-Factory.define :user do |u|
- u.username {Factory.next(:user_login)}
-end
+ end
+ factory :user do
+  username
+ end
 
-Factory.sequence :book_name do |n|
- "book #{n}"
-end
-Factory.define(:book) do | b |
- b.name { Factory.next(:book_name) }
- b.fbguid { "guid-#{rand(899)+100}-#{rand(89)+10}" }
+ sequence :book_name do |n|
+  "book #{n}"
+ end
+ factory(:book) do
+  name { Factory.next(:book_name) }
+  fbguid { "guid-#{rand(899)+100}-#{rand(89)+10}" }
+ end
 end

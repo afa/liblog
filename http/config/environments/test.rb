@@ -30,6 +30,7 @@ config.action_controller.allow_forgery_protection    = false
 # The :test delivery method accumulates sent emails in the
 # ActionMailer::Base.deliveries array.
 config.action_mailer.delivery_method = :test
+config.active_support.deprecation = :log
 end
 BASE_DATA_DIR = 'test/testdata'
 BATCH_INPUT_DIR = File.join(BASE_DATA_DIR, 'batch')
