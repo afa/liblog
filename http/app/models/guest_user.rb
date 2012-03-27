@@ -1,3 +1,4 @@
+# coding: UTF-8
 class GuestUser < User
 #Класс-затычка. Ничего не умеет, нет ролей и привилегий.
  def initialize

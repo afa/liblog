@@ -1,3 +1,4 @@
+# coding: UTF-8
 class BlogComment < ActiveRecord::Base
 
  validates_associated :post

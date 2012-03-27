@@ -1,3 +1,4 @@
+# coding: UTF-8
 class PreviewPage < ActiveRecord::Base
  has_attached_file :image
 

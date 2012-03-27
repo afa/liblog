@@ -1,3 +1,4 @@
+# coding: UTF-8
 require "bluecloth"
 class Convertor
  def self.to_markdown(src) #to internal

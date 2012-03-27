@@ -1,3 +1,4 @@
+# coding: UTF-8
 # Filters added to this controller apply to all controllers in the application.
 # Likewise, all the methods added will be available for all controllers.
 
@@ -15,7 +16,7 @@ class ApplicationController < ActionController::Base
  def current_user
   if @logged.nil? then
    unless session[:logon].nil? then
-    @logged = User.find( :first, session[:logon]) or GuestUser.new
+    @logged = User.find(session[:logon]) or GuestUser.new
    else 
     @logged = GuestUser.new
    end
@@ -23,10 +24,14 @@ class ApplicationController < ActionController::Base
   @logged
  end
 
+ def current_user=(user)
+  @logged = user
+ end
+
  # need change when subdomain_routes will handle non-80 port
  protected
- def default_url_options(options=nil)
-  logger.info "#{options.inspect}"
-  { :port => (self.request.andand.port ? self.request.andand.port : 80), :host=>(self.request.andand.host ? self.request.andand.host : 'e3pc') }.merge(options || {})
- end
+ #def default_url_options(options=nil)
+ # logger.info "#{options.inspect}"
+ # { :port => (self.request.andand.port ? self.request.andand.port : 80), :host=>(self.request.andand.host ? self.request.andand.host : 'e3pc') }.merge(options || {})
+ #end
 end

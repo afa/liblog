@@ -1,3 +1,4 @@
+# coding: UTF-8
 class Lang < ActiveRecord::Base
  has_many :books
 

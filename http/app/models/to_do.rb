@@ -1,3 +1,4 @@
+# coding: UTF-8
 class ToDo < ActiveRecord::Base
  belongs_to :parent, :class_name=>'ToDo', :foreign_key=>'parent_id'
  has_many :childs, :class_name=>'ToDo',  :foreign_key=>:parent_id, :dependent=>:delete_all

@@ -1,0 +1,6 @@
+%div{:style=>'width:70%; margin-bottom:10px;'}
+ = render :partial=>'blogs/post', :collection=>@posts
+ -# <legend>Хотелки</legend>
+ -# = todo_render( @todos, { :max_depth => 0 } )
+ -# = link_to ("Посмотреть все хотелки", todo_path) if @todos.total_pages > 1 
+ = will_paginate @posts, {:page_links=>false, :prev_label=>'Свежее', :next_label=>'Раньше'}

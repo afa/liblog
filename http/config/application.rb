@@ -39,6 +39,16 @@ module Afalone
     # in the database in UTC, and return them converted to the specified local zone.
     # Run "rake -D time" for a list of tasks for finding time zone names. Uncomment to use default local time.
     config.time_zone = 'Moscow'
+    config.i18n.default_locale = :ru
+    config.encoding = "utf-8"
+    config.filter_parameters += [:password]
+
+    # Enable the asset pipeline
+    #config.assets.enabled = false
+
+    # Version of your assets, change this if you want to expire all your assets
+    #config.assets.version = '1.0'
+
   
     # Your secret key for verifying cookie session data integrity.
     # If you change this key, all old sessions will become invalid!

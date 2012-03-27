@@ -7,11 +7,11 @@ def l_name(nm)
  name
 end
 namespace :books do
- task :tst, :files, :needs => :environment do |task_obj, args|
+ task :tst, [:files] => :environment do |task_obj, args|
   puts args
  end
  desc "Import book descriptions from fb2"
- task :import, :files, :needs => :environment do |task_name, args|
+ task :import, [:files] => :environment do |task_name, args|
   require 'rubygems'
   require 'xmlsimple'
 #  require 'timeout'

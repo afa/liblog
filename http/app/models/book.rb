@@ -1,3 +1,4 @@
+# coding: UTF-8
 class Book < ActiveRecord::Base
 include Fb2
 

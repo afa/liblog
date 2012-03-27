@@ -1,4 +1,18 @@
 Afalone::Application.routes.draw do
+  get "blogs/index"
+
+  get "blogs/show"
+
+  get "blogs/edit"
+
+  get "blogs/update"
+
+  get "blogs/create"
+
+  get "blogs/new"
+
+  get "blogs/rss"
+
  namespace :lib do
   resources :site do
    collection do

@@ -1,3 +1,4 @@
+# coding: UTF-8
 class SiteConfig < ActiveRecord::Base
  validates_uniqueness_of :name
  def self.[] ( name )

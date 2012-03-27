@@ -2,8 +2,17 @@ FactoryGirl.define do
  sequence :username do |n|
  "username_#{n}"
  end
+
+ sequence :name do |n|
+ "name_#{n}"
+ end
+
+ factory :identity do
+  name
+ end
  factory :user do
   username
+  identity
  end
 
  sequence :book_name do |n|
@@ -12,5 +21,9 @@ FactoryGirl.define do
  factory(:book) do
   name { Factory.next(:book_name) }
   fbguid { "guid-#{rand(899)+100}-#{rand(89)+10}" }
+ end
+
+ factory(:blog_post) do
+
  end
 end
