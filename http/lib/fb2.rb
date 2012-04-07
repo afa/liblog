@@ -1,3 +1,4 @@
+# coding: UTF-8
 module Fb2
  require "nokogiri"
   class << self

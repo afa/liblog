@@ -1,1 +1,1 @@
-autoload :Fb2, "lib/fb2"
+autoload :Fb2, "fb2"

@@ -1,3 +1,4 @@
+# coding: UTF-8
 class ToDoController < ApplicationController
 # change to REST
   before_filter :get_todo, :only => [:show, :edit, :update, :destroy]

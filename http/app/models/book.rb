@@ -84,7 +84,11 @@ include Fb2
    return false if fb2_guid.blank?
    return false if Book.find_by_fbguid(fb2_guid)
    title = Fb2.extract_xml_part(doc, '//description//title-info//book-title').first.andand.content
-   title = Iconv.iconv('utf-8', doc.encoding, title).join('')
+   if RUBY_VERSION >= '1.9'
+    title = title.encode("UTF-8")
+   else
+    title = Iconv.iconv('utf-8', doc.encoding, title).join('')
+   end
    book = Book.create(:fbguid=>fb2_guid, :name=>title, :file_name=>File.basename(file_name))
    book.valid?
   end

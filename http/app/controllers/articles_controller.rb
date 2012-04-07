@@ -1,3 +1,4 @@
+# coding: UTF-8
 class ArticlesController < ApplicationController
   def index
   end

@@ -1,3 +1,4 @@
+#coding: UTF-8
 FactoryGirl.define do
  sequence :username do |n|
  "username_#{n}"
@@ -7,12 +8,8 @@ FactoryGirl.define do
  "name_#{n}"
  end
 
- factory :identity do
-  name
- end
  factory :user do
   username
-  identity
  end
 
  sequence :book_name do |n|

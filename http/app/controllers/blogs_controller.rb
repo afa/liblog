@@ -1,5 +1,7 @@
+# coding: UTF-8
 class BlogsController < ApplicationController
-  before_filter :submenu
+ respond_to :html, :xml
+ before_filter :submenu
   
   before_filter :parse_named_id, :only=>[:show]
   before_filter :get_post, :only => [:edit, :update, :destroy, :show]
@@ -11,7 +13,9 @@ class BlogsController < ApplicationController
 
   def rss
     @posts = BlogPost.only_50.lasts.all
-    render :layout=>false
+    respond_with do |format|
+     format.xml { render :layout=>false }
+    end
   end
 
   def index
@@ -20,7 +24,7 @@ class BlogsController < ApplicationController
   end
 
   def new 
-   @post = current_user.identity.posts.build 
+   @post = current_user.blog_posts.build 
   end
 
   def create
@@ -39,8 +43,7 @@ class BlogsController < ApplicationController
 
   def update
    if @post.update_attributes(params[:post])
-    redirect_to :action=>'index'
-    flash[:notice] = 'Post stored'
+    redirect_to :action=>'index', :flash => {:notice => 'Post stored'}
    else
     flash[:error] = 'Ошибка сохранения'
     redirect_to :action=>:edit

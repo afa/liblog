@@ -1,3 +1,4 @@
+# coding: UTF-8
 # encoding: UTF-8
 #require 'mechanize'
 namespace :lre do

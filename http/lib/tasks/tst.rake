@@ -1,3 +1,4 @@
+# coding: UTF-8
 namespace :tst do
  task :t => :environment do
   f=Nokogiri::XML.parse File.new('desc/24.fb2.desc')

@@ -1,3 +1,4 @@
+# coding: UTF-8
 class Lib::BookController < ApplicationController
   layout 'lib/application'
 

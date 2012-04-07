@@ -1,0 +1,2 @@
+= render :partial=>'comments', :locals=>{ :comments => @comment, :colors=>['grey', 'light-grey'] }
+= render :partial=>'comments', :collection=>@comment.childs, :locals=>{:colors=>['light-grey', 'grey']}

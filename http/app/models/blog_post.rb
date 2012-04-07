@@ -31,7 +31,7 @@ class BlogPost < ActiveRecord::Base
  has_one :imported_entry
  cattr_reader :per_page
  @@per_page = 20
- belongs_to :identity
+ belongs_to :user
  has_many :comments, :class_name=>'BlogComment', :foreign_key=>'blog_post_id', :order=>'created_at'
  has_many :imm_comments, :class_name=>'BlogComment', :foreign_key=>'blog_post_id', :conditions=>'blog_comment_id is null', :order=>'created_at'
 

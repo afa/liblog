@@ -1,3 +1,4 @@
+#coding: UTF-8
 require File.expand_path('../boot', __FILE__)
 require "rails/all"
 
@@ -29,7 +30,7 @@ module Afalone
   #?   config.plugins = [ :in_place_editing, :all ]
   
     # Add additional load paths for your own custom dirs
-    # config.load_paths += %W( #{RAILS_ROOT}/extras )
+    config.autoload_paths += %W( #{Rails.root}/lib )
   
     # Force all environments to use the same logger level
     # (by default production uses :info, the others :debug)

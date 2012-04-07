@@ -1,3 +1,4 @@
+# coding: UTF-8
 class Lib::AuthorController < ApplicationController
   layout 'lib/application'
   before_filter :get_authors

@@ -1,3 +1,4 @@
+# coding: UTF-8
 class Lib::SiteController < ApplicationController
   layout 'lib/application'
   def index

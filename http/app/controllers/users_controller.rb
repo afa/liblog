@@ -1,3 +1,4 @@
+# coding: UTF-8
 class UsersController < ApplicationController
 #  helper :user
   before_filter :current_user, :only=>[:index, :show]
@@ -15,12 +16,12 @@ class UsersController < ApplicationController
 
   def index
    @title = "Список персон"
-   @users = Identity.order_by_name.all
+   @users = User.order("name").all
   end
 
   def new
    @title = 'Add person'
-   @identity = Identity.new unless params[:commit]
+   @user = User.new unless params[:commit]
   end
 
   def create
@@ -30,8 +31,8 @@ class UsersController < ApplicationController
   end
 
   def edit
-   @submenu << { :text=>'Delete', :url=>user_path(@identity.id, :method=>:delete) }
-   @title = "Edit person #{ @identity.name }"
+   @submenu << { :text=>'Delete', :url=>user_path(@user.id, :method=>:delete) }
+   @title = "Edit person #{ @user.name }"
   end
 
   def destroy
@@ -39,12 +40,12 @@ class UsersController < ApplicationController
 
   def show
  #  current_user #@?
-   redirect_to user_index_path if @identity.nil?
+   redirect_to user_index_path if @user.nil?
   end
  protected
   def get_identity_submenu
-   @identity = Identity.find params[:id]
-   @submenu << { :text=>'Edit', :url=>edit_user_path(@identity.id) }
+   @user = User.find params[:id]
+   @submenu << { :text=>'Edit', :url=>edit_user_path(@user.id) }
   end
 
   def submenu

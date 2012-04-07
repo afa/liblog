@@ -1,3 +1,4 @@
+# coding: UTF-8
 def l_name(nm)
  n_list = ['.fb2', '.desc', '.invalid']
  name = nm

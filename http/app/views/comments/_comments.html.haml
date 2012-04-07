@@ -1,0 +1,8 @@
+-# need ['coolors', 'colors'] - для расцвечивания фона. в :locals=>:colors
+.comment.full{:style=>"border: dotted 1px grey; margin: 4px; margin-bottom:6px; padding: 2px;"}
+ .header{:style=>"background-color:#cccccc; font-weight: bold;"}= comments.title
+ = comments.text
+ .links{:style=>"font-size:70%;"}
+  = link_to 'link', blog_comment_path(comments.post, comments)
+  = link_to 'comment', new_blog_comment_path(comments.post, :id=>comments.id)
+ = render :partial=>'comments', :collection=>comments.childs

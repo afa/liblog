@@ -1,0 +1,13 @@
+%fieldset
+ %legend блогеры такие блогеры
+  .field
+   = form.text_field :title, :style=>'width: 100%;'
+  .field
+   -# todo: move to shared view %>
+   = form.text_area :raw_text, :style=>'width:100%;'
+  .field
+   = form.text_field :tag_list, :style=>'width:100%;'
+  .field
+   = form.text_field :name
+   = form.hidden_field :user_id, :style=>'width:100%;' -%>
+= form.submit "Отправить"

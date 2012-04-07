@@ -1,3 +1,4 @@
+# coding: UTF-8
 def unbundle
  # extract from archives in bundle first archive to fb2 (if fb2 empty) and move archive to processed
  unless Dir[File.join 'lre/in/fb2', '*.fb2'].empty?

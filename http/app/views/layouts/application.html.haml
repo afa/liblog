@@ -1,0 +1,26 @@
+!!!
+%head
+ %title= @title
+ = auto_discovery_link_tag(:rss, rss_path)
+ = javascript_include_tag "prototype"
+ = stylesheet_link_tag "main"
+ = csrf_meta_tag
+%body
+ .main_menu
+  - unless current_page?( login_users_path )
+   %span{:style=>"display:block;float:right;"}
+    - unless current_user.logged?
+     - session[:return_to] = request.request_uri unless current_page?( login_users_path )
+     = link_to( 'Login', login_users_path )
+    - else
+     = link_to_unless_current( current_user.name, user_path(current_user.id) ) if current_user.logged?
+     = link_to "Logout", session_index_path, :method=>'delete'
+  = menu_bar main_menu
+ - if @submenu
+  .submenu
+   = menu_bar @submenu
+ - flash.each do |key, value|
+  .flash{ :class => key}= value
+ .content
+  = yield
+ .footer

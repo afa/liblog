@@ -1,3 +1,4 @@
+#coding: UTF-8
 require 'spec_helper'
 
 describe UsersController do
@@ -16,7 +17,7 @@ describe UsersController do
   end
   describe "normal user" do
    before(:each) do
-    @user = Factory.create(:user)
+    @user = FactoryGirl.create(:user)
    end
    it "should not has any roles" do
     @user.roles.should be_empty

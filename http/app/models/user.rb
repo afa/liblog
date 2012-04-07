@@ -1,6 +1,6 @@
 # coding: UTF-8
 class User < ActiveRecord::Base
- belongs_to :identity
+ has_many :blog_posts
 
  acts_as_authorized_user
  acts_as_authorizable
@@ -26,7 +26,6 @@ class User < ActiveRecord::Base
  end
 
  def self.register_email_user(email)
-  ident = Identity.find_by_name "mailer identity"
   self.find_or_create_by_email :username=>email, :email=>email
  end
 end

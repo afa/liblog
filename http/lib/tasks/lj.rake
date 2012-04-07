@@ -1,3 +1,4 @@
+# coding: UTF-8
 require 'livejournal'
 require "cgi"
 def lj_conv_text(txt)

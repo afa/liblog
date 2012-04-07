@@ -1,3 +1,4 @@
+# coding: UTF-8
 namespace :logs do
 
  desc "parse nginx logs, scan day statistics"

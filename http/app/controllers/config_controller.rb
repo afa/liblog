@@ -1,3 +1,4 @@
+# coding: UTF-8
 class ConfigController < ApplicationController
 # привилегии config.view, config.edit, config.delete
   before_filter :submenu

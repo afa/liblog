@@ -1,3 +1,4 @@
+# coding: UTF-8
 namespace "blog" do
 
   desc 'Import external pictures & convert links to it'

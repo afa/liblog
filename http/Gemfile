@@ -1,13 +1,16 @@
 # This preamble is the current preamble for Rails 3 apps; edit as needed.
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.9'
+gem 'rails', '3.0.12'
 
+gem "pg"
+gem "rb-readline", :require => "readline"
 #source 'http://gems.github.com'
 #gem 'mislav-will_paginate', '~> 2.2.3', :require => 'will_paginate'
 gem "will_paginate"
 #gem "will_paginate", :git=>"http://github.com/mislav/will_paginate.git", :branch=>"rails3"
-gem 'russian'
+#gem 'russian'
+#gem "readline-ffi"
 gem 'andand'
 gem 'nokogiri'
 gem 'paperclip'
@@ -39,5 +42,9 @@ group :development, :test do
  gem "rspec-rails", ">=2.6.0"
  #gem "rspec-cells"
  gem "cucumber-rails"
- gem "rcov"
+ #gem "rcov"
+ gem "simplecov"
+end
+group :test do
+ gem "database_cleaner"
 end

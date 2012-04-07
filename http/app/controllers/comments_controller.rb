@@ -1,3 +1,4 @@
+# coding: UTF-8
 class CommentsController < ApplicationController
 
  before_filter :get_post, :only=>[:index, :new, :create]

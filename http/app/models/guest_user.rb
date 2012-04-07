@@ -5,7 +5,6 @@ class GuestUser < User
   super
   self.username = ''
   self.password = ''
-  self.identity = Identity.new :name=>'Гость'
  end
  def has_role? (role_name)
   false
