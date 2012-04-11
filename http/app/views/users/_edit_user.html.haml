@@ -1,0 +1,15 @@
+%fieldset
+ = error_messages_for :user
+ %legend Параметры персоны
+  %div
+   = form.label :username, "Логин"
+   = form.text_field :username
+  %div
+   %label{:for=>"name"} Имя
+   = form.text_field :name
+  %div
+   = form.label :password, "Пароль"
+   = form.password_field :password
+  %div
+   = form.label :password_confirmation, "Подтверждение пароля"
+   = form.password_field :password_confirmation

@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   before_filter :current_user, :only=>[:index, :show]
   before_filter :protect, :except=>[:login]
   before_filter :submenu, :except=>[:login]
-  before_filter :get_identity_submenu, :only=>[:edit, :show]
+  before_filter :get_users_submenu, :only=>[:edit, :show]
 
   def login
   end
@@ -43,7 +43,7 @@ class UsersController < ApplicationController
    redirect_to user_index_path if @user.nil?
   end
  protected
-  def get_identity_submenu
+  def get_users_submenu
    @user = User.find params[:id]
    @submenu << { :text=>'Edit', :url=>edit_user_path(@user.id) }
   end

@@ -1,6 +1,7 @@
 # coding: UTF-8
 class User < ActiveRecord::Base
  has_many :blog_posts
+ scope :order_by_name, order("name")
 
  acts_as_authorized_user
  acts_as_authorizable
