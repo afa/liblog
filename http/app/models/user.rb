@@ -3,12 +3,20 @@ class User < ActiveRecord::Base
  has_many :blog_posts
  scope :order_by_name, order("name")
 
- acts_as_authorized_user
- acts_as_authorizable
 
  validates_uniqueness_of :username, :message=>'Аккаунт с таким именем уже существует', :on=>:create
 # validates_presence_of :email, :message=>'Необходимо ввести емайл'
  validates_confirmation_of :password
+
+ attr_accessible :name
+
+  def self.current
+   @current
+  end
+
+  def self.current=(user)
+   @current = user
+  end
 
  def can_admin?
   self.is_admin?

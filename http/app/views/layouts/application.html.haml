@@ -9,16 +9,15 @@
  .main_menu
   - unless current_page?( login_users_path )
    %span{:style=>"display:block;float:right;"}
-    - unless current_user.logged?
+    - unless User.current.try(:logged?)
      - session[:return_to] = request.request_uri unless current_page?( login_users_path )
      = link_to( 'Login', login_users_path )
     - else
-     = link_to_unless_current( current_user.name, user_path(current_user.id) ) if current_user.logged?
+     = link_to_unless_current( User.current.name, user_path(User.current.id) ) if User.current.logged?
      = link_to "Logout", session_index_path, :method=>'delete'
-  = menu_bar main_menu
- - if @submenu
+  = render :partial => "shared/menu"
   .submenu
-   = menu_bar @submenu
+   = yield :submenu
  - flash.each do |key, value|
   .flash{ :class => key}= value
  .content

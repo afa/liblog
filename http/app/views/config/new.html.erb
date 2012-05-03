@@ -1,8 +1,0 @@
-<% form_for @item, :url=>config_index_path do | form | %>
- <fieldset>
-  <legend>Параметры конфигурации</legend>
-  <%= form.text_field :name %>
-  <%= form.text_field :value %>
-  <%= form.submit "Сохранить" %>
- </fieldset>
-<% end %>

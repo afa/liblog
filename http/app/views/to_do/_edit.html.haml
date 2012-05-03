@@ -1,0 +1,14 @@
+= form_for "todo[]", todo do | form |
+ = content_for( 'div', 'Хотелка старшего уровня:' + link_to( h( parent.text ), todo_path(:action=>'show', :id=>parent.id) ) ) unless parent.nil?
+ %fieldset
+  %legend Параметры хотелки
+  %div
+   = form.text_field :text
+  %div
+   = form.date_select :to_date
+   - if show_done.nil? or ( not show_done )
+    = form.hidden_field :done
+   - else
+    = form.check_box :done
+   = form.hidden_field :parent_id unless parent.nil? %>
+ = form.submit "Сохранить" %>

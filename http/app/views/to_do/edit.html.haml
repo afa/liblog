@@ -1,0 +1,3 @@
+= form_tag todo_path(:action=>'delete', :id=>@todo.id), :method=>:post do
+ = submit_tag 'Удалить'
+= render :partial=>'edit', :locals=>{ :show_done => true, :todo=>@todo, :parent=>@parent} %>

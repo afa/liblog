@@ -1,0 +1,7 @@
+= form_for @item, :url=>config_path(@item), :html=>{:method=>:put} do | form |
+ %fieldset
+  %legend Параметры конфигурации
+  = @item.name
+  = form.text_field :value
+  = form.submit "Сохранить"
+= button_to 'удалить', config_path(@item), :method=>:delete

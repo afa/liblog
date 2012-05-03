@@ -25,6 +25,7 @@ class ApplicationController < ActionController::Base
  end
 
  def current_user=(user)
+  User.current = user
   @logged = user
  end
 

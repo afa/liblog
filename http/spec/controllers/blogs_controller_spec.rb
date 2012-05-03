@@ -31,7 +31,7 @@ describe BlogsController do
 
  describe "GET rss" do
   before do
-   get :rss
+   get :rss, :format => :xml
   end
   it "should be success" do
    response.should be_success

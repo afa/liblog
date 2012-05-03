@@ -29,6 +29,7 @@ gem "haml-rails"
 gem "sass"
 gem "cancan"
 gem "newrelic_rpm"
+gem "unicorn-rails"
 group :production do
  gem "hoptoad_notifier"
 end

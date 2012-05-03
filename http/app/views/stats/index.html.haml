@@ -1,0 +1,6 @@
+%table
+ - (@uniqs.keys + @totals.keys).uniq.sort.each do |stat|
+  %tr
+   %td= stat
+   %td= @uniqs[stat].counter if @uniqs[stat]
+   %td= @totals[stat].counter if @totals[stat]

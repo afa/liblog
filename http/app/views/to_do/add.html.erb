@@ -1,4 +1,0 @@
-<% form_for :todo, @todo do | form | %>
- <%= render :partial=>'edit', :locals=>{ :form=>form, :parent=>@parent, :show_done=>false } %>
- <%= form.submit 'Сохранить' %>
-<% end %>

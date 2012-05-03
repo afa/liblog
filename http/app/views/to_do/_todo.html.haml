@@ -1,0 +1,19 @@
+- div_for todo, {:class=>[(opts[:even_level] ? 'even_level' : 'odd_level'), cycle( 'even', 'odd' ) ]} do
+  %div{:style=>"float:left;margin-right:3px;font-size:10px;"}
+   = link_to_remote image_tag("plus16.png", :title=>'Добавить субхотелку', :style=>"border:0px;"), :failure=>'alert("ajax err");', :url=>ajax_path(:action=>'todo_child_form', :id=>todo.id), :update=>"child_form_for_#{todo.id.to_s}"
+   -# = link_to_function image_tag("plus16.png", :title=>'Добавить субхотелку', :style=>"border:0px;"), "$(\"add_child_#{ todo.id }\").style.display='';" %>
+   #{ todo.percent_done }%
+  %div{:style=>"float:left;font-size:10px;", :class=>"#{(! todo.done) && (! todo.to_date.nil?) && (todo.to_date < Date.current) ? 'expired' : todo.to_date == Date.current ? 'expire_today' : 'not_expired'}"}
+   #{todo.to_date}
+  %div
+   = link_to_unless_current h(todo.text), todo_path( :action=>'show', :id=>todo.id )
+  %div{:id => "child_form_for_#{todo.id}"}
+   -# remote_form_for "todo[]", ToDo.new( :parent_id=>todo.id, :to_date=>todo.to_date, :done=>false ), :html=>{ :style=>'display:none;', :id=>"add_child_#{ todo.id }" }, :url=>ajax_path( :action=>'todo_add_child', :id=>todo.id ) do | f | %>
+    <%#= f.date_select :to_date %>
+    <%#= f.text_field :text %>
+    <%#= f.hidden_field :parent_id %>
+    <%#= f.hidden_field :done %>
+    <%#= f.submit 'Create', :image=>'/image/plus16.png' %>
+ - if not todo.childs.empty? and not opts[:max_depth].nil? and opts[:max_depth] > 0
+  .childs{:id=>"childs_#{todo.id}"
+   = todo_render todo.childs, { :max_depth=>(opts[:max_depth] ? opts[:max_depth] - 1 : 0), :even_level=>( opts[:even_level].nil? ? false : (not opts[:even_level] ) ) }
