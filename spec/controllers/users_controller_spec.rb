@@ -19,9 +19,6 @@ describe UsersController do
    before(:each) do
     @user = FactoryGirl.create(:user)
    end
-   it "should not has any roles" do
-    @user.roles.should be_empty
-   end
   end
 
 end

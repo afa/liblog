@@ -15,7 +15,7 @@ include Fb2
  after_save :update_count
 
  scope :unbundled, lambda { where "state not in ('bundled', 'published')" }
- scope :only_50, lambda{limiti(50)}
+ scope :only_50, lambda{limit(50)}
  scope :lasts, lambda{order('created_at DESC')}
  scope :with_authors, lambda{includes([:authors])}
  scope :active, lambda{where(:state => 'published')}

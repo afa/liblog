@@ -1,0 +1,6 @@
+= link_to_unless_current "Home", root_path
+= link_to_unless_current "Users", users_path if User.current.try(:can?, :admin)
+= link_to_unless_current "Blog", blogs_path
+= link_to_unless_current "Stories", articles_path
+= link_to_unless_current "Config", config_index_path if User.current.try(:can?, :admin)
+= link_to_unless_current "Lib", lib_root_path

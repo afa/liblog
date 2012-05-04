@@ -1,24 +1,26 @@
 !!!
- %html
-  %head
-   %title= @title
-   = auto_discovery_link_tag(:rss, rss_lib_site_url)
-   = javascript_include_tag "prototype"
-   = stylesheet_link_tag "main"
-  %body
-   .main_menu
-    = menu_bar lib_menu
-   - if @submenu
-    .submenu
-     = menu_bar @submenu
-   - if flash && flash.size
-    .flash
-     - if flash[:notice]
-      .notice
-       = h(flash[:notice])
-     - if flash[:error]
-      .error
-       = h(flash[:error])
-   .content
-    = yield
-   .footer
+%html
+ %head
+  %title= @title
+  = auto_discovery_link_tag(:rss, rss_lib_site_index_url)
+  = javascript_include_tag "prototype"
+  = stylesheet_link_tag "main"
+  = csrf_meta_tag
+ %body
+  .main_menu
+   -# = menu_bar lib_menu
+   = render :partial => "shared/menu"
+  .submenu
+   -# = menu_bar @submenu
+   = yield :submenu
+  - if flash && flash.size
+   .flash
+    - if flash[:notice]
+     .notice
+      = h(flash[:notice])
+    - if flash[:error]
+     .error
+      = h(flash[:error])
+  .content
+   = yield
+  .footer
