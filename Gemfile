@@ -1,7 +1,7 @@
 # This preamble is the current preamble for Rails 3 apps; edit as needed.
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.12'
+gem 'rails', '3.1.6'
 
 gem "pg"
 gem "rb-readline", :require => "readline"
@@ -34,10 +34,12 @@ gem "capistrano"
 group :production do
  gem "hoptoad_notifier"
 end
-#gem "rails-backbone" at 3.1 restore
-group :assets do
- gem "twitter-bootstrap-rails"
-end
+gem "rails-backbone" # at 3.1 restore
+#group :assets do
+gem "therubyracer"
+gem "execjs"
+gem "twitter-bootstrap-rails"
+#end
 group :development, :test do
  gem "factory_girl_rails", ">=1.1.rc1"
  #gem "rspec", ">=2.5"
