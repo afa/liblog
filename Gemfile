@@ -5,6 +5,7 @@ gem 'rails', '3.1.6'
 
 gem "pg"
 gem "rb-readline", :require => "readline"
+gem "net-ssh"
 #source 'http://gems.github.com'
 #gem 'mislav-will_paginate', '~> 2.2.3', :require => 'will_paginate'
 gem "will_paginate"
