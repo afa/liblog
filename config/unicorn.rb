@@ -5,6 +5,7 @@ worker_processes(3)
 preload_app true
 user('afa','afa')
 timeout 90
+puts "socket /tmp/unicorn_#{File.basename(File.dirname(File.dirname(prefix)))}.sock"
 listen "/tmp/unicorn_#{File.basename(File.dirname(File.dirname(prefix)))}.sock"
 #listen "/tmp/unicorn_urm2.sock"
 #listen '/var/sockets/cup-of.cup-of.sock'
