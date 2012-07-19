@@ -1,21 +1,21 @@
 Afalone::Application.configure do
 # Settings specified here will take precedence over those in config/environment.rb
 
-config.action_controller.session ||= {}
+#config.action_controller.session ||= {}
 #config.action_controller.session[:session_domain] = '.afalone.ru'
 #SubdomainRoutes::Config.domain_length = 2
 
 # The production environment is meant for finished, "live" apps.
 # Code is not reloaded between requests
-config.cache_classes = true
+#config.cache_classes = true
 
 # Use a different logger for distributed setups
 # config.logger = SyslogLogger.new
 
 # Full error reports are disabled and caching is turned on
 #config.action_controller.consider_all_requests_local = false
-config.action_controller.perform_caching             = true
-config.action_view.cache_template_loading            = true
+#config.action_controller.perform_caching             = true
+#config.action_view.cache_template_loading            = true
 
 # Use a different cache store in production
 # config.cache_store = :mem_cache_store
@@ -30,7 +30,7 @@ GEM_PATH='/home/virtwww/w_afalone-ru_3e7b26fa/.gems:/usr/lib/ruby/gems/1.8'
 NGINXLOGS_PATH='../../logs'
 NGINXLOGS_MASK=['access*log']
 
-DESC_PATH = File.join RAILS_ROOT, 'desc'
-FB2_PATH = File.join RAILS_ROOT, 'fb2'
+DESC_PATH = File.join Rails.root, 'desc'
+FB2_PATH = File.join Rails.root, 'fb2'
 
-BUNDLE_PATH = File.join RAILS_ROOT, 'bundles'
+BUNDLE_PATH = File.join Rails.root, 'bundles'
