@@ -40,11 +40,16 @@ class BlogPost < ActiveRecord::Base
  scope :accessible, where(:state => ['published', 'prepared'])
  scope :active, where(:state => 'published')
 
+ before_validation :prerender_body
   def convertor
    class_eval((raw_type || 'Simple') + 'Convertor')
   end
 
- def permalink
-  self.name
- end 
+  def permalink
+   self.name
+  end 
+
+  def prerender_body
+   #convert raw_text, raw_header, raw_tail, raw_cut_string to title, text, cutted_text
+  end
 end

@@ -57,7 +57,7 @@ class UsersController < ApplicationController
 
   def protect
    if session[:logon].nil? then
-    session[:return_to] = request.request_uri
+    session[:return_to] = "http://#{request.host}:#{request.port+request.fullpath}"
     flash[:error] =  "Must be logged in"
     redirect_to login_users_path
     return false
