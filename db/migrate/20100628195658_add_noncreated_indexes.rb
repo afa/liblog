@@ -8,7 +8,7 @@ class AddNoncreatedIndexes < ActiveRecord::Migration
    add_index :taggings, [:taggable_id]
    #add_index :roles_users, [:role_id]
    #add_index :roles_users, [:user_id]
-   add_index :roles, [:authorizable_id]
+   #add_index :roles, [:authorizable_id]
    add_index :imported_entries, [:blog_post_id]
    add_index :books_genres, [:genre_id]
    add_index :books_genres, [:book_id]
