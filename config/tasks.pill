@@ -1,0 +1,34 @@
+#coding: UTF-8
+Bluepill.application("production.v3") do |app|
+  app.working_dir = "/var/www/production.rails.v3"
+  %w(batch split prod flex p2f abbyy pdf pdc media publish cleanup).each do |pname|
+  app.process(pname) do |process|
+    process.start_grace_time    = 30.seconds
+    process.stop_grace_time     = 30.seconds
+    process.restart_grace_time  = 60.seconds
+    process.group = "resque"
+    process.start_command = "rake QUEUE=#{pname} resque:work"
+    #process.stop_command  = "ruby script/delayed_job -e production stop"
+    process.stdout = process.stderr = "/var/www/production.rails.v3/log/resque_#{pname}.log"
+    process.pid_file = "/var/www/production.rails.v3/tmp/pids/resque_#{pname}.pid"
+    process.daemonize = true
+    process.checks :flapping, :times => 2, :within => 60.seconds, :retry_in => 30.seconds
+#    process.uid = "deploy"
+#    process.gid = "deploy"
+  end
+  end
+  app.process('scheduler') do |process|
+    process.start_grace_time    = 30.seconds
+    process.stop_grace_time     = 30.seconds
+    process.restart_grace_time  = 60.seconds
+    process.group = "resque"
+    process.start_command = "rake resque:scheduler"
+    #process.stop_command  = "ruby script/delayed_job -e production stop"
+    process.stdout = process.stderr = "/var/www/production.rails.v3/log/resque_scheduler.log"
+    process.pid_file = "/var/www/production.rails.v3/tmp/pids/resque_scheduler.pid"
+    process.daemonize = true
+#    process.uid = "deploy"
+#    process.gid = "deploy"
+  end
+end
+

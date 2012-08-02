@@ -1,6 +1,15 @@
 # coding: UTF-8
 require "bluecloth"
 class Convertor
+ attr :body, :header
+ attr_accessor :body, :header
+ def self.import #to markdown
+ end
+ def self.prepare #to hash for save viewable text from markdowns
+ end
+ 
+ def self.restore #
+ end
  def self.to_markdown(src) #to internal
   src
  end
