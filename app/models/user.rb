@@ -1,5 +1,8 @@
 # coding: UTF-8
 class User < ActiveRecord::Base
+
+ include Afauth
+
  has_many :blog_posts
  scope :order_by_name, order("name")
 

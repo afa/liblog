@@ -10,6 +10,7 @@ FactoryGirl.define do
 
  factory :user do
   username
+  name
  end
 
  sequence :book_name do |n|
