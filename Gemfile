@@ -34,7 +34,6 @@ gem "cancan"
 gem "newrelic_rpm"
 gem "unicorn-rails"
 gem "capistrano"
-gem "less"
 group :production do
  gem "hoptoad_notifier"
 end
@@ -43,6 +42,7 @@ gem "rails-backbone" # at 3.1 restore
 gem "therubyracer"
 gem "execjs"
 gem "twitter-bootstrap-rails"
+gem "less-rails"
 #end
 group :development, :test do
  gem "factory_girl_rails", ">=1.1.rc1"
