@@ -34,6 +34,7 @@ gem "cancan"
 gem "newrelic_rpm"
 gem "unicorn-rails"
 gem "capistrano"
+gem "less"
 group :production do
  gem "hoptoad_notifier"
 end
