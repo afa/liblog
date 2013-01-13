@@ -11,10 +11,6 @@ describe UsersController do
     flash[:error].should =~ /be logged in/
    end
   end
-  it "should get login" do
-   get :login
-   response.should render_template 'login'
-  end
   describe "normal user" do
    before(:each) do
     @user = FactoryGirl.create(:user)

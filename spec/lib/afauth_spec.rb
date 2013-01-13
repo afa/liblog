@@ -1,5 +1,5 @@
 #coding: UTF-8
 require 'spec_helper'
 
-describe UsersHelper do
+shared_examples "afauth" do |auth_class|
 end

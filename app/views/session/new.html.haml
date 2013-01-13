@@ -1,0 +1,29 @@
+!!!
+%html
+ %head
+  %title= t :login_title
+ %body
+  = form_for :session, :url => session_index_path, :id => "loginform" do |form|
+   %p
+    %label{:for=>"user_login"}
+     Имя пользователя
+    %br
+    %input#user_login.input{:type=>"text", :name=>"session[username]", :value=>"", :size=>"20", :tabindex=>"10"}
+   %p
+    %label{:for=>"user_pass"}
+     Пароль
+    %br
+    %input#user_pass.input{:type=>"password", :name=>"session[password]", :value=>"", :size=>"20", :tabindex=>"20"}
+   %p.forgetmenot
+    %label{:for=>"rememberme"}
+     Запомнить меня
+    %input#rememberme{:name=>"rememberme", :type=>"checkbox", :value=>"1", :tabindex=>"90"}
+   %p.submit
+    %input#wp-submit.button-primary{:type=>"submit", :name=>"wp-submit", :value=>"Войти", :tabindex=>"100"}
+
+   %p.nav
+    = link_to "Регистрация", new_user_path
+
+  .clear
+
+

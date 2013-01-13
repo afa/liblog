@@ -7,19 +7,20 @@
  = csrf_meta_tag
 %body
  .main_menu
-  - unless current_page?( login_users_path )
+  - unless current_page?( new_session_path )
    %span{:style=>"display:block;float:right;"}
-    - unless User.current.try(:logged?)
-     - session[:return_to] = request.url unless current_page?( login_users_path )
-     = link_to( 'Login', login_users_path )
+    - unless User.logged?
+     - session[:return_to] = request.url unless current_page?( new_session_path )
+     = link_to( 'Login', new_session_path )
     - else
-     = link_to_unless_current( User.current.name, user_path(User.current.id) ) if User.current.logged?
+     = link_to_unless_current( User.current.name, user_path(User.current.id) ) if User.logged?
      = link_to "Logout", session_index_path, :method=>'delete'
   = render :partial => "shared/menu"
   .submenu
    = yield :submenu
- - flash.each do |key, value|
-  .flash{ :class => key}= value
+ #flash_place
+  - flash.each do |key, value|
+   .flash{ :class => key}= value
  .content
   = yield
  .footer

@@ -1,10 +1,9 @@
 %div
- - @users.each do | user |
+ - @users.each do |user|
   .user
    %div= user.name
-   - user.users.each do | u |
-    %div
-     %span= link_to u.username, :action=>'show', :id=>u.id
-     %span{:class=>[ (u.can_login? ? "allowed" : "blocked"), "right"]}L
-     %span{:class=>[ (u.is_admin? ? "allowed" : "blocked"), "right"]}A
-     %span{:class=>[ (u.can_post? ? "allowed" : "blocked"), "right"]}P
+   %div
+    %span= link_to user.username, :action=>'show', :id=>user.id
+    %span{:class=>[ (user.can_login? ? "allowed" : "blocked"), "right"]}L
+    %span{:class=>[ (user.is_admin? ? "allowed" : "blocked"), "right"]}A
+    %span{:class=>[ (user.can_post? ? "allowed" : "blocked"), "right"]}P

@@ -58,13 +58,13 @@ class ConfigController < ApplicationController
   end
 
   def protect
-   unless current_user.logged?
+   unless User.logged?
     redirect_to index_path
    end
   end
 
   def protect_admin_access
-    redirect_to :action=>'index' unless current_user.is_admin?
+    redirect_to config_index_path unless current_user.is_admin?
   end
 
 end

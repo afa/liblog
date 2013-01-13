@@ -38,16 +38,16 @@ Afalone::Application.routes.draw do
  end
 
  resources :tag
- resources :users do
-  collection do
-   get :login, :as => :login
-   post :logit
-   get :logout
-  end
- end
+ resources :users #do
+ # collection do
+ #  get :login, :as => :login
+ #  post :logit
+ #  get :logout
+ # end
+ #end
 
  resources :stats
- resources :session
+ resources :session, :only => [:new, :create, :destroy]
  resources :config
 end
 

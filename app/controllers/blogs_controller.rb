@@ -94,10 +94,10 @@ class BlogsController < ApplicationController
   end
 
   def protect
-   unless current_user.logged?
+   unless User.logged?
     session[:return_to] = request.request_uri
     flash[:error] =  "Must be logged in"
-    redirect_to login_users_path
+    redirect_to new_session_path
     return false
    end
   end

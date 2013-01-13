@@ -1,7 +1,7 @@
 # This preamble is the current preamble for Rails 3 apps; edit as needed.
 source 'http://rubygems.org'
 
-gem 'rails', '3.1.6'
+gem 'rails', '3.2.11'
 
 gem "pg"
 gem "rb-readline", :require => "readline"
@@ -22,7 +22,9 @@ gem 'acts-as-taggable-on'
 #gem 'daemons'
 #gem 'newrelic_rpm'
 gem 'rmagick', "2.12.2", :require => 'RMagick'
-gem 'bluecloth'
+#gem 'bluecloth'
+gem "kramdown"
+gem "livejournal"
 #gem "haml"
 gem "jquery-rails"
 #gem "cells"

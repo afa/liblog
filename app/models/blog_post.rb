@@ -1,5 +1,6 @@
 # coding: UTF-8
-require "bluecloth"
+#require "bluecloth"
+require "kramdown"
 class Convertor
  attr :body, :header
  attr_accessor :body, :header

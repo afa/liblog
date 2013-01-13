@@ -6,7 +6,7 @@ describe BlogsController do
   before do
    @user = FactoryGirl.create :user
    @user.stub!(:is_blogger?).and_return(true)
-   controller.current_user = @user
+   User.current = @user
    get :new
   end
   it "should be success" do

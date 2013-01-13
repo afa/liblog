@@ -19,7 +19,7 @@ module Afauth
    end
 
    def current
-    raise AuthError if @current.nil?
+    raise AuthError if @current.nil? && !auth_allow_unlogged
     @current
    end
 
@@ -30,6 +30,14 @@ module Afauth
 
    def authen_field_name(symb)
     @auth_field_name = symb
+   end
+
+   def can_be_unlogged(val)
+    @auth_allow_unlogged = val
+   end
+
+   def auth_allow_unlogged
+    @auth_allow_unlogged
    end
 
    def failed_auth(*list)
@@ -46,11 +54,19 @@ module Afauth
     p username, password
     unless user = where((@auth_field_name || :username) => username).first
      @failed_methods.each{|m| send(m, nil) } unless @failed_methods.blank?
-     raise AuthError
+     if @auth_allow_unlogged
+      return nil
+     else
+      raise AuthError
+     end
     end
     unless user.authenticated?(password)
      @failed_methods.each{|m| send(m, user) } unless @failed_methods.blank?
-     raise AuthError
+     if @auth_allow_unlogged
+      return nil
+     else
+      raise AuthError
+     end
     end
     @post_methods.each{|m| send(m, user) } unless @post_methods.blank?
     user
@@ -130,7 +146,6 @@ module Afauth
  module Controller
   module App
    def self.included(base)
-    #base.extend ClassMethods
     base.extend ClassMethods
     base.instance_eval do
      before_filter :process_cookie
@@ -139,12 +154,19 @@ module Afauth
      # hide when hardly test
      rescue_from Afauth::AuthError do |e|
       Rails.logger.info "---rescue: need redirect, #{e}, #{e.backtrace.first(3)}"
+      #if self.class.class_variable_defined?(:@@auth_can_be_unlogged) && self.class.auth_can_be_unlogged
+       #do nothing
+      #elsif self.class.class_variable_defined?(:@@auth_redirect_on_failed) && self.class.auth_redirect_on_failed
       if self.class.class_variable_defined?(:@@auth_redirect_on_failed) && self.class.auth_redirect_on_failed
        redirect_to self.class.auth_redirect_on_failed
       elsif self.class.class_variable_defined?(:@@auth_redirect_on_failed_cb) && self.class.auth_redirect_on_failed_cb
        redirect_to self.send(self.class.auth_redirect_on_failed_cb)
       else
-       raise
+       if self.class.class_variable_defined?(:@@auth_can_be_unlogged) && self.class.auth_can_be_unlogged
+        self.class.auth_model.current = self.class.auth_model.new
+       else
+        raise
+       end
       end
      end
     end
@@ -162,7 +184,7 @@ module Afauth
 
   def authenticate!
    unless logged_in?
-    redirect_to new_sessions_path
+    redirect_to new_session_path unless self.class.class_variable_defined?(:@@auth_can_be_unlogged) && self.class.auth_can_be_unlogged
    end
   end
 
@@ -178,7 +200,8 @@ module Afauth
 
    def process_cookie
     if cookies[self.class.auth_cookie_name].blank? || self.class.auth_model.where(:remember_token => cookies[self.class.auth_cookie_name]).first.nil?
-     raise Afauth::AuthError
+       
+     raise Afauth::AuthError unless self.class.class_variable_defined?(:@@auth_can_be_unlogged) && self.class.auth_can_be_unlogged #!!!!!!
     end
    end
 
@@ -216,7 +239,7 @@ module Afauth
 
    module ClassMethods
     #setup
-    %w(auth_model auth_cookie_name auth_redirect_on_failed auth_redirect_on_failed_cb auth_expired_in auth_before_logout_cb auth_field_name auth_post_sign_cb auth_post_logout_cb).each do |mtd|
+    %w(auth_model auth_cookie_name auth_redirect_on_failed auth_redirect_on_failed_cb auth_expired_in auth_before_logout_cb auth_field_name auth_post_sign_cb auth_post_logout_cb auth_can_be_unlogged).each do |mtd|
      define_method(mtd) do
       begin
        class_variable_get("@@#{mtd}")
@@ -232,11 +255,20 @@ module Afauth
     define_method(:user_model) do |klass|
      self.auth_model = klass
      if (class_variable_defined?(:@@auth_field_name) || superclass.class_variable_defined?(:@@auth_field_name)) && !auth_field_name.nil?
-      self.auth_model.authen_field_name nm
+      self.auth_model.authen_field_name auth_field_name
+     end
+     if (class_variable_defined?(:@@auth_can_be_unlogged) || superclass.class_variable_defined?(:@@auth_can_be_unlogged)) && !auth_can_be_unlogged.nil?
+      self.auth_model.can_be_unlogged auth_can_be_unlogged
      end
     end
     define_method(:remembered_cookie_name) do |name|
      self.auth_cookie_name = name
+    end
+    define_method(:can_be_unlogged) do |val|
+     self.auth_can_be_unlogged = val
+     if (class_variable_defined?(:@@user_model) || superclass.class_variable_defined?(:@@user_model)) && !auth_model.nil?
+      auth_model.can_be_unlogged val
+     end
     end
     define_method(:redirect_failed) do |rte|
      self.auth_redirect_on_failed = rte
@@ -284,12 +316,16 @@ module Afauth
     sign_out if logged_in?
     l_user = self.class.auth_model.authenticate(params[:session].try(:[], self.class.auth_field_name), params[:session].try(:[], :password))
     unless l_user
+     p "---sescr - rdrct"
      self.class.auth_model.current = nil
      redirect_to self.class.auth_redirect_on_failed_cb, :flash => {:error => "Неверный пароль или имя пользователя."} 
      return
     end
+    p "---sescr - us", l_user
     sign_in(l_user, :rememberme => params[:rememberme]) #unless logged_in?
+    p "---sescr - crnt", User.current
     if logged_in?
+     p "---sescr - lgd"
      if self.class.class_variable_defined?(:@@auth_post_sign_cb) && self.class.auth_post_sign_cb
       [self.class.auth_post_sign_cb].flatten.each do |mtd|
        self.send(mtd)

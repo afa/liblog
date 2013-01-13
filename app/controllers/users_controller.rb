@@ -1,18 +1,18 @@
 # coding: UTF-8
 class UsersController < ApplicationController
 #  helper :user
-  before_filter :current_user, :only=>[:index, :show]
-  before_filter :protect, :except=>[:login]
+#  before_filter :current_user, :only=>[:index, :show]
+#  before_filter :protect, :except=>[:login]
   before_filter :submenu, :except=>[:login]
   before_filter :get_users_submenu, :only=>[:edit, :show]
 
-  def login
-  end
+#  def login
+#  end
 
-  def logout
-   session[:logon] = nil
-   redirect_to index_path
-  end
+#  def logout
+#   session[:logon] = nil
+#   redirect_to index_path
+#  end
 
   def index
    @title = "Список персон"
@@ -40,7 +40,7 @@ class UsersController < ApplicationController
 
   def show
  #  current_user #@?
-   redirect_to user_index_path if @user.nil?
+   redirect_to users_path if @user.nil?
   end
  protected
   def get_users_submenu
@@ -50,18 +50,18 @@ class UsersController < ApplicationController
 
   def submenu
    @submenu = [
-    {:text=>'Index', :url=>user_index, :check=>'current_user.is_admin?'},
-    {:text=>'Add', :url=>new_user, :check=>'current_user.is_admin?'}
+    {:text=>'Index', :url=>users_path, :check=>'current_user.is_admin?'},
+    {:text=>'Add', :url=>new_user_path, :check=>'current_user.is_admin?'}
    ]
   end
 
-  def protect
-   if session[:logon].nil? then
-    session[:return_to] = "http://#{request.host}:#{request.port+request.fullpath}"
-    flash[:error] =  "Must be logged in"
-    redirect_to login_users_path
-    return false
-   end
-   #current_user #@?
-  end 
+#  def protect
+#   if session[:logon].nil? then
+#    session[:return_to] = "http://#{request.host}:#{request.port+request.fullpath}"
+#    flash[:error] =  "Must be logged in"
+#    redirect_to login_users_path
+#    return false
+#   end
+#   #current_user #@?
+#  end 
 end
