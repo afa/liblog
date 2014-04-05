@@ -1,0 +1,5 @@
+.form
+ /= error_messages_for 'post'
+ = form_for :post, url: blog_posts_path do | form |
+  = render :partial=>'blog_post_edit', :locals=>{ :form=>form }
+

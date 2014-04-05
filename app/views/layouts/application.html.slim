@@ -1,0 +1,36 @@
+doctype html
+head
+ title= @title
+ = auto_discovery_link_tag(:rss, rss_path)
+ = javascript_include_tag "application"
+ = stylesheet_link_tag "application"
+ = csrf_meta_tag
+body
+ .container
+  /.main_menu
+   - unless current_page?( new_session_path )
+    span style="display:block;float:right;" 
+     - unless false #User.logged?
+      - session[:return_to] = request.url unless current_page?( new_session_path )
+      = link_to( 'Login', new_session_path )
+     - else
+      = link_to_unless_current( User.current.name, user_path(User.current.id) ) if User.logged?
+      = link_to "Logout", session_index_path, :method=>'delete'
+   / = render :partial => "shared/menu"
+   /.submenu
+    = yield :submenu
+  = render :partial => "shared/menu"
+  .header
+   .row 
+    .col-md-8 
+      #flash_place
+      - flash.each do |key, value|
+       .flash  class=key = value
+  .content
+   = yield
+  .navbar-fixed-bottom
+   .navbar-text
+    |&copy; 20**, afa
+   ul.navbar-nav.nav
+    li
+     a href='#' contacts

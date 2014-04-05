@@ -1,0 +1,11 @@
+/= form_tag( session_index_url ) do
+ div
+  label for="username" Имя пользователя:
+  = text_field_tag :username, '', {:style=>'max-width:100px;font-size:11px;'}
+ div
+  label for="password" Пароль:
+  = password_field_tag :password, '', {:style=>'max-width:100px;font-size:11px;'}
+ div
+  label for="remember" Запомнить на этом компьютере
+  = check_box_tag :remember
+ = submit_tag "Login", {:style=>'font-size:10px;'}

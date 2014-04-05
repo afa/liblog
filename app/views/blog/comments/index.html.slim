@@ -1,0 +1,3 @@
+= render :partial=>'blog/posts/post', :locals=>{ :post => @post }
+= render :partial=>'comments', :collection=>@post.comments, :locals=>{:colors=>['grey', 'light-grey']}
+/= render :partial=>'comments', :collection=>@post.imm_comments, :locals=>{:colors=>['grey', 'light-grey']}

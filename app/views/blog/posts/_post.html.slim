@@ -1,0 +1,22 @@
+.post
+  .header
+    .row
+      .col-md-11
+        = post.title.blank? ? '' : post.title.html_safe
+      .col-md-1.date= post.created_at.to_s(:short)
+  .text
+    .row
+    .col-md-12
+      = post.text.to_s.html_safe
+  .links
+    .row
+      .col-md-1
+        = link_to "<noindex>Link</noindex>".html_safe, blog_post_path(post)
+        span
+          = link_to_unless_current '<noindex>Послать</noindex>'.html_safe, new_blog_post_comment_path(post)
+          | &nbsp;
+        - if post.comments.exists?
+          = link_to "<noindex>#{ post.comments.count } засланцев</noindex>".html_safe, blog_post_comments_path(post)
+        - if post.name.blank?
+        - else
+          = link_to "<noindex>PermaLink</noindex>".html_safe, blog_post_path(post)

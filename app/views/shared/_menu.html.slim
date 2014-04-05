@@ -1,0 +1,37 @@
+.navbar-default.navbar-static-top
+  .row
+    .col-xs-7
+      ul.navbar-nav.nav
+        li class=([current_page?(root_path) ? 'active' : nil]) 
+          = link_to "Home", root_path
+        /!- if User.logged? && can?(:admin, current_user)
+        /!  %li{:class => [current_page?(users_path) ? 'active' : nil]}
+        /!    = link_to "Users", users_path
+        li class=([current_page?(blog_root_path) ? 'active' : nil]) 
+          = link_to "Blog", blog_root_path
+        li class=([current_page?(articles_path) ? 'active' : nil]) 
+          = link_to "Stories", articles_path
+        /!- if User.logged? && can?(:admin, User.current)
+        /!  %li{:class => [current_page?(config_root_path) ? 'active' : nil]}
+        /!    = link_to "Config", config_index_path
+        li class=([current_page?(lib_root_path) ? 'active' : nil]) 
+          = link_to "Lib", lib_root_path
+    - if signed_in?
+      .col-xs-5.offset-3
+        ul.navbar-nav.nav
+          li
+            = link_to current_user.username, '#'
+          li
+            = link_to "logout", sign_out_path, method: :delete
+    - else
+      .col-xs-5
+
+        = form_for :session, url: session_path, html: {method: :post, class: 'navbar-form form-inline'} do |f|
+          .form-group
+            .row
+              .col-xs-5
+                = f.text_field :email, placeholder: 'E-Mail', class: 'form-control col-xs-5'
+              .col-xs-5
+                = f.password_field :password, placeholder: 'password', class: 'form-control col-xs-5'
+              .col-xs-2
+                = f.submit "sign-in", class: 'form-control col-xs-2'

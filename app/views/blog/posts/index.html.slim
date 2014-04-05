@@ -1,0 +1,3 @@
+= render :partial=>'post', :collection=>@posts
+= will_paginate @posts, {:page_links=>false, :prev_label=>'Свежее', :next_label=>'Раньше'}
+
