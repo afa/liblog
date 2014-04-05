@@ -1,7 +1,8 @@
 Afalone::Application.routes.draw do
 
  namespace :blog do
-   root to: 'posts#index'
+   root to: 'main#dashboard'
+   resource :main, only: [:dashboard]
    resources :posts , controller: :posts do
      collection do
        get :rss

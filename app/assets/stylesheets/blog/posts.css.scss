@@ -1,0 +1,33 @@
+// Place all the styles related to the Blog::Posts controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+//temporary commented pads&margins
+
+.post {
+  padding-bottom: 3px;
+  margin-bottom: 7px;
+  background-color: #c0c0e0;
+  margin-left: 3px;
+  margin-right: 3px;
+  padding-right: 2px;
+  padding-left: 2px;
+
+  .header {
+    background-color: #f8f8f8;
+    padding-top: 5px;
+    padding-left: 3px;
+    padding-right: 3px;
+    font-weight: bold;
+    .date {
+      //float: right;
+      font-weight: normal;
+      font-size: 10px;
+    }
+  }
+  .links {
+    //border-top: 1px solid #e0e0e0;
+    //border-color: black;
+  }
+}
+
