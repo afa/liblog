@@ -3,28 +3,29 @@
 # Likewise, all the methods added will be available for all controllers.
 
 class ApplicationController < ActionController::Base
+  include Clearance::Controller
   helper :all # include all helpers, all the time
-  include Afauth::Controller::App
-  remembered_cookie_name :afalone_token
-  user_model User
-  can_be_unlogged true
-  auth_expired_in_days 30
-  authen_field_name :username
-  redirect_failed_cb :fail_redirect
-  post_logout_cb :to_root
-  before_logout_cb :do_nothing
-  post_sign_cb :to_root
+  #include Afauth::Controller::App
+  #remembered_cookie_name :afalone_token
+  #user_model User
+  #can_be_unlogged true
+  #auth_expired_in_days 30
+  #authen_field_name :username
+  #redirect_failed_cb :fail_redirect
+  #post_logout_cb :to_root
+  #before_logout_cb :do_nothing
+  #post_sign_cb :to_root
   
-  def fail_redirect
-   new_session_path
-  end
+  #def fail_redirect
+  # new_session_path
+  #end
 
-  def to_root
-   redirect_to root_path
-  end
+  #def to_root
+  # redirect_to root_path
+  #end
 
-  def do_nothing
-  end
+  #def do_nothing
+  #end
 
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store

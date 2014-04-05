@@ -1,12 +1,13 @@
 #setup user environment
-ENV['RAILS_ENV'] = 'production'
+#!!ENV['RAILS_ENV'] = 'production'
 prefix = Dir.getwd #"/mnt/data/www/urm2"
 worker_processes(3)
 preload_app true
 user('afa','afa')
 timeout 90
-puts "socket /tmp/unicorn_#{File.basename(File.dirname(File.dirname(prefix)))}.sock"
-listen "/tmp/unicorn_#{File.basename(File.dirname(File.dirname(prefix)))}.sock"
+#puts "socket /tmp/unicorn_#{File.basename(File.dirname(File.dirname(prefix)))}.sock"
+listen File.join(prefix, 'tmp/sockets/unicorn.sock')
+#listen "/tmp/unicorn_#{File.basename(File.dirname(File.dirname(prefix)))}.sock"
 #listen "/tmp/unicorn_urm2.sock"
 #listen '/var/sockets/cup-of.cup-of.sock'
 working_directory "#{prefix}"

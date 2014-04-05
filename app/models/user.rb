@@ -1,19 +1,21 @@
 # coding: UTF-8
 class User < ActiveRecord::Base
+include Clearance::User
 
- include Afauth::Model
- authen_field_name :username
+
+ #include Afauth::Model
+ #authen_field_name :username
  
 
- has_many :blog_posts
- scope :order_by_name, order("name")
+ has_many :blog_posts, class_name: Blog::Post
+ scope :order_by_name, -> { order("name") }
 
 
- validates_uniqueness_of :username, :message=>'Аккаунт с таким именем уже существует', :on=>:create
+ validates_uniqueness_of :username, :message=>'Аккаунт с таким именем уже существует'
 # validates_presence_of :email, :message=>'Необходимо ввести емайл'
 # validates_confirmation_of :password
 
- attr_accessible :name
+ #attr_accessible :name
 
 #  def self.current
 #   @current

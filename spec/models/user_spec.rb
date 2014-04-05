@@ -1,10 +1,14 @@
 #coding: UTF-8
 require 'spec_helper'
-require 'lib/afauth_spec'
+#require 'lib/afauth_spec_lib'
 
 describe User do
  before do
   @user = FactoryGirl.create(:user)
  end
- include_examples 'afauth', User
+ subject {@user}
+
+ it { should be_valid }
+
+ #include_examples 'afauth_model', User
 end

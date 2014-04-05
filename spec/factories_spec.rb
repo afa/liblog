@@ -8,7 +8,10 @@ describe 'validate FactoryGirl factories' do
       subject { FactoryGirl.build(factory.name) }
 
       it "is valid" do
-        subject.valid?.should be, subject.errors.full_messages
+        subject.valid?
+        p subject.errors.full_messages
+        expect(subject.valid?).to be
+        subject.errors.full_messages.should be_empty
       end
     end
   end

@@ -1,10 +1,14 @@
 #coding: UTF-8
 module Afauth
+ class Config
+
+ end
  class AuthError < Exception; end
  module Model
   def self.included(base)
    base.extend ClassMethods
    base.instance_eval do
+    afauth_init
     before_validation :make_salt, :if => lambda{self.salt.blank?}
     before_validation :calc_password, :on => :create
     before_validation :generate_remember_token, :if => lambda{ self.remember_token.blank? }
@@ -14,6 +18,18 @@ module Afauth
   end
 
   module ClassMethods
+   def afauth_init
+    @afauth_config ||= Afauth::Config.new
+   end
+
+   def auth_config
+    cfg = Afauth::Config.new
+    if block_defined?
+     yield(cfg)
+    end
+    
+   end
+
    def current=(user)
     @current = user
    end

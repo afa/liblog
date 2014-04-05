@@ -7,7 +7,7 @@ class Lib::SiteController < ApplicationController
   end
 
   def rss
-   @books = Book.lasts.only_50.with_authors.all
+   @books = Book.lasts.only_50.with_authors
    render :layout=>false
   end
 

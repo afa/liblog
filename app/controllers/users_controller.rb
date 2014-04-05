@@ -3,8 +3,9 @@ class UsersController < ApplicationController
 #  helper :user
 #  before_filter :current_user, :only=>[:index, :show]
 #  before_filter :protect, :except=>[:login]
-  before_filter :submenu, :except=>[:login]
-  before_filter :get_users_submenu, :only=>[:edit, :show]
+  before_action :check_ability
+  before_action :submenu, :except=>[:login]
+  before_action :get_users_submenu, :only=>[:edit, :show]
 
 #  def login
 #  end
@@ -16,7 +17,7 @@ class UsersController < ApplicationController
 
   def index
    @title = "Список персон"
-   @users = User.order("name").all
+   @users = User.order("name")
   end
 
   def new
@@ -55,6 +56,9 @@ class UsersController < ApplicationController
    ]
   end
 
+  def check_ability
+    redirect_to root_path, flash: {error: t('user.need_login')} unless can? :manage, User
+  end
 #  def protect
 #   if session[:logon].nil? then
 #    session[:return_to] = "http://#{request.host}:#{request.port+request.fullpath}"

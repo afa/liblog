@@ -1,4 +1,5 @@
 Afalone::Application.configure do
+  config.eager_load = true
 # Settings specified here will take precedence over those in config/environment.rb
 
 #config.action_controller.session ||= {}

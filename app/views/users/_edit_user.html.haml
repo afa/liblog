@@ -1,6 +1,7 @@
 %fieldset
- = error_messages_for :user
- %legend Параметры персоны
+ = error_messages_for @user
+ %legend
+  Параметры персоны
   %div
    = form.label :username, "Логин"
    = form.text_field :username

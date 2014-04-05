@@ -1,4 +1,6 @@
 Afalone::Application.configure do
+  config.eager_load = false
+
  config.active_support.deprecation = :log
 # Settings specified here will take precedence over those in config/environment.rb
 

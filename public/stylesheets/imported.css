@@ -45,7 +45,7 @@ code.html span.doctype
 }
 
 /* nav rounded */
-nav {
+/*nav {
 -moz-background-clip:border;
 -moz-background-inline-policy:continuous;
 -moz-background-origin:padding;
@@ -56,5 +56,5 @@ padding:0 5px;
 position:absolute;
 right:0;
 top:2.5em;
-}
+}*/
 

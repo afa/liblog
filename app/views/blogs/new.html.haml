@@ -1,5 +1,0 @@
-.form
- = error_messages_for 'post'
- = form_for :post, @post, :url=>url_for(:action=>'create') do | form |
-  = render :partial=>'blog_post_edit', :locals=>{ :form=>form }
-

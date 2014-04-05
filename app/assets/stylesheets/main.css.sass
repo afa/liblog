@@ -1,116 +1,110 @@
 body
- background-color: #e0e0e0
- font-family: Tahoma,Verdana,sans-serif
+  background-color: #e0e0e0
+  font-family: Tahoma,Verdana,sans-serif
 
 p
- margin: 0px
- padding: 0px
+  margin: 0px
+  padding: 0px
 
 .flash
- width: 100%
- padding-bottom: 20px
+  width: 100%
+  padding-bottom: 20px
 
 .error, .notice
- padding: 3px
- margin: 2px
+  padding: 3px
+  margin: 2px
 
 .flash .error
- background-color: red
+  background-color: red
 
 .flash .notice
- background-color: green
+  background-color: green
 
 .main_menu
- padding-bottom: 5px
- padding-top: 3px
- padding-left: 3px
- background-color: #f0f0f0
+  padding-bottom: 5px
+  padding-top: 3px
+  padding-left: 3px
+  background-color: #f0f0f0
 
 .submenu
- padding-bottom: 5px
- padding-left: 7px
- background-color: #f8f8f8
- color: #404040
+  padding-bottom: 5px
+  padding-left: 7px
+  background-color: #f8f8f8
+  color: #404040
 
 span.menu_item
- padding-right: 5px
+  padding-right: 5px
 
-
-.post
- padding-bottom: 3px
- margin-bottom: 7px
- background-color: #c0c0e0
- margin-left: 3px
- margin-right: 3px
- padding-right: 2px
- padding-left: 2px
-
-.post .header
- background-color: #f8f8f8
- padding-top: 5px
- padding-left: 3px
- padding-right: 3px
- font-weight: bold
-
-.post .date
- float: right
- font-weight: normal
- font-size: 10px
-
-.post .links
- border-top: black 1px #e0e0e0
 
 
 div.to_do
- padding-bottom: 3px
- margin-bottom: 2px
+  padding-bottom: 3px
+  margin-bottom: 2px
 
 div.to_do div
- margin-left: 2px
- margin-right: 2px
- padding-left: 2px
+  margin-left: 2px
+  margin-right: 2px
+  padding-left: 2px
 
 .to_do .childs
- margin-left: 10px
- margin-bottom: 3px
+  margin-left: 10px
+  margin-bottom: 3px
 
 .to_do .expired
- font-weight: bold
- color: red
+  font-weight: bold
+  color: red
 
 .to_do .not_expired
- font-weight: bold
- color: green
+  font-weight: bold
+  color: green
 
 .to_do .expire_today
- font-weight: bold
- color: blue
+  font-weight: bold
+  color: blue
 
 .blocked
- color: red
- text-style: striked
+  color: red
+  text-style: striked
 
 .allowed
- color: green
+  color: green
 
 .right
- font-weight: bold
- padding-left: 3px
- padding-right: 3px
+  font-weight: bold
+  padding-left: 3px
+  padding-right: 3px
 
 
 
 
-li.page
- display: inline
-li.page a
- text-decoration: none
-li.page span
- border: 1px solid black
- padding: 0.2em 0.5em
+li
+  &.page
+    display: inline
+    a
+      text-decoration: none
+    span
+      border: 1px solid black
+      padding: 0.2em 0.5em
 
-li.page.selected span, li.page span:hover
- background: gray
- color: white
-li.page.gap_before:before
- content: "..."
+    &.selected span, span:hover
+      background: gray
+      color: white
+    &.gap_before:before
+      content: "..."
+
+footer
+  width: 100%
+  background-color: #048bc3
+  height: 100px
+
+.content
+  height: 100%
+  min-height: 100%
+  margin-bottom: -50px
+
+@mixin bootformgroup
+  .form-group
+
+.post
+  fieldset
+    @include bootformgroup

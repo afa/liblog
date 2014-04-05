@@ -1,6 +1,6 @@
 # coding: UTF-8
 class SessionController < ApplicationController
- include Afauth::Controller::Session
+ #include Afauth::Controller::Session
 #  def new
 
 #  end

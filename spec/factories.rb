@@ -8,20 +8,29 @@ FactoryGirl.define do
  "name_#{n}"
  end
 
- factory :user do
+ sequence :email do |n|
+   "user_#{n}@afalone.it"
+ end
+
+ factory :user, class: 'User' do
   username
   name
+  email
+  password 'password'
+  after(:create) do |user, ev|
+    if user.password.blank?
+      user.password = 'password'
+      user.update_password
+    end
+  end
  end
 
  sequence :book_name do |n|
   "book #{n}"
  end
  factory(:book) do
-  name { Factory.next(:book_name) }
+  name { next(:book_name) }
   fbguid { "guid-#{rand(899)+100}-#{rand(89)+10}" }
  end
 
- factory(:blog_post) do
-
- end
 end

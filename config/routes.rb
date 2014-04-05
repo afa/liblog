@@ -1,5 +1,16 @@
 Afalone::Application.routes.draw do
 
+ namespace :blog do
+   root to: 'posts#index'
+   resources :posts , controller: :posts do
+     collection do
+       get :rss
+     end
+     resources :comments, shallow: true
+     #resources :comments, :only => [:index, :new, :create]
+   end
+   #resources :comments, :only => [:show, :edit, :update, :delete]
+ end
  namespace :lib do
   resources :site do
    collection do
@@ -8,7 +19,7 @@ Afalone::Application.routes.draw do
   end
   root :to => 'site#index'
   #match '/' => 'site#index', :as => :index
-  match '/rss' => 'site#rss', :as => :rss
+  get '/rss' => 'site#rss', :as => :rss
   resources :author
   resources :book
   resources :genre
@@ -24,18 +35,18 @@ Afalone::Application.routes.draw do
 
  root :to => 'site#index'
  #match '' => 'site#index', :as => :index
- match '/sitemap.xml' => 'site#sitemap', :as => :sitemap, :format => 'xml'
- match '/contacts' => 'site#contacts', :as => :contacts
- match '/rss.xml' => 'site#rss', :as => :rss
+ get '/sitemap.xml' => 'site#sitemap', :as => :sitemap, :format => 'xml'
+ get '/contacts' => 'site#contacts', :as => :contacts
+ get '/rss.xml' => 'site#rss', :as => :rss
  resources :todo
  resources :rails
  resources :articles
- resources :blogs do
-  collection do
-   get :rss
-  end
-  resources :comments
- end
+ #resources :blogs do
+ # collection do
+ #  get :rss
+ # end
+ # resources :comments
+ #end
 
  resources :tag
  resources :users #do
@@ -47,7 +58,7 @@ Afalone::Application.routes.draw do
  #end
 
  resources :stats
- resources :session, :only => [:new, :create, :destroy]
+ #resources :session, :only => [:new, :create, :destroy]
  resources :config
 end
 
