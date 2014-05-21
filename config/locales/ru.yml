@@ -1,3 +1,18 @@
 ru:
   formats:
     date:
+  blog:
+    comments:
+      new:
+      comment_form:
+        title: не думай. тряси.
+        header: название
+        text: текст коммента
+        send: Отправить
+    posts:
+      post_form:
+        title: блогеры такие блогеры
+        header: название
+        text: текст
+        send: Отправить
+        name: обозвать попроще  

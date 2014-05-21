@@ -18,13 +18,14 @@ class Blog::PostsController < ApplicationController
   end
 
   def new
+    @post = current_user.blog_posts.new
   end
 
   def edit
   end
 
   def create
-    if current_user.blog_posts.create(permitted_params[:post])
+    if current_user.blog_posts.create(permitted_params)
       redirect_to blog_posts_path
     else
       render :new
@@ -55,7 +56,7 @@ class Blog::PostsController < ApplicationController
 
   private
   def permitted_params
-    params.require(:post).permit(:title, :text, :name)
+    params.require(:blog_post).permit(:title, :text, :name)
   end
 
   def auth

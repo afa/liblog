@@ -1,2 +1,7 @@
-h1 Blog::Main#dashboard
-p Find me in app/views/blog/main/dashboard.html.haml
+.row
+  .col-lg-8
+    = render partial: 'blog/posts/post', collection: @posts
+  .col-lg-4
+    .last.comments.row
+      .col-lg-12
+        = render partial: 'blog/comments/comments', collection: @comments

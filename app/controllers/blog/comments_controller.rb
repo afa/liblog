@@ -60,7 +60,8 @@ class Blog::CommentsController < ApplicationController
   end
 
   def auth_rm
-    redirect_to blog_post_comments_path(@post) unless can? :delete, @comment
+    redirect_to blog_posts_path unless can? :delete, @comment
+    #redirect_to blog_post_comments_path(@post) unless can? :delete, @comment
   end
 
   def permitted_params

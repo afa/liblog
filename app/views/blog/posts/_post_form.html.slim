@@ -1,0 +1,15 @@
+/= error_messages_for 'post'
+= form_for post, url: post.persisted? ? blog_post_path(post) : blog_posts_path, html: {method: post.persisted? ? 'PUT' : 'POST', class: 'form-vertical form'} do | form |
+
+  fieldset
+    legend = t('.title')
+    .field.form-group
+      = form.text_field :title, class: 'form-control', placeholder: t('.header')
+    .field.form-group
+      /= form.text_area :raw_text, :style=>'width:100%;'
+      = form.text_area :text, class: 'form-control', placeholder: t('.text')
+    /.field
+      = form.text_field :tag_list, :style=>'width:100%;'
+    .field.form-group
+      = form.text_field :name, class: 'form-control', placeholder: t('.name')
+  = form.submit t('.send')

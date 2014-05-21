@@ -10,4 +10,5 @@ tmp/
 test/testdata/
 http/
 afalone/
-
+db/*.sqlite3
+db/development_structure.sql

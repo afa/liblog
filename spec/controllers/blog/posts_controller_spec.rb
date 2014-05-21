@@ -121,7 +121,7 @@ describe Blog::PostsController do
         @count = Blog::Post.count
       end
       it "reddirects to blogs" do
-        post 'create', post: {text: ''} 
+        post 'create', blog_post: {text: ''} 
         response.should redirect_to(blog_posts_path)
         @count.should < Blog::Post.count
       end
@@ -132,7 +132,7 @@ describe Blog::PostsController do
         @post = FactoryGirl.create(:post)
       end
       it "reddirects to blog" do
-        put 'update', id: @post.id, text: 'to edit'
+        put 'update', id: @post.id, blog_post: { text: 'to edit' }
         response.should redirect_to(blog_root_path)
         Blog::Post.find(@post.id).text.should_not == 'to edit'
       end
@@ -143,7 +143,7 @@ describe Blog::PostsController do
         @post = FactoryGirl.create(:post, user: @controller.current_user)
       end
       it "reddirects to blogs" do
-        put 'update', id: @post.id, post: {text: 'to edit'}
+        put 'update', id: @post.id, blog_post: {text: 'to edit'}
         response.should redirect_to(blog_posts_path)
         Blog::Post.find(@post.id).text.should == 'to edit'
       end

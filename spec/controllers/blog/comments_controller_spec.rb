@@ -83,9 +83,9 @@ describe Blog::CommentsController do
       before do
         @comment = FactoryGirl.create(:comment)
       end
-      it "returns http success" do
+      it "removes comment and redirects to post comments" do
         delete 'destroy', id: @comment.id
-        response.should redirect_to(blog_post_comments_path(@comment.post))
+        response.should redirect_to(blog_posts_path)
       end
     end
     context "and accessing comment of my post" do
@@ -103,7 +103,7 @@ describe Blog::CommentsController do
         it "should successfully redirect to comments" do
           delete 'destroy', id: @comment.id
           response.should redirect_to(blog_post_comments_path(@post))
-          Blog::Comment.where(id: @comment.id).should_not be_exist
+          Blog::Comment.where(id: @comment.id).should_not exist
         end
       end
     end

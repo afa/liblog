@@ -11,7 +11,6 @@ config.cache_classes = true
 #SubdomainRoutes::Config.domain_length = 1
 
 # Log error messages when you accidentally call methods on nil.
-config.whiny_nils = true
 
 #config.gem "test-unit", :lib => 'test/unit'
 #config.gem "machinist"
