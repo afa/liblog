@@ -1,7 +1,7 @@
 # coding: UTF-8
 require "livejournal"
 
-=begin
+#=begin
 module Livejournal
  require 'net/http'
  require 'xmlrpc/client'
@@ -53,4 +53,4 @@ module Livejournal
   res
  end
 end
-=end
+#=end
