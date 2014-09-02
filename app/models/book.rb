@@ -12,7 +12,7 @@ include Fb2
 
  validates_uniqueness_of :fbguid, :nil=>true
  validates_presence_of :name, :blank=>false
- after_save :update_count
+ #after_save :update_count
 
  scope :unbundled, lambda { where "state not in ('bundled', 'published')" }
  scope :only_50, lambda{limit(50)}

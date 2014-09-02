@@ -2,7 +2,8 @@
 require File.expand_path('../boot', __FILE__)
 require "rails/all"
 
-Bundler.require(:default, Rails.env) if defined?(Bundler)
+# Bundler.require(:default, Rails.env) if defined?(Bundler)
+Bundler.require *Rails.groups(:assets => %w(development test))
 
 
 
@@ -46,6 +47,7 @@ module Afalone
 
     # Enable the asset pipeline
     config.assets.enabled = true
+    config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
 
     # Version of your assets, change this if you want to expire all your assets
     #config.assets.version = '1.0'
@@ -76,28 +78,6 @@ module Afalone
     # config.active_record.observers = :cacher, :garbage_collector
   
   
-#    config.gem 'mislav-will_paginate', :version => '~> 2.2.3', :lib => 'will_paginate', 
-#      :source => 'http://gems.github.com'
-#    config.gem 'russian'
-#    config.gem 'andand'
-#    config.gem 'nokogiri'
-#    config.gem "mholling-paged_scopes", :lib=>"paged_scopes", :source=>"http://gems.github.com"
-#    config.gem "paperclip"
-#    #config.gem "rubyist-aasm", :lib=>'aasm'
-#    #config.gem "rubyist-aasm", :lib => "aasm", :source => "http://gems.github.com"
-#    config.gem "state_machine"
-#    config.gem "mechanize"
-#    config.gem "acts-as-taggable-on", :source => "http://gemcutter.org"
-#    #config.gem "blueprints"
-#    #config.gem "machinist"
-#    #config.gem "faker"
-#    config.gem "delayed_job"
-#    #config.gem "daemon-spawn"
-#    config.gem "daemons"
-#    config.gem "newrelic_rpm"
-#    #config.gem "mholling-subdomain_routes", :lib=>"subdomain_routes"
-#    config.gem "rmagick", :lib=>'RMagick'
-#    config.gem "bluecloth"
   end
 end
 

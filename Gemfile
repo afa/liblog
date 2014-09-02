@@ -5,6 +5,7 @@ gem 'rails', '4.1.1'
 
 gem "pg"
 gem 'bootstrap-sass', '>= 3.0.0.0'
+gem 'spring'
 gem 'cancan'
 gem 'faker'
 gem 'knife-solo'
@@ -28,7 +29,8 @@ gem 'acts-as-taggable-on'
 #gem 'delayed_job'
 #gem 'daemons'
 #gem 'newrelic_rpm'
-gem 'rmagick', "2.12.2", :require => 'RMagick'
+gem 'rmagick', :require => 'RMagick'
+# , "2.12.2"
 #gem 'bluecloth'
 gem "kramdown"
 gem "livejournal"
@@ -46,12 +48,10 @@ group :production do
  gem "hoptoad_notifier"
 end
 gem "rails-backbone" # at 3.1 restore
-group :assets do
-  #gem "therubyracer"
-  gem "execjs"
+#gem "therubyracer"
+gem "execjs"
 #gem "twitter-bootstrap-rails"
 ##gem "less-rails"
-end
 group :development do
   gem 'annotate'
   gem 'haml2slim'
